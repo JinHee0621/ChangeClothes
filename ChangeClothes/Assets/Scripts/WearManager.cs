@@ -59,7 +59,7 @@ public class WearManager : MonoBehaviour
     {
         if(collision.GetComponent<WearObject>().checkEquip())
         {
-            Debug.Log("out This " + collision.gameObject.name);
+            //Debug.Log("out This " + collision.gameObject.name);
             collision.GetComponent<WearObject>().UnEquipped();
             collision.gameObject.transform.SetParent(OtherPos.transform);
             collision.transform.localScale = new Vector3(1, 1);

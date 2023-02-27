@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weared: 0
+  clothType: default
+  clothType_Part: 0
 --- !u!114 &4422476579234648265
 MonoBehaviour:
   m_ObjectHideFlags: 0

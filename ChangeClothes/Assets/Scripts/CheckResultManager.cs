@@ -8,10 +8,11 @@ public class CheckResultManager : MonoBehaviour
     public GameObject cover2;
     public void startCheckResult()
     {
-        Debug.Log("체크시작");
+        SoundManager.OffBGM();
         gameObject.SetActive(false);
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");
+        SoundManager.PlaySFX(3);
     }
 
 }

@@ -32,8 +32,17 @@ public class WearObject : MonoBehaviour
         WearManager.changeCatch(false);
         if (weared)
         {
+            SoundManager.PlaySFX(1);
             gameObject.transform.localPosition = new Vector3(0, 0);
+        } else
+        {
+            SoundManager.PlaySFX(2);
         }
+    }
+
+    private void OnMouseDown()
+    {
+        SoundManager.PlaySFX(0);
     }
 
 

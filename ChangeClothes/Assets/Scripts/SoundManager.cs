@@ -37,9 +37,6 @@ public class SoundManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(FadeInBGM(source));
-        } else
-        {
-            Debug.Log("end");
         }
     }
 }

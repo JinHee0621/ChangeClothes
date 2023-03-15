@@ -9,11 +9,17 @@ public class WearObject : MonoBehaviour
     public string clothType = "";
     public int clothType_Part = 0;
     public CharStateManager stat;
+    public Sprite[] whenWear;
 
     private void Start()
     {
         stat = GameObject.Find("Kimdoe").GetComponent<CharStateManager>();
         clothType_Part = setObjectPart(gameObject.tag);
+
+        if(gameObject.tag.Equals("Outer"))
+        {
+            whenWear = Resources.LoadAll<Sprite>(gameObject.name.Substring(0,gameObject.name.Length - 2));
+        }
     }
 
     // X : 9, Y : 5
@@ -30,10 +36,15 @@ public class WearObject : MonoBehaviour
     {
         gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         WearManager.changeCatch(false);
+
         if (weared)
         {
             SoundManager.PlaySFX(1);
             gameObject.transform.localPosition = new Vector3(0, 0);
+            if (gameObject.tag.Equals("Outer"))
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
+            }
         } else
         {
             SoundManager.PlaySFX(2);
@@ -43,6 +54,10 @@ public class WearObject : MonoBehaviour
     private void OnMouseDown()
     {
         SoundManager.PlaySFX(0);
+        if (gameObject.tag.Equals("Outer"))
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
+        }
     }
 
 

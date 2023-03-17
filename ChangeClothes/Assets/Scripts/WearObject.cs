@@ -18,7 +18,7 @@ public class WearObject : MonoBehaviour
 
         if(gameObject.tag.Equals("Outer"))
         {
-            whenWear = Resources.LoadAll<Sprite>(gameObject.name.Substring(0,gameObject.name.Length - 2));
+            whenWear = Resources.LoadAll<Sprite>("Outer/" + gameObject.name.Substring(0,gameObject.name.Length - 2));
         }
     }
 

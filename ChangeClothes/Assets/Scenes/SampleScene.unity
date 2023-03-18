@@ -279,6 +279,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4422476579234648267, guid: 2737dba1600612845aea4078a8e7c806, type: 3}
+      propertyPath: wearable
+      value: 
+      objectReference: {fileID: 935540920}
     - target: {fileID: 4422476579234648276, guid: 2737dba1600612845aea4078a8e7c806, type: 3}
       propertyPath: m_Name
       value: Cloth_bone_0
@@ -340,6 +344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Glass_bone_0
       objectReference: {fileID: 0}
+    - target: {fileID: 6616446726346893197, guid: c016be8077cfafd47a43cbc90e22873e, type: 3}
+      propertyPath: wearable
+      value: 
+      objectReference: {fileID: 935540920}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c016be8077cfafd47a43cbc90e22873e, type: 3}
 --- !u!1 &195355809
@@ -926,7 +934,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 935540920}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1997,6 +2005,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 428339184}
     m_Modifications:
+    - target: {fileID: 4192552125600581900, guid: 204bb1ddaacf0bd4a928229805e2bff0, type: 3}
+      propertyPath: wearable
+      value: 
+      objectReference: {fileID: 935540920}
     - target: {fileID: 4192552125600581901, guid: 204bb1ddaacf0bd4a928229805e2bff0, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2126,6 +2138,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5642077449657210663, guid: 85f0604bf7195da4ab3e9a45b667cc40, type: 3}
+      propertyPath: wearable
+      value: 
+      objectReference: {fileID: 935540920}
     - target: {fileID: 5642077449657210680, guid: 85f0604bf7195da4ab3e9a45b667cc40, type: 3}
       propertyPath: m_Name
       value: Outer_bone_0
@@ -2183,6 +2199,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2819488315139782372, guid: 28b73b90ec6966c468aef664b84746bf, type: 3}
+      propertyPath: wearable
+      value: 
+      objectReference: {fileID: 935540920}
     - target: {fileID: 2819488315139782373, guid: 28b73b90ec6966c468aef664b84746bf, type: 3}
       propertyPath: m_Name
       value: Glass_HotBand

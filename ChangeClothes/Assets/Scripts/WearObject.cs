@@ -40,11 +40,21 @@ public class WearObject : MonoBehaviour
         if (weared)
         {
             SoundManager.PlaySFX(1);
-            gameObject.transform.localPosition = new Vector3(0, 0);
             if (gameObject.tag.Equals("Outer"))
             {
                 gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
             }
+
+            if (!stat.getBody(clothType_Part).Equals("") && !stat.getBody(clothType_Part).Equals(clothType))
+            {
+                Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
+                weardObj.transform.SetParent(GameObject.Find("Object").gameObject.transform.Find(gameObject.tag));
+                weardObj.transform.localPosition = new Vector3(0, 0);
+                weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            }
+            stat.setBody(clothType, clothType_Part);
+            gameObject.transform.localPosition = new Vector3(0, 0);
+
         } else
         {
             SoundManager.PlaySFX(2);
@@ -64,15 +74,13 @@ public class WearObject : MonoBehaviour
     public void Equipped()
     {
         weared = true;
-        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-        stat.setBody(clothType, clothType_Part);
+        //gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
     public void UnEquipped()
     {
         weared = false;
-        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        stat.outBody(clothType_Part);
+       // gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     public bool checkEquip()

@@ -59,10 +59,18 @@ public class WearManager : MonoBehaviour
     {
         if(collision.GetComponent<WearObject>().checkEquip())
         {
-            //Debug.Log("out This " + collision.gameObject.name);
             collision.GetComponent<WearObject>().UnEquipped();
-            collision.gameObject.transform.SetParent(OtherPos.transform);
+            collision.gameObject.transform.SetParent(OtherPos.transform.Find(collision.gameObject.tag));
             collision.transform.localScale = new Vector3(1, 1);
+            CheckUnEquip(collision.gameObject);
+        }
+    }
+
+    public void CheckUnEquip(GameObject target)
+    {
+        if(gameObject.transform.Find(target.tag).childCount == 0)
+        {
+            gameObject.GetComponentInParent<CharStateManager>().outBody(target.GetComponent<WearObject>().clothType_Part);
         }
     }
 }

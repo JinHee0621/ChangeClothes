@@ -67,4 +67,28 @@ public class CharStateManager : MonoBehaviour
                 break;
         }
     }
+
+    public string getBody(int part_type)
+    {
+        switch (part_type)
+        {
+            case 1:
+                return shirt_type;
+            case 2:
+                return pants_type;
+            case 3:
+                return outer_type;
+            case 4:
+                return left_type;
+            case 5:
+                return right_type;
+            case 6:
+                return hair_type;
+            case 7:
+                return glass_type;
+            default:
+                return shirt_type;
+        }
+    }
+
 }

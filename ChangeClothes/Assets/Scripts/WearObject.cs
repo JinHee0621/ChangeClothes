@@ -10,9 +10,11 @@ public class WearObject : MonoBehaviour
     public int clothType_Part = 0;
     public CharStateManager stat;
     public Sprite[] whenWear;
+    private Vector2 first_pos;
 
     private void Start()
     {
+        first_pos = gameObject.transform.localPosition;
         stat = GameObject.Find("Kimdoe").GetComponent<CharStateManager>();
         clothType_Part = setObjectPart(gameObject.tag);
 
@@ -35,7 +37,7 @@ public class WearObject : MonoBehaviour
     private void OnMouseUp()
     {
         gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-        WearManager.changeCatch(false);
+       WearManager.changeCatch(false);
 
         if (weared)
         {
@@ -49,7 +51,7 @@ public class WearObject : MonoBehaviour
             {
                 Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
                 weardObj.transform.SetParent(GameObject.Find("Object").gameObject.transform.Find(gameObject.tag));
-                weardObj.transform.localPosition = new Vector3(0, 0);
+                weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().getFirstPos();
                 weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             }
             stat.setBody(clothType, clothType_Part);
@@ -58,6 +60,10 @@ public class WearObject : MonoBehaviour
         } else
         {
             SoundManager.PlaySFX(2);
+            if (!weared)
+            {
+                gameObject.transform.localPosition = first_pos;
+            }
         }
     }
 
@@ -74,13 +80,11 @@ public class WearObject : MonoBehaviour
     public void Equipped()
     {
         weared = true;
-        //gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
     }
 
     public void UnEquipped()
     {
         weared = false;
-       // gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 
     public bool checkEquip()
@@ -116,5 +120,10 @@ public class WearObject : MonoBehaviour
                 break;
         }
         return typeNum;
+    }
+
+    public Vector2 getFirstPos()
+    {
+        return this.first_pos;
     }
 }

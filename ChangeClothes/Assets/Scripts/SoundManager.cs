@@ -9,7 +9,7 @@ public class SoundManager : MonoBehaviour
     static AudioSource SFX_Sound;
     static AudioSource BGM_Sound;
     static public List<AudioClip> SFX;
-    // Start is called before the first frame update
+
     void Start()
     {
         SFX = SFX_List;

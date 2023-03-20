@@ -10,10 +10,13 @@ public class WearObject : MonoBehaviour
     public int clothType_Part = 0;
     public CharStateManager stat;
     public Sprite[] whenWear;
-    private Vector2 first_pos;
+    private Vector3 first_pos;
+    private GameObject hanger;
 
     private void Start()
     {
+        hanger = transform.parent.gameObject;
+
         first_pos = gameObject.transform.localPosition;
         stat = GameObject.Find("Kimdoe").GetComponent<CharStateManager>();
         clothType_Part = setObjectPart(gameObject.tag);
@@ -24,7 +27,6 @@ public class WearObject : MonoBehaviour
         }
     }
 
-    // X : 9, Y : 5
     private void OnMouseDrag()
     {
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
@@ -50,7 +52,7 @@ public class WearObject : MonoBehaviour
             if (!stat.getBody(clothType_Part).Equals("") && !stat.getBody(clothType_Part).Equals(clothType))
             {
                 Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
-                weardObj.transform.SetParent(GameObject.Find("Object").gameObject.transform.Find(gameObject.tag));
+                weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().getThisHanger().transform);
                 weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().getFirstPos();
                 weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             }
@@ -122,8 +124,13 @@ public class WearObject : MonoBehaviour
         return typeNum;
     }
 
-    public Vector2 getFirstPos()
+    public Vector3 getFirstPos()
     {
         return this.first_pos;
+    }
+
+    public GameObject getThisHanger()
+    {
+        return this.hanger;
     }
 }

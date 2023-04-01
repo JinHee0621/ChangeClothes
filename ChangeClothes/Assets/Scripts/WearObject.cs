@@ -19,7 +19,7 @@ public class WearObject : MonoBehaviour
 
         first_pos = gameObject.transform.localPosition;
         stat = GameObject.Find("Kimdoe").GetComponent<CharStateManager>();
-        clothType_Part = setObjectPart(gameObject.tag);
+        clothType_Part = SetObjectPart(gameObject.tag);
 
         if(gameObject.tag.Equals("Outer"))
         {
@@ -33,13 +33,13 @@ public class WearObject : MonoBehaviour
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         transform.position = objPosition;
-        WearManager.changeCatch(true);
+        WearManager.ChangeCatch(true);
     }
 
     private void OnMouseUp()
     {
         gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-       WearManager.changeCatch(false);
+       WearManager.ChangeCatch(false);
 
         if (weared)
         {
@@ -49,14 +49,14 @@ public class WearObject : MonoBehaviour
                 gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
             }
 
-            if (!stat.getBody(clothType_Part).Equals("") && !stat.getBody(clothType_Part).Equals(clothType))
+            if (!stat.GetBody(clothType_Part).Equals("") && !stat.GetBody(clothType_Part).Equals(clothType))
             {
                 Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
-                weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().getThisHanger().transform);
-                weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().getFirstPos();
+                weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
+                weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
                 weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             }
-            stat.setBody(clothType, clothType_Part);
+            stat.SetBody(clothType, clothType_Part);
             gameObject.transform.localPosition = new Vector3(0, 0);
 
         } else
@@ -89,12 +89,12 @@ public class WearObject : MonoBehaviour
         weared = false;
     }
 
-    public bool checkEquip()
+    public bool CheckEquip()
     {
         return weared;
     }
 
-    private int setObjectPart(string tag)
+    private int SetObjectPart(string tag)
     {
         int typeNum = 0;
         switch(tag)
@@ -124,12 +124,12 @@ public class WearObject : MonoBehaviour
         return typeNum;
     }
 
-    public Vector3 getFirstPos()
+    public Vector3 GetFirstPos()
     {
         return this.first_pos;
     }
 
-    public GameObject getThisHanger()
+    public GameObject GetThisHanger()
     {
         return this.hanger;
     }

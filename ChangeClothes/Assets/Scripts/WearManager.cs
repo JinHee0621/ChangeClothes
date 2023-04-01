@@ -6,10 +6,10 @@ public class WearManager : MonoBehaviour
 {
     //public GameObject[] clothes;
     public List<GameObject> clothes;
-    public GameObject OtherPos;
+    public GameObject otherPos;
 
-    private static bool Catched = false;
-    private bool ConfinedMouse = false;
+    private static bool catched = false;
+    private bool confinedMouse = false;
     
     /*
     private void Start()
@@ -17,25 +17,25 @@ public class WearManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
     }
     */
-    public static void changeCatch(bool check)
+    public static void ChangeCatch(bool check)
     {
-        Catched = check;
+        catched = check;
     }
 
     private void Update()
     {
-        if (!Catched)
+        if (!catched)
         {
-            if (!ConfinedMouse)
+            if (!confinedMouse)
             {
                 Cursor.lockState = CursorLockMode.None;
-                ConfinedMouse = true;
+                confinedMouse = true;
             }
         } 
         else
         {
             Cursor.lockState = CursorLockMode.Confined;
-            ConfinedMouse = false;
+            confinedMouse = false;
         }
     }
 
@@ -44,7 +44,7 @@ public class WearManager : MonoBehaviour
         for(int i = 0; i < clothes.Count; i++)
         {
             if (clothes[i].gameObject.name.Equals(collision.gameObject.name)){
-                if (!collision.GetComponent<WearObject>().checkEquip())
+                if (!collision.GetComponent<WearObject>().CheckEquip())
                 {
                     collision.gameObject.transform.SetParent(transform.Find(collision.gameObject.tag));
                     collision.transform.localScale = new Vector3(1, 1);
@@ -57,10 +57,10 @@ public class WearManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.GetComponent<WearObject>().checkEquip())
+        if(collision.GetComponent<WearObject>().CheckEquip())
         {
             collision.GetComponent<WearObject>().UnEquipped();
-            collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().getThisHanger().transform);
+            collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
             collision.transform.localScale = new Vector3(1, 1);
             CheckUnEquip(collision.gameObject);
         }
@@ -70,7 +70,7 @@ public class WearManager : MonoBehaviour
     {
         if(gameObject.transform.Find(target.tag).childCount == 0)
         {
-            gameObject.GetComponentInParent<CharStateManager>().outBody(target.GetComponent<WearObject>().clothType_Part);
+            gameObject.GetComponentInParent<CharStateManager>().OutBody(target.GetComponent<WearObject>().clothType_Part);
         }
     }
 }

@@ -12,7 +12,7 @@ public class CharStateManager : MonoBehaviour
     public string hair_type = "";
     public string glass_type = "";
 
-    public void setBody(string object_type, int part_type)
+    public void SetBody(string object_type, int part_type)
     {
         switch(part_type)
         {
@@ -40,7 +40,7 @@ public class CharStateManager : MonoBehaviour
         }
     }
 
-    public void outBody(int part_type)
+    public void OutBody(int part_type)
     {
         switch (part_type)
         {
@@ -68,7 +68,7 @@ public class CharStateManager : MonoBehaviour
         }
     }
 
-    public string getBody(int part_type)
+    public string GetBody(int part_type)
     {
         switch (part_type)
         {

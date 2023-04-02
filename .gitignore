@@ -60,6 +60,7 @@ crashlytics-build.properties
 
 *.meta
 *.png
+*.mp3
 ChangeClothes/Temp/
 ChangeClothes/UserSettings/
 ChangeClothes/ProjectSettings/

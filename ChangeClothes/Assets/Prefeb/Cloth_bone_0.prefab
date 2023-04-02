@@ -150,6 +150,8 @@ MonoBehaviour:
   weared: 0
   clothType: default
   clothType_Part: 0
+  stat: {fileID: 0}
+  whenWear: []
 --- !u!114 &4422476579234648265
 MonoBehaviour:
   m_ObjectHideFlags: 0

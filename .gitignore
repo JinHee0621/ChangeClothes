@@ -61,6 +61,10 @@ crashlytics-build.properties
 *.meta
 *.png
 *.mp3
+*.wav
+*.pdf
+*.cache
+
 ChangeClothes/Temp/
 ChangeClothes/UserSettings/
 ChangeClothes/ProjectSettings/

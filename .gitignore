@@ -59,6 +59,7 @@ sysinfo.txt
 crashlytics-build.properties
 
 *.meta
+*.png
 ChangeClothes/Temp/
 ChangeClothes/UserSettings/
 ChangeClothes/ProjectSettings/

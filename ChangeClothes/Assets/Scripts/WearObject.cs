@@ -5,6 +5,7 @@ using UnityEngine;
 public class WearObject : MonoBehaviour
 {
     float distance = 4;
+    public bool isdecoObj;
     public bool weared = false;
     public string clothType = "";
     public int clothType_Part = 0;
@@ -12,6 +13,8 @@ public class WearObject : MonoBehaviour
     public Sprite[] whenWear;
     private Vector3 first_pos;
     private GameObject hanger;
+
+    private bool move = false;
 
     private void Start()
     {
@@ -29,52 +32,67 @@ public class WearObject : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
-        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        transform.position = objPosition;
-        WearManager.ChangeCatch(true);
+        if(!move)
+        {
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
+            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+            transform.position = objPosition;
+            WearManager.ChangeCatch(true);
+        }
     }
 
     private void OnMouseUp()
     {
-        gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-       WearManager.ChangeCatch(false);
-
-        if (weared)
+        if(!move)
         {
-            SoundManager.PlaySFX(1);
-            if (gameObject.tag.Equals("Outer"))
-            {
-                gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
-            }
+            gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            WearManager.ChangeCatch(false);
 
-            if (!stat.GetBody(clothType_Part).Equals("") && !stat.GetBody(clothType_Part).Equals(clothType))
+            if (weared)
             {
-                Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
-                weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
-                weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
-                weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            }
-            stat.SetBody(clothType, clothType_Part);
-            gameObject.transform.localPosition = new Vector3(0, 0);
+                SoundManager.PlaySFX(1);
+                if (gameObject.tag.Equals("Outer"))
+                {
+                    gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
+                }
 
-        } else
-        {
-            SoundManager.PlaySFX(2);
-            if (!weared)
+                if (!stat.GetBody(clothType_Part).Equals("") && !stat.GetBody(clothType_Part).Equals(clothType))
+                {
+                    Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
+                    weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
+                    weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
+
+                    if (isdecoObj) weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                    else weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                }
+                stat.SetBody(clothType, clothType_Part);
+                gameObject.transform.localPosition = new Vector3(0, 0);
+
+            }
+            else
             {
-                gameObject.transform.localPosition = first_pos;
+                SoundManager.PlaySFX(2);
+                if (!weared)
+                {
+                    gameObject.transform.localPosition = first_pos;
+                    if (isdecoObj) gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                    else gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                }
             }
         }
+
     }
 
     private void OnMouseDown()
     {
-        SoundManager.PlaySFX(0);
-        if (gameObject.tag.Equals("Outer"))
+        if(!move)
         {
-            gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
+            SoundManager.PlaySFX(0);
+            if (gameObject.tag.Equals("Outer"))
+            {
+                gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
+            }
         }
     }
 
@@ -132,5 +150,22 @@ public class WearObject : MonoBehaviour
     public GameObject GetThisHanger()
     {
         return this.hanger;
+    }
+
+    public void SetMove()
+    {
+        move = true;
+        StartCoroutine("WaitSceond");
+    }
+
+    public bool GetMove()
+    {
+        return move;
+    }
+
+    IEnumerator WaitSceond()
+    {
+        yield return new WaitForSeconds(1.5f);
+        move = false;
     }
 }

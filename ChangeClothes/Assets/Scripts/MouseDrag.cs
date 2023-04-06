@@ -10,9 +10,11 @@ public class MouseDrag : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
-        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        transform.position = objPosition;
+        if(gameObject.GetComponent<WearObject>() != null && !gameObject.GetComponent<WearObject>().GetMove())
+        {
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
+            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            transform.position = objPosition;
+        }
     }
-
 }

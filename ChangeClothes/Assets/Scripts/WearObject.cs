@@ -51,6 +51,7 @@ public class WearObject : MonoBehaviour
 
             if (weared)
             {
+                //¿Ê ÀåÂø
                 SoundManager.PlaySFX(1);
                 if (gameObject.tag.Equals("Outer"))
                 {
@@ -68,6 +69,7 @@ public class WearObject : MonoBehaviour
                 }
                 stat.SetBody(clothType, clothType_Part);
                 gameObject.transform.localPosition = new Vector3(0, 0);
+                gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
 
             }
             else
@@ -137,6 +139,9 @@ public class WearObject : MonoBehaviour
                 break;
             case "Glass":
                 typeNum = 7;
+                break;
+            case "Face":
+                typeNum = 8;
                 break;
         }
         return typeNum;

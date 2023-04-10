@@ -11,6 +11,7 @@ public class CharStateManager : MonoBehaviour
     public string right_type = "";
     public string hair_type = "";
     public string glass_type = "";
+    public string face_type = "";
 
     public void SetBody(string object_type, int part_type)
     {
@@ -36,6 +37,9 @@ public class CharStateManager : MonoBehaviour
                 break;
             case 7:
                 glass_type = object_type;
+                break;
+            case 8:
+                face_type = object_type;
                 break;
         }
     }
@@ -65,6 +69,9 @@ public class CharStateManager : MonoBehaviour
             case 7:
                 glass_type = "";
                 break;
+            case 8:
+                face_type = "";
+                break;
         }
     }
 
@@ -86,6 +93,8 @@ public class CharStateManager : MonoBehaviour
                 return hair_type;
             case 7:
                 return glass_type;
+            case 8:
+                return face_type;
             default:
                 return shirt_type;
         }

@@ -17,7 +17,7 @@ public class ScreenFix : MonoBehaviour
         int deviceHeight = Screen.height; // 기기 높이 저장
 
         Screen.SetResolution(setWidth, (int)(((float)deviceHeight / deviceWidth) * setWidth), false); // SetResolution 함수 제대로 사용하기
-
+        //Screen.SetResolution(setWidth, setHeight, false);
         if ((float)setWidth / setHeight < (float)deviceWidth / deviceHeight) // 기기의 해상도 비가 더 큰 경우
         {
             float newWidth = ((float)setWidth / setHeight) / ((float)deviceWidth / deviceHeight); // 새로운 너비

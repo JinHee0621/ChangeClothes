@@ -30,6 +30,7 @@ public class BackgroundButtonManager : MonoBehaviour
     {
         if (enteredMouse && !moving)
         {
+            SoundManager.PlaySFX(4);
             if (!openedMenu)
             {
                 StartCoroutine("Moving");

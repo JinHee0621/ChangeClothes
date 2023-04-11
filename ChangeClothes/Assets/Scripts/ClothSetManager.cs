@@ -46,6 +46,8 @@ public class ClothSetManager : MonoBehaviour
                     }
                 }
                 isShirtSetOpen = true;
+                closePantsSet();
+                closeOtherSet();
             }
             else
             {
@@ -82,6 +84,8 @@ public class ClothSetManager : MonoBehaviour
                     }
                 }
                 isPantsSetOpen = true;
+                closeShirtSet();
+                closeOtherSet();
             }
             else
             {
@@ -118,6 +122,8 @@ public class ClothSetManager : MonoBehaviour
                     }
                 }
                 isOuterSetOpen = true;
+                closeShirtSet();
+                closePantsSet();
             }
             else
             {
@@ -139,6 +145,57 @@ public class ClothSetManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.8f);
         moving = false;
+    }
+
+    void closeShirtSet()
+    {
+        if (isShirtSetOpen)
+        {
+            shirtSet.GetComponent<Animator>().SetBool("Open", false);
+            foreach (GameObject ele in hangerSet)
+            {
+                ele.GetComponent<Animator>().SetTrigger("GetClothSet");
+                if (ele.GetComponentInChildren<WearObject>() != null)
+                {
+                    ele.GetComponentInChildren<WearObject>().SetMove();
+                }
+            }
+            isShirtSetOpen = false;
+        }
+    }
+
+    void closePantsSet()
+    {
+        if (isPantsSetOpen)
+        {
+            pantsSet.GetComponent<Animator>().SetBool("Open", false);
+            foreach (GameObject ele in pantsHangerSet)
+            {
+                ele.GetComponent<Animator>().SetTrigger("GetClothSet");
+                if (ele.GetComponentInChildren<WearObject>() != null)
+                {
+                    ele.GetComponentInChildren<WearObject>().SetMove();
+                }
+            }
+            isPantsSetOpen = false;
+        }
+    }
+
+    void closeOtherSet()
+    {
+        if (isOuterSetOpen)
+        {
+            outerSet.GetComponent<Animator>().SetBool("Open", false);
+            foreach (GameObject ele in outerHangerSet)
+            {
+                ele.GetComponent<Animator>().SetTrigger("GetOuterClothSet");
+                if (ele.GetComponentInChildren<WearObject>() != null)
+                {
+                    ele.GetComponentInChildren<WearObject>().SetMove();
+                }
+            }
+            isOuterSetOpen = false;
+        }
     }
 
 }

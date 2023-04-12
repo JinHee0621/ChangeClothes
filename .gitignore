@@ -64,6 +64,7 @@ crashlytics-build.properties
 *.wav
 *.pdf
 *.cache
+*.otf
 
 ChangeClothes/Temp/
 ChangeClothes/UserSettings/

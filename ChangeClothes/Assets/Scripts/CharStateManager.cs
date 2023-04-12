@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class CharStateManager : MonoBehaviour
 {
+    public GameObject state_guage;
+    public int condition = 100;
+    public int tension = 100;
+    public int mental = 100;
+
     public string shirt_type = "";
     public string pants_type = "";
     public string outer_type = "";
@@ -12,6 +17,14 @@ public class CharStateManager : MonoBehaviour
     public string hair_type = "";
     public string glass_type = "";
     public string face_type = "";
+
+    public void changeState(int con, int ten, int men)
+    {
+        condition = condition + con;
+        tension = tension + ten;
+        mental = mental + men;
+        state_guage.GetComponent<StateGuage>().SetGuageState();
+    }
 
     public void SetBody(string object_type, int part_type)
     {

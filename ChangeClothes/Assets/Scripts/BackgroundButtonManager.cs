@@ -47,6 +47,18 @@ public class BackgroundButtonManager : MonoBehaviour
             }
         }
     }
+
+    public void CloseMenuPub()
+    {
+        if(openedMenu)
+        {
+            StartCoroutine("Moving");
+            CloseMenu();
+            moving = true;
+            openedMenu = false;
+        }
+    }
+
     private void OpenMenu()
     {
         button_target_obj.transform.DOMoveY(button_target_obj.transform.localPosition.y + 5, 1.5f);

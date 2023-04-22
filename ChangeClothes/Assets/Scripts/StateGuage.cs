@@ -15,7 +15,7 @@ public class StateGuage : MonoBehaviour
     private Image condition_Img;
     private Image tension_Img;
     private Image mental_Img;
-    private bool state_window_activated = false;
+   // private bool state_window_activated = false;
     void Start()
     {
         condition_Img = condition_guage.GetComponent<Image>();
@@ -24,6 +24,7 @@ public class StateGuage : MonoBehaviour
         SetGuageState();
     }
 
+    /*
     void Update()
     {
         if (EventSystem.current.IsPointerOverGameObject() == true)
@@ -48,7 +49,7 @@ public class StateGuage : MonoBehaviour
         }
         new WaitForSeconds(0.05f);
     }
-
+    */
     public void SetGuageState()
     {
         condition_Img.fillAmount = state_owner.GetComponent<CharStateManager>().condition / 100f;

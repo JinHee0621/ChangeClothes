@@ -29,7 +29,7 @@ public class ClothSetManager : MonoBehaviour
 
     public void ShirtSetOpen()
     {
-        if(!moving)
+        if (!moving)
         {
             moving = true;
             StartCoroutine("WaitSceond");
@@ -145,6 +145,13 @@ public class ClothSetManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.8f);
         moving = false;
+    }
+
+    public void CloseAll()
+    {
+        closeOtherSet();
+        closePantsSet();
+        closeShirtSet();
     }
 
     void closeShirtSet()

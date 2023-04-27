@@ -9,6 +9,7 @@ public class UIMovingManager : MonoBehaviour
     public GameObject bottomUI;
     public GameObject gameSetUI;
     public GameObject gameUIScroll;
+    public GameObject statusSetUI;
     public GameObject clothSetBtnUI;
     public GameObject backgorundSetBtnUI;
 
@@ -40,7 +41,8 @@ public class UIMovingManager : MonoBehaviour
 
     public void OpenGameSetUI()
     {
-        gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y + 900, 1.5f);
+        gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y + 920, 1.5f);
+        statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y + 920, 1.5f);
     }
 
     public void LeftMoveScroll()
@@ -52,4 +54,6 @@ public class UIMovingManager : MonoBehaviour
     {
         gameUIScroll.transform.DOLocalMoveX(gameUIScroll.transform.localPosition.x - 200, 0.5f);
     }
+
+
 }

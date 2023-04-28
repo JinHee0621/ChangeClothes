@@ -21,5 +21,6 @@ public class CheckResultManager : MonoBehaviour
         SoundManager.PlaySFX(3);
         yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().OpenGameSetUI();
+        uiManager.GetComponent<UIMovingManager>().MoveStatusGuage();
     }
 }

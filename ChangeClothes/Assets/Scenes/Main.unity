@@ -229,18 +229,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16540959}
-  m_LocalRotation: {x: -0.0108000375, y: -0.38265726, z: -0.0044735214, w: 0.92381644}
+  m_LocalRotation: {x: -0.010776271, y: -0.3882129, z: -0.004539889, w: 0.92149556}
   m_LocalPosition: {x: 0, y: 0, z: 75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2005032209}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -1.34, y: -45, z: 0}
+  m_LocalEulerAnglesHint: {x: -1.34, y: -45.69, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 126, y: 73}
-  m_SizeDelta: {x: 150, y: 150}
+  m_SizeDelta: {x: 150, y: 155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &16540961
 MonoBehaviour:
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1563,7 +1563,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100
+  m_Text: '0
+
+'
 --- !u!222 &229237019
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3515,8 +3517,8 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
+  m_FillAmount: 0
+  m_FillClockwise: 0
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 7.96
@@ -4922,7 +4924,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100
+  m_Text: 0
 --- !u!222 &1103288580
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6318,7 +6320,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -77.999985, y: 84.000015}
-  m_SizeDelta: {x: 160, y: 65}
+  m_SizeDelta: {x: 200, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1494686082
 MonoBehaviour:
@@ -6357,7 +6359,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 4a38943283de8da408c186ff4e7f5d31, type: 3}
-    m_FontSize: 60
+    m_FontSize: 45
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -6368,7 +6370,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC88B\uC74C"
+  m_Text: "\uB9E4\uC6B0\uB098\uC068"
 --- !u!222 &1494686084
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6519,7 +6521,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD558\uC774\uD150\uC158"
+  m_Text: "\uB85C\uC6B0\uD150\uC158"
 --- !u!222 &1549790084
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7591,7 +7593,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   conditionGuage: {fileID: 808536354}
+  conditionText: {fileID: 1494686080}
+  conditionNum: {fileID: 1103288576}
   tensionGuage: {fileID: 16540959}
+  tensionText: {fileID: 1549790080}
+  tensionNum: {fileID: 229237015}
   statusSet: {fileID: 1101259164}
 --- !u!1 &1734876373
 GameObject:

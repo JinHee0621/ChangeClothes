@@ -22,6 +22,11 @@ public class UIMovingManager : MonoBehaviour
         MoveUI();
     }
 
+    public void MoveStatusGuage()
+    {
+        gameObject.GetComponent<StatusUIManager>().ReSetGuage();
+    }
+
     public void MoveUI()
     {
         // dayUI.transform.DOMoveY(dayUI.transform.position.y - 83, 2f);
@@ -41,8 +46,8 @@ public class UIMovingManager : MonoBehaviour
 
     public void OpenGameSetUI()
     {
-        gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y + 920, 1.5f);
-        statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y + 920, 1.5f);
+        gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y + 940, 1.5f);
+        statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y + 940, 1.5f);
     }
 
     public void LeftMoveScroll()

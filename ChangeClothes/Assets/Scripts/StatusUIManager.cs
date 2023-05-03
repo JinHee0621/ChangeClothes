@@ -8,34 +8,35 @@ public class StatusUIManager : MonoBehaviour
     public GameObject conditionGuage;
     public GameObject conditionText;
     public GameObject conditionNum;
-    public GameObject tensionGuage;
-    public GameObject tensionText;
-    public GameObject tensionNum;
+    public GameObject mentalGuage;
+    public GameObject mentalText;
+    public GameObject mentalNum;
     public GameObject statusSet;
 
     string[] conditionTextSet = {"매우좋음", "좋음", "보통", "나쁨", "매우나쁨"};
-    string[] testionTextSet = { "하이텐션", "보통텐션", "로우텐션" };
+    string[] mentalTextSet = { "매우좋음", "좋음", "보통", "나쁨", "매우나쁨" };
 
     int charCondition = 0;
-    int charTension = 0;
+    int charMental = 0;
     int guageConditon = 0;
-    int guageTension = 0;
+    int guageMental = 0;
 
 
     public void ReSetGuage()
     {
         conditionGuage.GetComponent<Image>().fillAmount = 0;
-        tensionGuage.GetComponent<Image>().fillAmount = 0;
+        mentalGuage.GetComponent<Image>().fillAmount = 0;
         charCondition = statusSet.GetComponent<CharStateManager>().condition;
-        charTension = statusSet.GetComponent<CharStateManager>().tension;
+        charMental = statusSet.GetComponent<CharStateManager>().mental;
         StartCoroutine("SetConditionGuageRunning");
-        StartCoroutine("SetTensionGuageRunning");
+        StartCoroutine("SetMentalGuageRunning");
     }
 
     IEnumerator SetConditionGuageRunning()
     {
         if(guageConditon < charCondition)
         {
+            SoundManager.PlayConditionSound();
             guageConditon += 1;
             conditionNum.GetComponent<Text>().text = guageConditon.ToString();
             SetGuage(0);
@@ -48,16 +49,17 @@ public class StatusUIManager : MonoBehaviour
         }
     }
 
-    IEnumerator SetTensionGuageRunning()
+    IEnumerator SetMentalGuageRunning()
     {
-        if (guageTension < charTension)
+        if (guageMental < charMental)
         {
-            guageTension += 1;
-            tensionNum.GetComponent<Text>().text = guageTension.ToString();
+            SoundManager.PlayMentalSound();
+            guageMental += 1;
+            mentalNum.GetComponent<Text>().text = guageMental.ToString();
             SetGuage(1);
             SetStatusText(1);
             yield return new WaitForSeconds(0.02f);
-            StartCoroutine("SetTensionGuageRunning");
+            StartCoroutine("SetMentalGuageRunning");
         }
         else
         {
@@ -72,7 +74,7 @@ public class StatusUIManager : MonoBehaviour
             conditionGuage.GetComponent<Image>().fillAmount = (float)guageConditon / 100f;
         } else
         {
-            tensionGuage.GetComponent<Image>().fillAmount = (float)guageTension / 100f;
+            mentalGuage.GetComponent<Image>().fillAmount = (float)guageMental / 100f;
         }
     }
 
@@ -107,17 +109,29 @@ public class StatusUIManager : MonoBehaviour
             }
         } else
         {
-            if (guageTension > 75)
+            if (guageMental > 80)
             {
-                tensionText.GetComponent<Text>().text = testionTextSet[0];
+                mentalText.GetComponent<Text>().text = mentalTextSet[0];
             }
-            else if (guageTension > 35 && guageTension <= 75)
+            else if (guageMental > 60 && guageMental <= 80)
             {
-                tensionText.GetComponent<Text>().text = testionTextSet[1];
+                mentalText.GetComponent<Text>().text = mentalTextSet[1];
             }
-            else if (guageTension > 0 && guageTension <= 35)
+            else if (guageMental > 60 && guageMental <= 80)
             {
-                tensionText.GetComponent<Text>().text = testionTextSet[2];
+                mentalText.GetComponent<Text>().text = mentalTextSet[1];
+            }
+            else if (guageMental > 40 && guageMental <= 60)
+            {
+                mentalText.GetComponent<Text>().text = mentalTextSet[2];
+            }
+            else if (guageMental > 20 && guageMental <= 40)
+            {
+                mentalText.GetComponent<Text>().text = mentalTextSet[3];
+            }
+            else if (guageMental >= 0 && guageMental <= 20)
+            {
+                mentalText.GetComponent<Text>().text = mentalTextSet[4];
             }
         }
     } 

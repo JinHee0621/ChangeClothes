@@ -29,6 +29,7 @@ public class ClothSetManager : MonoBehaviour
 
     public void ShirtSetOpen()
     {
+        SoundManager.PlaySFX(6);
         if (!moving)
         {
             moving = true;
@@ -67,6 +68,7 @@ public class ClothSetManager : MonoBehaviour
 
     public void PantsSetOpen()
     {
+        SoundManager.PlaySFX(6);
         if (!moving)
         {
             moving = true;
@@ -105,6 +107,7 @@ public class ClothSetManager : MonoBehaviour
 
     public void OuterSetOpen()
     {
+        SoundManager.PlaySFX(6);
         if (!moving)
         {
             moving = true;

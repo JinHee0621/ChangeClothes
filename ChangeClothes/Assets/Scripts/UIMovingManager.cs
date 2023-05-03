@@ -12,6 +12,7 @@ public class UIMovingManager : MonoBehaviour
     public GameObject statusSetUI;
     public GameObject clothSetBtnUI;
     public GameObject backgorundSetBtnUI;
+    public GameObject moniterScreen;
 
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
@@ -20,6 +21,17 @@ public class UIMovingManager : MonoBehaviour
         dayUI_default_pos = dayUI.transform.localPosition;
         bottomUI_default_pos = bottomUI.transform.localPosition;
         MoveUI();
+    }
+
+    public void MoniterOnOff(int plag)
+    {
+        if(plag == 0)
+        {
+            moniterScreen.transform.DOScale(new Vector3(0f, 0f, 1f), 0.5f).SetEase(Ease.InOutExpo);
+        } else
+        {
+            moniterScreen.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f).SetEase(Ease.InOutExpo);
+        }
     }
 
     public void MoveStatusGuage()
@@ -59,6 +71,4 @@ public class UIMovingManager : MonoBehaviour
     {
         gameUIScroll.transform.DOLocalMoveX(gameUIScroll.transform.localPosition.x - 200, 0.5f);
     }
-
-
 }

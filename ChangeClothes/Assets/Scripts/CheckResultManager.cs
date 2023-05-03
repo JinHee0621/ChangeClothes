@@ -9,6 +9,7 @@ public class CheckResultManager : MonoBehaviour
     public GameObject cover2;
     public void startCheckResult()
     {
+        SoundManager.PlaySFX(5);
         uiManager.GetComponent<UIMovingManager>().RemoveUI();
         StartCoroutine("ScreenClose");
     }
@@ -21,6 +22,7 @@ public class CheckResultManager : MonoBehaviour
         SoundManager.PlaySFX(3);
         yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().OpenGameSetUI();
+        yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().MoveStatusGuage();
     }
 }

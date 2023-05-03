@@ -14,6 +14,7 @@ public class SelectGameManager : MonoBehaviour
     {
         if(!moveScroll)
         {
+            SoundManager.PlaySFX(6);
             moveScroll = true;
             StartCoroutine("WaitSceond");
             if (gameNum <= 0)
@@ -32,6 +33,7 @@ public class SelectGameManager : MonoBehaviour
     {
         if(!moveScroll)
         {
+            SoundManager.PlaySFX(6);
             moveScroll = true;
             StartCoroutine("WaitSceond");
             gameNum += 1;

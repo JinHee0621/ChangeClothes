@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class StartStreamManager : MonoBehaviour
 {
     public GameObject streamStartBtn;
+    public CharStateManager charStateManager;
+    public StatusUIManager statUi;
     public UIMovingManager uiManager;
     GameObject btnText;
     bool isStartStream = false;
@@ -18,7 +20,7 @@ public class StartStreamManager : MonoBehaviour
             SoundManager.PlaySFX(7);
             uiManager.MoniterOnOff(1);
             btnText = streamStartBtn.transform.GetChild(0).transform.GetChild(0).gameObject;
-            streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = false;
+            //streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = false;
             StartCoroutine("NowStreamText");
             isStartStream = true;
         } else
@@ -33,7 +35,6 @@ public class StartStreamManager : MonoBehaviour
             isStartStream = false;
         }
     }
-
     IEnumerator NowStreamText()
     {
         btnText.GetComponent<Text>().text = "¢¹";
@@ -44,4 +45,5 @@ public class StartStreamManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         StartCoroutine("NowStreamText");
     }
+
 }

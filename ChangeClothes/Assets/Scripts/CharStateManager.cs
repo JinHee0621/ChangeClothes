@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class CharStateManager : MonoBehaviour
 {
-    public GameObject state_guage;
+    public int minCondition = 60;
+    public int maxCondition = 100;
     public int condition = 100;
-    public int tension = 100;
+
+    public int minMental = 0;
+    public int maxMental = 5;
     public int mental = 100;
 
     public string shirt_type = "";
@@ -18,12 +21,26 @@ public class CharStateManager : MonoBehaviour
     public string glass_type = "";
     public string face_type = "";
 
-    public void changeState(int con, int ten, int men)
+    public void changeState(int target, int val)
     {
-        condition = condition + con;
-        tension = tension + ten;
-        mental = mental + men;
-        state_guage.GetComponent<StateGuage>().SetGuageState();
+        if (target == 0)
+        {
+            condition = condition + val;
+            if (condition <= 0) condition = 0;
+            else if (condition >= 100) condition = 100;
+        }
+        else 
+        {
+            mental = mental + val;
+            if (mental <= 0) mental = 0;
+            else if (mental >= 100) mental = 100;
+        }
+    }
+
+    public void RandomSetState()
+    {
+        condition = (int) Random.Range(minCondition, maxCondition);
+        mental = (int)Random.Range(minMental, maxMental);
     }
 
     public void SetBody(string object_type, int part_type)

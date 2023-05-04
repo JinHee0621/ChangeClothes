@@ -11,7 +11,7 @@ public class StatusUIManager : MonoBehaviour
     public GameObject mentalGuage;
     public GameObject mentalText;
     public GameObject mentalNum;
-    public GameObject statusSet;
+    public CharStateManager statusSet;
 
     string[] conditionTextSet = {"매우좋음", "좋음", "보통", "나쁨", "매우나쁨"};
     string[] mentalTextSet = { "매우좋음", "좋음", "보통", "나쁨", "매우나쁨" };
@@ -26,8 +26,9 @@ public class StatusUIManager : MonoBehaviour
     {
         conditionGuage.GetComponent<Image>().fillAmount = 0;
         mentalGuage.GetComponent<Image>().fillAmount = 0;
-        charCondition = statusSet.GetComponent<CharStateManager>().condition;
-        charMental = statusSet.GetComponent<CharStateManager>().mental;
+        statusSet.RandomSetState();
+        charCondition = statusSet.condition;
+        charMental = statusSet.mental;
         StartCoroutine("SetConditionGuageRunning");
         StartCoroutine("SetMentalGuageRunning");
     }
@@ -66,6 +67,101 @@ public class StatusUIManager : MonoBehaviour
             yield return null;
         }
     }
+
+    // target : condition(0) OR mental(1) 
+    public void SetGuage(int target, int val)
+    {
+        statusSet.changeState(target, val);
+        StartCoroutine(StatusGuageChanging(target, val));
+    }
+
+    IEnumerator StatusGuageChanging(int target, int val)
+    {
+        if(target == 0)
+        {
+            if(val < 0)
+            {
+                SoundManager.PlayConditionSound();
+                if(guageConditon > 0)
+                {
+                    guageConditon -= 1;
+                } else
+                {
+                    guageConditon = 0;
+                }
+                conditionNum.GetComponent<Text>().text = guageConditon.ToString();
+                SetGuage(0);
+                SetStatusText(0);
+                yield return new WaitForSeconds(0.015f);
+                val += 1;
+                StartCoroutine(StatusGuageChanging(0,val));
+            } else if(val > 0)
+            {
+                SoundManager.PlayConditionSound();
+                if(guageConditon < 100)
+                {
+                    guageConditon += 1;
+                } else
+                {
+                    guageConditon = 100;
+                }
+                conditionNum.GetComponent<Text>().text = guageConditon.ToString();
+
+                SetGuage(0);
+                SetStatusText(0);
+                yield return new WaitForSeconds(0.015f);
+                val -= 1;
+                StartCoroutine(StatusGuageChanging(0, val));
+            } else if(val == 0)
+            {
+                yield return null;
+            }
+        } else
+        {
+            if (val < 0)
+            {
+                SoundManager.PlayMentalSound();
+                if (guageMental > 0)
+                {
+                    guageMental -= 1;
+                }
+                else
+                {
+                    guageMental = 0;
+                }
+                mentalNum.GetComponent<Text>().text = guageMental.ToString();
+                SetGuage(1);
+                SetStatusText(1);
+                yield return new WaitForSeconds(0.02f);
+                val += 1;
+                StartCoroutine(StatusGuageChanging(1, val));
+            }
+            else if (val > 0)
+            {
+                SoundManager.PlayMentalSound();
+                if (guageMental < 100)
+                {
+                    guageMental += 1;
+                }
+                else
+                {
+                    guageMental = 100;
+                }
+                mentalNum.GetComponent<Text>().text = guageMental.ToString();
+                SetGuage(1);
+                SetStatusText(1);
+                yield return new WaitForSeconds(0.02f);
+                val -= 1;
+                StartCoroutine(StatusGuageChanging(1, val));
+            }
+            else if (val == 0)
+            {
+                yield return null;
+            }
+        }
+    }
+
+
 
     public void SetGuage(int target)
     {

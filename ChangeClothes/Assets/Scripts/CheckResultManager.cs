@@ -7,6 +7,15 @@ public class CheckResultManager : MonoBehaviour
     public GameObject uiManager;
     public GameObject cover1;
     public GameObject cover2;
+    GameObject[] patterns;
+    private void Start()
+    {
+        patterns = GameObject.FindGameObjectsWithTag("Pattern");
+        foreach (GameObject i in patterns)
+        {
+            i.SetActive(false);
+        }
+    }
     public void startCheckResult()
     {
         SoundManager.PlaySFX(5);
@@ -20,6 +29,12 @@ public class CheckResultManager : MonoBehaviour
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");
         SoundManager.PlaySFX(3);
+        yield return new WaitForSeconds(0.2f);
+        foreach(GameObject i in patterns)
+        {
+            i.SetActive(true);
+            i.GetComponent<BackGroundPattern>().FadeInPattern();
+        }
         yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().OpenGameSetUI();
         yield return new WaitForSeconds(1.5f);

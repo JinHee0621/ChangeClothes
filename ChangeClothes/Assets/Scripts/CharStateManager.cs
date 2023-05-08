@@ -8,8 +8,8 @@ public class CharStateManager : MonoBehaviour
     public int maxCondition = 100;
     public int condition = 100;
 
-    public int minMental = 0;
-    public int maxMental = 5;
+    public int minMental = 15;
+    public int maxMental = 100;
     public int mental = 100;
 
     public string shirt_type = "";

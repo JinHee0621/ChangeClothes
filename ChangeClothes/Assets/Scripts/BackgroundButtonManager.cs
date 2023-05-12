@@ -30,7 +30,6 @@ public class BackgroundButtonManager : MonoBehaviour
     {
         if (enteredMouse && !moving)
         {
-            SoundManager.PlaySFX(4);
             if (!openedMenu)
             {
                 StartCoroutine("Moving");
@@ -61,11 +60,13 @@ public class BackgroundButtonManager : MonoBehaviour
 
     private void OpenMenu()
     {
+        SoundManager.PlaySFX(9);
         button_target_obj.transform.DOMoveY(button_target_obj.transform.localPosition.y + 5, 1.5f);
     }
 
     private void CloseMenu()
     {
+        SoundManager.PlaySFX(9);
         button_target_obj.transform.DOMoveY(button_target_obj.transform.localPosition.y - 5, 1.5f);
     }
 

@@ -8,6 +8,7 @@ public class StartStreamManager : MonoBehaviour
 {
     public GameObject streamStartBtn;
     public CharStateManager charStateManager;
+    public SelectGameManager selectGameManager;
     public StatusUIManager statUi;
     public UIMovingManager uiManager;
     public GameObject streamTimeGuage;
@@ -15,8 +16,6 @@ public class StartStreamManager : MonoBehaviour
     public GameObject streamViewerNum;
 
     public int test_time;
-    //private int tickVal = 0;
-    //private int timeVal = 0;
     private int new_checks = 0;
 
     GameObject btnText;
@@ -29,10 +28,10 @@ public class StartStreamManager : MonoBehaviour
             SoundManager.PlaySFX(7);
             uiManager.MoniterOnOff(1);
             btnText = streamStartBtn.transform.GetChild(0).transform.GetChild(0).gameObject;
-            //streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = false;
             StartCoroutine("NowStreamText");
             CheckStreamTime(test_time);
             isStartStream = true;
+            StreamStart();
         } else
         {
             //방송 종료 후 
@@ -45,6 +44,14 @@ public class StartStreamManager : MonoBehaviour
             isStartStream = false;
         }
     }
+
+    public void StreamStart()
+    {
+        GameObject selectedGame = selectGameManager.GetSelectedGameInfo();
+        Debug.Log(selectedGame.GetComponent<SelectGameObject>().gameName);
+    }
+
+
     IEnumerator NowStreamText()
     {
         btnText.GetComponent<Text>().text = "▷";

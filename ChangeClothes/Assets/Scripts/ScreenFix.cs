@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class ScreenFix : MonoBehaviour
 {
+    private void Awake()
+    {
+        Application.targetFrameRate = 60;
+    }
     private void Start()
     {
         SetResolution(); // 초기에 게임 해상도 고정

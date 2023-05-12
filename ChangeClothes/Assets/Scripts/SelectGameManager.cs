@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SelectGameManager : MonoBehaviour
 {
+
     public GameObject uiMoveManager;
     public List<GameObject> selectableGame;
 
@@ -14,7 +15,7 @@ public class SelectGameManager : MonoBehaviour
     {
         if(!moveScroll)
         {
-            SoundManager.PlaySFX(6);
+            SoundManager.PlaySFX(4);
             moveScroll = true;
             StartCoroutine("WaitSceond");
             if (gameNum <= 0)
@@ -33,12 +34,17 @@ public class SelectGameManager : MonoBehaviour
     {
         if(!moveScroll)
         {
-            SoundManager.PlaySFX(6);
+            SoundManager.PlaySFX(4);
             moveScroll = true;
             StartCoroutine("WaitSceond");
             gameNum += 1;
             uiMoveManager.GetComponent<UIMovingManager>().RightMoveScroll();
         }
+    }
+
+    public GameObject GetSelectedGameInfo()
+    {
+        return selectableGame[gameNum];
     }
 
 

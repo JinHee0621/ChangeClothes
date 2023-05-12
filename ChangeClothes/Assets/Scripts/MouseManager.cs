@@ -10,8 +10,8 @@ public class MouseManager : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             // Touch are screens location. Convert to world
+            SoundManager.MouseSFX(8);
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log("Clicked");
             // Effect for feedback
             SpecialEffectsScript.MakeExplosion((position));
         }

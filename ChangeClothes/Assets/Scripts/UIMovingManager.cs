@@ -47,6 +47,8 @@ public class UIMovingManager : MonoBehaviour
     public void MoveUI()
     {
         // dayUI.transform.DOMoveY(dayUI.transform.position.y - 83, 2f);
+        StartCoroutine(DelayEffect(10, 1.0f));
+        StartCoroutine(DelayEffect(10, 1.5f));
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 653, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 421, 2.5f);
         dayUI.transform.DOLocalMoveY(dayUI.transform.localPosition.y - 139, 2f);
@@ -76,4 +78,12 @@ public class UIMovingManager : MonoBehaviour
     {
         gameUIScroll.transform.DOLocalMoveX(gameUIScroll.transform.localPosition.x - 200, 0.5f);
     }
+
+    IEnumerator DelayEffect(int sfxCode, float time)
+    {
+        yield return new WaitForSeconds(time);
+        SoundManager.PlaySFX(sfxCode);
+        StopCoroutine(DelayEffect(sfxCode, time));
+    }
+
 }

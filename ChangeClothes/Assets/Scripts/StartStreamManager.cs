@@ -6,11 +6,17 @@ using UnityEngine.UI;
 
 public class StartStreamManager : MonoBehaviour
 {
-    public GameObject streamStartBtn;
+    public bool nowStream = false;
+
     public CharStateManager charStateManager;
     public SelectGameManager selectGameManager;
-    public StatusUIManager statUi;
     public UIMovingManager uiManager;
+    public StatusUIManager statUi;
+
+    public GameObject scoreObj;
+    public GameObject scoreObjEle;
+
+    public GameObject streamStartBtn;
     public GameObject streamTimeGuage;
     public GameObject streamTimeNum;
     public GameObject streamViewerNum;
@@ -20,6 +26,11 @@ public class StartStreamManager : MonoBehaviour
 
     GameObject btnText;
     bool isStartStream = false;
+
+    public void ScoreEffect()
+    {
+        uiManager.ScoreAdd(5);
+    }
 
     public void PushStreamStartBtn()
     {
@@ -31,7 +42,7 @@ public class StartStreamManager : MonoBehaviour
             StartCoroutine("NowStreamText");
             CheckStreamTime(test_time);
             isStartStream = true;
-            StreamStart();
+            StreamStateChange(1);
         } else
         {
             //방송 종료 후 
@@ -42,13 +53,25 @@ public class StartStreamManager : MonoBehaviour
             streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = true;
             StopCoroutine("NowStreamText");
             isStartStream = false;
+            StreamStateChange(0);
         }
     }
 
-    public void StreamStart()
+    public void StreamStateChange(int flag)
     {
-        GameObject selectedGame = selectGameManager.GetSelectedGameInfo();
-        Debug.Log(selectedGame.GetComponent<SelectGameObject>().gameName);
+        if(flag == 1) //방송시작
+        {
+            nowStream = true;
+            ScoreEffect();
+            selectGameManager.SelectBtnChange(1);
+            GameObject selectedGame = selectGameManager.GetSelectedGameInfo();
+            Debug.Log(selectedGame.GetComponent<SelectGameObject>().gameName);
+        }else
+        {
+            nowStream = false;
+            selectGameManager.SelectBtnChange(0);
+        }
+
     }
 
 

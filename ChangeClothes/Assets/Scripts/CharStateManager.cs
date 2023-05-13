@@ -12,6 +12,9 @@ public class CharStateManager : MonoBehaviour
     public int maxMental = 100;
     public int mental = 100;
 
+    public int streaming_date = 1;
+    public int viewer_Like = 0;
+
     public string shirt_type = "";
     public string pants_type = "";
     public string outer_type = "";

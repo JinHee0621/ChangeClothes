@@ -1,15 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SelectGameManager : MonoBehaviour
 {
 
     public GameObject uiMoveManager;
+    public GameObject leftBtn;
+    public GameObject rightBtn;
     public List<GameObject> selectableGame;
 
     int gameNum = 0;
     bool moveScroll = false;
+
+    public void SelectBtnChange(int flag)
+    {
+        if(flag == 1)
+        {
+            leftBtn.SetActive(false);
+            rightBtn.SetActive(false);
+        } else
+        {
+            leftBtn.SetActive(true);
+            rightBtn.SetActive(true);
+        }
+    }
 
     public void LeftMoveScroll()
     {

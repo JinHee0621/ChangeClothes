@@ -5,6 +5,7 @@ using UnityEngine;
 public class WearManager : MonoBehaviour
 {
     //public GameObject[] clothes;
+    public StartStreamManager streamManager;
     public List<GameObject> clothes;
     public GameObject otherPos;
 
@@ -41,15 +42,19 @@ public class WearManager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        for(int i = 0; i < clothes.Count; i++)
+        if (!streamManager.nowStream)
         {
-            if (clothes[i].gameObject.name.Equals(collision.gameObject.name)){
-                if (!collision.GetComponent<WearObject>().CheckEquip())
+            for (int i = 0; i < clothes.Count; i++)
+            {
+                if (clothes[i].gameObject.name.Equals(collision.gameObject.name))
                 {
-                    collision.gameObject.transform.SetParent(transform.Find(collision.gameObject.tag));
-                    collision.transform.localScale = new Vector3(1, 1);
-                    collision.GetComponent<WearObject>().Equipped();
-                    break;
+                    if (!collision.GetComponent<WearObject>().CheckEquip())
+                    {
+                        collision.gameObject.transform.SetParent(transform.Find(collision.gameObject.tag));
+                        collision.transform.localScale = new Vector3(1, 1);
+                        collision.GetComponent<WearObject>().Equipped();
+                        break;
+                    }
                 }
             }
         }
@@ -57,13 +62,17 @@ public class WearManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.GetComponent<WearObject>().CheckEquip())
+        if (!streamManager.nowStream)
         {
-            collision.GetComponent<WearObject>().UnEquipped();
-            collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
-            collision.transform.localScale = new Vector3(1, 1);
-            CheckUnEquip(collision.gameObject);
+            if (collision.GetComponent<WearObject>().CheckEquip())
+            {
+                collision.GetComponent<WearObject>().UnEquipped();
+                collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
+                collision.transform.localScale = new Vector3(1, 1);
+                CheckUnEquip(collision.gameObject);
+            }
         }
+
     }
 
     public void CheckUnEquip(GameObject target)

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class UIMovingManager : MonoBehaviour
 {
     public GameObject dayUI;
+    public GameObject dayNumUI;
     public GameObject bottomUI;
     public GameObject gameSetUI;
     public GameObject gameUIScroll;
@@ -14,16 +16,35 @@ public class UIMovingManager : MonoBehaviour
     public GameObject backgorundSetBtnUI;
     public GameObject moniterScreen;
     public GameObject viewerUI;
+    public GameObject[] scoreObjects;
 
+    Sprite[] daySprite;
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 viewerUI_default_pos = new Vector3(0, 0, 0);
     void Start()
     {
+        daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
+        dayCheck(gameObject.GetComponent<StatusUIManager>().statusSet.streaming_date);
         dayUI_default_pos = dayUI.transform.localPosition;
         bottomUI_default_pos = bottomUI.transform.localPosition;
         viewerUI_default_pos = viewerUI.transform.localPosition;
         MoveUI();
+    }
+
+    public void ScoreAdd(int cnt)
+    {
+        for(int i = 0; i < cnt; i++)
+        {
+            scoreObjects[i].SetActive(true);
+            scoreObjects[i].GetComponent<ScoreObject>().StartMove();
+        }
+    }
+
+
+    public void dayCheck(int num)
+    {
+        dayNumUI.GetComponent<Image>().sprite = daySprite[num];
     }
 
     public void MoniterOnOff(int plag)

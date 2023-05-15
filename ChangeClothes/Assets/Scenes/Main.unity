@@ -351,6 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa6e5867505d9e4898a9724dc212983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiMovingManager: {fileID: 1734526832}
   charScore: {fileID: 1101259166}
   likeScore: 15
 --- !u!50 &23448304
@@ -3553,6 +3554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa6e5867505d9e4898a9724dc212983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiMovingManager: {fileID: 1734526832}
   charScore: {fileID: 1101259166}
   likeScore: 15
 --- !u!1 &424876849
@@ -5832,12 +5834,11 @@ MonoBehaviour:
   uiManager: {fileID: 1734526832}
   statUi: {fileID: 1734526833}
   scoreObj: {fileID: 1688124551}
-  scoreObjEle: {fileID: 5253259680693080207, guid: a2b3cd19b5fa1e14aa07af43a98e4b8f, type: 3}
   streamStartBtn: {fileID: 613016996}
   streamTimeGuage: {fileID: 1507405629}
   streamTimeNum: {fileID: 386751337}
   streamViewerNum: {fileID: 922467645}
-  test_time: 60
+  test_time: 120
 --- !u!1 &690175159
 GameObject:
   m_ObjectHideFlags: 0
@@ -7683,6 +7684,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa6e5867505d9e4898a9724dc212983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiMovingManager: {fileID: 1734526832}
   charScore: {fileID: 1101259166}
   likeScore: 15
 --- !u!1 &997680503
@@ -7951,7 +7953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameID: 0
   gameName: Dead By Daylight
-  playTime: 90
+  playTime: 60
   needCondition: 25
   needMental: 25
   likeScore: 100
@@ -11679,7 +11681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameID: 2
   gameName: 'Zelda : Tears Of Kingdom'
-  playTime: 100
+  playTime: 240
   needCondition: 25
   needMental: -25
   likeScore: 150
@@ -13126,7 +13128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameID: 1
   gameName: League Of Legends
-  playTime: 100
+  playTime: 120
   needCondition: 40
   needMental: 25
   likeScore: 250
@@ -13399,6 +13401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa6e5867505d9e4898a9724dc212983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiMovingManager: {fileID: 1734526832}
   charScore: {fileID: 1101259166}
   likeScore: 15
 --- !u!1 &1706518898
@@ -13806,6 +13809,7 @@ MonoBehaviour:
   backgorundSetBtnUI: {fileID: 99406783}
   moniterScreen: {fileID: 424876849}
   viewerUI: {fileID: 720835669}
+  viewerUIText: {fileID: 922467645}
   scoreObjects:
   - {fileID: 23448301}
   - {fileID: 423703082}
@@ -15537,6 +15541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa6e5867505d9e4898a9724dc212983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiMovingManager: {fileID: 1734526832}
   charScore: {fileID: 1101259166}
   likeScore: 15
 --- !u!1 &1939602171

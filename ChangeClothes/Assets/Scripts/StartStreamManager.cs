@@ -14,7 +14,6 @@ public class StartStreamManager : MonoBehaviour
     public StatusUIManager statUi;
 
     public GameObject scoreObj;
-    public GameObject scoreObjEle;
 
     public GameObject streamStartBtn;
     public GameObject streamTimeGuage;
@@ -27,11 +26,6 @@ public class StartStreamManager : MonoBehaviour
     GameObject btnText;
     bool isStartStream = false;
 
-    public void ScoreEffect()
-    {
-        uiManager.ScoreAdd(5);
-    }
-
     public void PushStreamStartBtn()
     {
         if(!isStartStream)
@@ -40,7 +34,13 @@ public class StartStreamManager : MonoBehaviour
             uiManager.MoniterOnOff(1);
             btnText = streamStartBtn.transform.GetChild(0).transform.GetChild(0).gameObject;
             StartCoroutine("NowStreamText");
-            CheckStreamTime(test_time);
+            
+            
+            GameObject selectGame = selectGameManager.CheckSelectGame();
+            
+            //선택 게임에 따른 상황 변화
+            CheckStreamTime(selectGame.GetComponent<SelectGameObject>().playTime);
+
             isStartStream = true;
             StreamStateChange(1);
         } else
@@ -62,7 +62,6 @@ public class StartStreamManager : MonoBehaviour
         if(flag == 1) //방송시작
         {
             nowStream = true;
-            ScoreEffect();
             selectGameManager.SelectBtnChange(1);
             GameObject selectedGame = selectGameManager.GetSelectedGameInfo();
             Debug.Log(selectedGame.GetComponent<SelectGameObject>().gameName);
@@ -73,7 +72,6 @@ public class StartStreamManager : MonoBehaviour
         }
 
     }
-
 
     IEnumerator NowStreamText()
     {
@@ -96,13 +94,36 @@ public class StartStreamManager : MonoBehaviour
     {
         if(check > ticks)
         {
-            yield return null;
+            if(!uiManager.CheckAllScoreActivate())
+            {
+                // Score Icon All Disable
+                PushStreamStartBtn();
+                yield return null;
+            } else
+            {
+                yield return new WaitForSeconds(1f);
+                StartCoroutine(TimeStatChange(ticks, new_checks));
+            }
         } else
         {
             new_checks = check + 1;
             streamTimeGuage.GetComponent<Image>().fillAmount = (float)(check) / ticks;
+
             yield return new WaitForSeconds(0.05f);
+            if (new_checks % 30 == 0)
+            {
+                AddScoreBasic();
+            }
             StartCoroutine(TimeStatChange(ticks, new_checks));
         }
+    }
+    public void AddScoreBasic()
+    {
+        uiManager.ScoreAdd(1);
+    }
+
+    public void EventOccured()
+    {
+
     }
 }

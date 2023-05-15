@@ -63,11 +63,15 @@ public class SelectGameManager : MonoBehaviour
         return selectableGame[gameNum];
     }
 
-
     IEnumerator WaitSceond()
     {
         yield return new WaitForSeconds(0.8f);
         moveScroll = false;
+    }
+
+    public GameObject CheckSelectGame()
+    {
+        return selectableGame[gameNum];
     }
 
 }

@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class ScoreObject : MonoBehaviour
 {
+    public UIMovingManager uiMovingManager;
     public CharStateManager charScore;
     public int likeScore;
 
@@ -23,7 +24,17 @@ public class ScoreObject : MonoBehaviour
         yield return new WaitForSeconds((float)time);
         gameObject.transform.DOLocalMove(new Vector3(-381f, 395f, 0f), 1.5f).SetEase(Ease.OutExpo);
         yield return new WaitForSeconds(1.5f);
-        charScore.viewer_Like += likeScore;
+
+        float currentNum = 0;
+        float cntTime = 0.005f;
+
+        while (currentNum < likeScore)
+        {
+            currentNum += 1;
+            charScore.viewer_Like += 1;
+            uiMovingManager.ChangeViewerTxt();
+            yield return new WaitForSeconds(cntTime);
+        }
         EndMove();
     }
 

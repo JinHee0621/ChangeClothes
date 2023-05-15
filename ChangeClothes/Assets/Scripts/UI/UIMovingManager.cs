@@ -16,12 +16,16 @@ public class UIMovingManager : MonoBehaviour
     public GameObject backgorundSetBtnUI;
     public GameObject moniterScreen;
     public GameObject viewerUI;
+    public GameObject viewerUIText;
     public GameObject[] scoreObjects;
 
     Sprite[] daySprite;
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 viewerUI_default_pos = new Vector3(0, 0, 0);
+
+    System.Random randomIndex = new System.Random();
+
     void Start()
     {
         daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
@@ -32,12 +36,45 @@ public class UIMovingManager : MonoBehaviour
         MoveUI();
     }
 
+    public bool CheckAllScoreActivate()
+    {
+        bool scoreActive = false;
+        for (int i  = 0; i < scoreObjects.Length; i++)
+        {
+            if(scoreObjects[i].activeSelf)
+            {
+                scoreActive = true;
+                break;
+            }
+        }
+        return scoreActive;
+    }
+
     public void ScoreAdd(int cnt)
     {
-        for(int i = 0; i < cnt; i++)
+        int failcnt = 0;
+        for (int i = 0; i < cnt;)
         {
-            scoreObjects[i].SetActive(true);
-            scoreObjects[i].GetComponent<ScoreObject>().StartMove();
+            int index = randomIndex.Next(0, scoreObjects.Length - 1);
+
+            if(failcnt >= 10)
+            {
+                gameObject.GetComponent<StatusUIManager>().statusSet.viewer_Like += 150;
+                ChangeViewerTxt();
+                break;
+            }
+
+            if (scoreObjects[index].activeSelf)
+            {
+                failcnt += 1;
+                continue;
+            }
+            else
+            {
+                scoreObjects[index].SetActive(true);
+                scoreObjects[index].GetComponent<ScoreObject>().StartMove();
+                i += 1;
+            }
         }
     }
 
@@ -49,7 +86,7 @@ public class UIMovingManager : MonoBehaviour
 
     public void MoniterOnOff(int plag)
     {
-        if(plag == 0)
+        if (plag == 0)
         {
             moniterScreen.transform.DOScale(new Vector3(0f, 0f, 1f), 0.5f).SetEase(Ease.InOutExpo);
             viewerUI.transform.DOLocalMoveY(viewerUI_default_pos.y, 1.5f);
@@ -107,4 +144,8 @@ public class UIMovingManager : MonoBehaviour
         StopCoroutine(DelayEffect(sfxCode, time));
     }
 
+    public void ChangeViewerTxt()
+    {
+        viewerUIText.GetComponent<Text>().text = gameObject.GetComponent<StatusUIManager>().statusSet.viewer_Like.ToString();
+    }
 }

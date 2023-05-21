@@ -17,7 +17,6 @@ public class StartStreamManager : MonoBehaviour
 
     public GameObject streamStartBtn;
     public GameObject streamTimeGuage;
-    public GameObject streamTimeNum;
     public GameObject streamViewerNum;
 
     public int test_time;
@@ -25,6 +24,14 @@ public class StartStreamManager : MonoBehaviour
 
     GameObject btnText;
     bool isStartStream = false;
+
+    public Text streamTimeSecond;
+    public Text streamTimeMinute;
+    public Text streamTimeHour;
+
+    private int stream_second = 0;
+    private int stream_minute = 0;
+    private int stream_hour = 0;
 
     public void PushStreamStartBtn()
     {
@@ -86,18 +93,25 @@ public class StartStreamManager : MonoBehaviour
     public void CheckStreamTime(int ticks)
     {
         new_checks = 0;
+        // time guage 초기화
         streamTimeGuage.GetComponent<Image>().fillAmount = 0f;
         StartCoroutine(TimeStatChange(ticks, new_checks));
+
+
+        Debug.Log(ticks);
+        // ticks -> time 변환 필요
+        
     }
 
     IEnumerator TimeStatChange(int ticks, int check)
     {
-        if(check > ticks)
+        if(check >= ticks)
         {
             if(!uiManager.CheckAllScoreActivate())
             {
                 // Score Icon All Disable
                 PushStreamStartBtn();
+                streamTimeGuage.GetComponent<Image>().fillAmount = 100;
                 yield return null;
             } else
             {
@@ -107,8 +121,10 @@ public class StartStreamManager : MonoBehaviour
         } else
         {
             new_checks = check + 1;
+            stream_second += Random.Range(30,59);
+            stream_minute += 1;
             streamTimeGuage.GetComponent<Image>().fillAmount = (float)(check) / ticks;
-
+            ChangeTimeText();
             yield return new WaitForSeconds(0.05f);
             if (new_checks % 30 == 0)
             {
@@ -126,4 +142,51 @@ public class StartStreamManager : MonoBehaviour
     {
 
     }
+    public void ChangeTimeText()
+    {
+        string hour = "00";
+        string minute = "00";
+        string second = "00";
+
+        if (stream_second < 10)
+        {
+            second = "0" + stream_second.ToString();
+        }
+        else if (stream_second >= 60)
+        {
+            stream_second = 0;
+            second = "00";
+        }
+        else
+        {
+            second = stream_second.ToString();
+        }
+
+        if (stream_minute < 10)
+        {
+            minute = "0" + stream_minute.ToString();
+        } else if (stream_minute == 60)
+        {
+            stream_minute = 0;
+            minute = "00";
+            stream_hour += 1;
+        }
+        else
+        {
+            minute = stream_minute.ToString();
+        }
+
+
+        if (stream_hour < 10)
+        {
+            hour = "0" + stream_hour.ToString();
+        } else
+        {
+            hour = stream_hour.ToString();
+        }
+
+        streamTimeSecond.text = second;
+        streamTimeMinute.text = minute;
+        streamTimeHour.text = hour;
+    } 
 }

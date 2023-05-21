@@ -89,11 +89,10 @@ public class UIMovingManager : MonoBehaviour
         if (plag == 0)
         {
             moniterScreen.transform.DOScale(new Vector3(0f, 0f, 1f), 0.5f).SetEase(Ease.InOutExpo);
-            viewerUI.transform.DOLocalMoveY(viewerUI_default_pos.y, 1.5f);
         } else
         {
             moniterScreen.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f).SetEase(Ease.InOutExpo);
-            viewerUI.transform.DOLocalMoveY(viewerUI.transform.localPosition.y - 139, 1.5f);
+
         }
     }
 
@@ -125,7 +124,16 @@ public class UIMovingManager : MonoBehaviour
     {
         gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y + 940, 1.5f);
         statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y + 940, 1.5f);
+        viewerUI.transform.DOLocalMoveY(viewerUI.transform.localPosition.y - 139, 1.5f);
     }
+
+    public void CloseGameSetUI()
+    {
+        //gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y , 1.5f);
+        //statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y , 1.5f);
+        //viewerUI.transform.DOLocalMoveY(viewerUI_default_pos.y, 1.5f);
+    }
+
 
     public void LeftMoveScroll()
     {

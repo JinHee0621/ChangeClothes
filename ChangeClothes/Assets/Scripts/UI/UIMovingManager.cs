@@ -9,8 +9,12 @@ public class UIMovingManager : MonoBehaviour
     public GameObject dayUI;
     public GameObject dayNumUI;
     public GameObject bottomUI;
+
     public GameObject gameSetUI;
+    public SelectGameManager gameSetManager;
     public GameObject gameUIScroll;
+
+
     public GameObject statusSetUI;
     public GameObject clothSetBtnUI;
     public GameObject backgorundSetBtnUI;
@@ -125,6 +129,7 @@ public class UIMovingManager : MonoBehaviour
         gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y + 940, 1.5f);
         statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y + 940, 1.5f);
         viewerUI.transform.DOLocalMoveY(viewerUI.transform.localPosition.y - 139, 1.5f);
+        gameSetManager.ChangeGaameInfo();
     }
 
     public void CloseGameSetUI()

@@ -44,7 +44,7 @@ public class StartStreamManager : MonoBehaviour
             
             
             GameObject selectGame = selectGameManager.CheckSelectGame();
-            
+            streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = false;
             //선택 게임에 따른 상황 변화
             CheckStreamTime(selectGame.GetComponent<SelectGameObject>().playTime);
 

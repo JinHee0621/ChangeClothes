@@ -11,6 +11,10 @@ public class SelectGameManager : MonoBehaviour
     public GameObject rightBtn;
     public List<GameObject> selectableGame;
 
+    public Text gameNameTxt;
+    public Text gameConditionTxt;
+    public Text gameMentalTxt;
+
     int gameNum = 0;
     bool moveScroll = false;
 
@@ -43,6 +47,7 @@ public class SelectGameManager : MonoBehaviour
                 gameNum -= 1;
                 uiMoveManager.GetComponent<UIMovingManager>().LeftMoveScroll();
             }
+            ChangeGaameInfo();
         }
     }
 
@@ -55,6 +60,7 @@ public class SelectGameManager : MonoBehaviour
             StartCoroutine("WaitSceond");
             gameNum += 1;
             uiMoveManager.GetComponent<UIMovingManager>().RightMoveScroll();
+            ChangeGaameInfo();
         }
     }
 
@@ -72,6 +78,15 @@ public class SelectGameManager : MonoBehaviour
     public GameObject CheckSelectGame()
     {
         return selectableGame[gameNum];
+    }
+
+    public void ChangeGaameInfo()
+    {
+        SelectGameObject target = selectableGame[gameNum].gameObject.GetComponent<SelectGameObject>();
+
+        gameNameTxt.text = target.gameName;
+        gameConditionTxt.text = target.needCondition.ToString();
+        gameMentalTxt.text = target.needMental.ToString();
     }
 
 }

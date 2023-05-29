@@ -19,6 +19,10 @@ public class StartStreamManager : MonoBehaviour
     public GameObject streamTimeGuage;
     public GameObject streamViewerNum;
 
+
+    GameObject selectedGame;
+
+
     public int test_time;
     private int new_checks = 0;
 
@@ -55,8 +59,14 @@ public class StartStreamManager : MonoBehaviour
             //방송 종료 후 
             SoundManager.PlaySFX(7);
             uiManager.MoniterOnOff(0);
+
+            uiManager.ShowCharStatVal(1, selectedGame.GetComponent<SelectGameObject>().needCondition);
+            uiManager.ShowCharStatVal(2, selectedGame.GetComponent<SelectGameObject>().needMental);
+
             btnText = streamStartBtn.transform.GetChild(0).transform.GetChild(0).gameObject;
             btnText.GetComponent<Text>().text = "방송준비";
+
+
             streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = true;
             StopCoroutine("NowStreamText");
             isStartStream = false;
@@ -70,7 +80,7 @@ public class StartStreamManager : MonoBehaviour
         {
             nowStream = true;
             selectGameManager.SelectBtnChange(1);
-            GameObject selectedGame = selectGameManager.GetSelectedGameInfo();
+            selectedGame = selectGameManager.GetSelectedGameInfo();
             Debug.Log(selectedGame.GetComponent<SelectGameObject>().gameName);
         }else
         {
@@ -90,6 +100,7 @@ public class StartStreamManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         StartCoroutine("NowStreamText");
     }
+
     public void CheckStreamTime(int ticks)
     {
         new_checks = 0;
@@ -133,6 +144,7 @@ public class StartStreamManager : MonoBehaviour
             StartCoroutine(TimeStatChange(ticks, new_checks));
         }
     }
+
     public void AddScoreBasic()
     {
         uiManager.ScoreAdd(1);

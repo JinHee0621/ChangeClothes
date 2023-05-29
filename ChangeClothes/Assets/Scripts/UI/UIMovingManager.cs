@@ -21,6 +21,12 @@ public class UIMovingManager : MonoBehaviour
     public GameObject moniterScreen;
     public GameObject viewerUI;
     public GameObject viewerUIText;
+
+    public GameObject conditonPosition;
+    public GameObject mentalPosition;
+    public GameObject conditionValObj;
+    public GameObject mentalValObj;
+
     public GameObject[] scoreObjects;
 
     Sprite[] daySprite;
@@ -39,6 +45,42 @@ public class UIMovingManager : MonoBehaviour
         viewerUI_default_pos = viewerUI.transform.localPosition;
         MoveUI();
     }
+
+    public void ShowCharStatVal(int target, int value)
+    {
+        GameObject popVal;
+        value *= -1; // UI에서 보여지는 값은 감소값에 해당됨
+
+        string showValue = value.ToString();
+        if (value >= 0)
+        {
+            showValue = "+" + value.ToString();
+        } 
+
+        // target 1: Condition , 2 : Mental
+        if (target == 1)
+        {
+            popVal = Instantiate(conditionValObj, conditonPosition.transform);
+            popVal.GetComponent<Text>().text = showValue;
+            popVal.transform.DOLocalMoveY(popVal.transform.localPosition.y + 15, 3f);
+            StartCoroutine(RemoveValObj(popVal));
+        }  else if (target == 2)
+        {
+            popVal = Instantiate(mentalValObj, mentalPosition.transform);
+            popVal.GetComponent<Text>().text = showValue;
+            popVal.transform.DOLocalMoveY(popVal.transform.localPosition.y + 15, 3f);
+            StartCoroutine(RemoveValObj(popVal));
+        }
+    }
+    
+    IEnumerator RemoveValObj(GameObject target)
+    {
+        target.GetComponent<Text>().DOColor(new Color(target.GetComponent<Text>().color.r, target.GetComponent<Text>().color.g, target.GetComponent<Text>().color.b, 0f), 3f);
+        yield return new WaitForSeconds(3.5f);
+        Destroy(target);
+        yield return null;
+    }
+
 
     public bool CheckAllScoreActivate()
     {

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class CheckResultManager : MonoBehaviour
 {
+    public StartStreamManager streamManager;
     public GameObject uiManager;
+    public GameObject objectBox;
     public GameObject cover1;
     public GameObject cover2;
     GameObject[] patterns;
@@ -15,13 +17,22 @@ public class CheckResultManager : MonoBehaviour
         {
             i.SetActive(false);
         }
+        uiManager.GetComponent<UIMovingManager>().FadeInCover();
     }
+
+    public void NextDay()
+    {
+        StartCoroutine(ScreenOpen());
+    }
+
     public void startCheckResult()
     {
         SoundManager.PlaySFX(5);
         uiManager.GetComponent<UIMovingManager>().RemoveUI();
-        StartCoroutine("ScreenClose");
+        StartCoroutine(ScreenClose());
+        streamManager.ReadyStream();
     }
+
     IEnumerator ScreenClose()
     {
         yield return new WaitForSeconds(1.5f);
@@ -39,5 +50,27 @@ public class CheckResultManager : MonoBehaviour
         uiManager.GetComponent<UIMovingManager>().OpenGameSetUI();
         yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().MoveStatusGuage();
+    }
+
+    IEnumerator ScreenOpen()
+    {
+        yield return new WaitForSeconds(2.5f);
+        uiManager.GetComponent<UIMovingManager>().CloseGameSetUI();
+        uiManager.GetComponent<UIMovingManager>().FadeOutCover();
+        yield return new WaitForSeconds(3.5f);
+        foreach (GameObject i in patterns)
+        {
+            i.SetActive(false);
+        }
+        //SoundManager.OffBGM();
+        //SoundManager.PlaySFX(3);
+        yield return new WaitForSeconds(1f);
+        cover1.GetComponent<Animator>().SetTrigger("StartCheck");
+        cover2.GetComponent<Animator>().SetTrigger("StartCheck");
+        yield return new WaitForSeconds(3f);
+        uiManager.GetComponent<UIMovingManager>().FadeInCover();
+        yield return new WaitForSeconds(3f);
+        uiManager.GetComponent<UIMovingManager>().ResetUI();
+        streamManager.StreamStateChange(0);
     }
 }

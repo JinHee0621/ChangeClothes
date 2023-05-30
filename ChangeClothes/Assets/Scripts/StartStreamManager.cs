@@ -8,6 +8,7 @@ public class StartStreamManager : MonoBehaviour
 {
     public bool nowStream = false;
 
+    public CheckResultManager checkRessultManageer;
     public CharStateManager charStateManager;
     public SelectGameManager selectGameManager;
     public UIMovingManager uiManager;
@@ -37,6 +38,14 @@ public class StartStreamManager : MonoBehaviour
     private int stream_minute = 0;
     private int stream_hour = 0;
 
+    public void ReadyStream()
+    {
+        isStartStream = false;
+        StreamStateChange(0);
+        streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = true;
+    }
+
+
     public void PushStreamStartBtn()
     {
         if(!isStartStream)
@@ -60,17 +69,25 @@ public class StartStreamManager : MonoBehaviour
             SoundManager.PlaySFX(7);
             uiManager.MoniterOnOff(0);
 
-            uiManager.ShowCharStatVal(1, selectedGame.GetComponent<SelectGameObject>().needCondition);
-            uiManager.ShowCharStatVal(2, selectedGame.GetComponent<SelectGameObject>().needMental);
+            uiManager.ShowCharStatVal(0, selectedGame.GetComponent<SelectGameObject>().needCondition);
+            uiManager.ShowCharStatVal(1, selectedGame.GetComponent<SelectGameObject>().needMental);
+            statUi.ChangeGuage(0, selectedGame.GetComponent<SelectGameObject>().needCondition);
+            statUi.ChangeGuage(1, selectedGame.GetComponent<SelectGameObject>().needMental);
 
             btnText = streamStartBtn.transform.GetChild(0).transform.GetChild(0).gameObject;
             btnText.GetComponent<Text>().text = "방송준비";
-
-
             streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = true;
             StopCoroutine("NowStreamText");
             isStartStream = false;
             StreamStateChange(0);
+
+            if(charStateManager.condition <= 0)
+            {
+                streamStartBtn.transform.GetChild(0).GetComponent<Button>().interactable = false;
+                StreamStateChange(1);
+                checkRessultManageer.NextDay();
+                charStateManager.NextDay();
+            } 
         }
     }
 
@@ -107,11 +124,6 @@ public class StartStreamManager : MonoBehaviour
         // time guage 초기화
         streamTimeGuage.GetComponent<Image>().fillAmount = 0f;
         StartCoroutine(TimeStatChange(ticks, new_checks));
-
-
-        Debug.Log(ticks);
-        // ticks -> time 변환 필요
-        
     }
 
     IEnumerator TimeStatChange(int ticks, int check)

@@ -40,6 +40,11 @@ public class CharStateManager : MonoBehaviour
         }
     }
 
+    public void NextDay()
+    {
+        streaming_date = streaming_date + 1;
+    }
+
     public void RandomSetState()
     {
         condition = (int) Random.Range(minCondition, maxCondition);

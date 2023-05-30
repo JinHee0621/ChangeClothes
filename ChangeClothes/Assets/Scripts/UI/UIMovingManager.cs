@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class UIMovingManager : MonoBehaviour
 {
+    public GameObject screen;
     public GameObject dayUI;
     public GameObject dayNumUI;
     public GameObject bottomUI;
@@ -38,12 +39,17 @@ public class UIMovingManager : MonoBehaviour
 
     void Start()
     {
-        daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
-        dayCheck(gameObject.GetComponent<StatusUIManager>().statusSet.streaming_date);
-        dayUI_default_pos = dayUI.transform.localPosition;
-        bottomUI_default_pos = bottomUI.transform.localPosition;
-        viewerUI_default_pos = viewerUI.transform.localPosition;
-        MoveUI();
+        ResetUI();
+    }
+
+    public void FadeOutCover()
+    {
+        screen.GetComponent<SpriteRenderer>().DOColor(new Color(0f,0f,0f,1f), 3f);
+    }
+
+    public void FadeInCover()
+    {
+        screen.GetComponent<SpriteRenderer>().DOColor(new Color(0f,0f,0f,0f), 3f);
     }
 
     public void ShowCharStatVal(int target, int value)
@@ -57,14 +63,14 @@ public class UIMovingManager : MonoBehaviour
             showValue = "+" + value.ToString();
         } 
 
-        // target 1: Condition , 2 : Mental
-        if (target == 1)
+        // target 0: Condition , 1 : Mental
+        if (target == 0)
         {
             popVal = Instantiate(conditionValObj, conditonPosition.transform);
             popVal.GetComponent<Text>().text = showValue;
             popVal.transform.DOLocalMoveY(popVal.transform.localPosition.y + 15, 3f);
             StartCoroutine(RemoveValObj(popVal));
-        }  else if (target == 2)
+        }  else if (target == 1)
         {
             popVal = Instantiate(mentalValObj, mentalPosition.transform);
             popVal.GetComponent<Text>().text = showValue;
@@ -147,15 +153,27 @@ public class UIMovingManager : MonoBehaviour
         gameObject.GetComponent<StatusUIManager>().ReSetGuage();
     }
 
+    public void ResetUI()
+    {
+        daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
+        dayCheck(gameObject.GetComponent<StatusUIManager>().statusSet.streaming_date);
+        dayUI_default_pos = dayUI.transform.localPosition;
+        bottomUI_default_pos = bottomUI.transform.localPosition;
+        viewerUI_default_pos = viewerUI.transform.localPosition;
+        MoveUI();
+    }
+
     public void MoveUI()
     {
         // dayUI.transform.DOMoveY(dayUI.transform.position.y - 83, 2f);
+        StartCoroutine(DelayOpen(3f));
         StartCoroutine(DelayEffect(10, 1.0f));
         StartCoroutine(DelayEffect(10, 1.5f));
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 653, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 421, 2.5f);
         dayUI.transform.DOLocalMoveY(dayUI.transform.localPosition.y - 139, 2f);
     }
+
 
     public void RemoveUI()
     {
@@ -176,9 +194,9 @@ public class UIMovingManager : MonoBehaviour
 
     public void CloseGameSetUI()
     {
-        //gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y , 1.5f);
-        //statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y , 1.5f);
-        //viewerUI.transform.DOLocalMoveY(viewerUI_default_pos.y, 1.5f);
+        gameSetUI.transform.DOLocalMoveY(gameSetUI.transform.localPosition.y - 940, 1.5f);
+        statusSetUI.transform.DOLocalMoveY(statusSetUI.transform.localPosition.y - 940, 1.5f);
+        viewerUI.transform.DOLocalMoveY(viewerUI_default_pos.y, 1.5f);
     }
 
 
@@ -190,6 +208,11 @@ public class UIMovingManager : MonoBehaviour
     public void RightMoveScroll()
     {
         gameUIScroll.transform.DOLocalMoveX(gameUIScroll.transform.localPosition.x - 200, 0.5f);
+    }
+
+    IEnumerator DelayOpen(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 
     IEnumerator DelayEffect(int sfxCode, float time)

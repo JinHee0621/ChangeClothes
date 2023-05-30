@@ -20,7 +20,7 @@ public class StatusUIManager : MonoBehaviour
     int charMental = 0;
     int guageConditon = 0;
     int guageMental = 0;
-
+    int changeValue = 0;
 
     public void ReSetGuage()
     {
@@ -29,8 +29,24 @@ public class StatusUIManager : MonoBehaviour
         statusSet.RandomSetState();
         charCondition = statusSet.condition;
         charMental = statusSet.mental;
-        StartCoroutine("SetConditionGuageRunning");
-        StartCoroutine("SetMentalGuageRunning");
+        StartCoroutine(SetConditionGuageRunning());
+        StartCoroutine(SetMentalGuageRunning());
+    }
+
+    public void ChangeGuage(int target, int val)
+    {
+        val *= -1;
+        statusSet.changeState(target, val);
+        if (target == 0)
+        {
+            charCondition = statusSet.condition;
+            changeValue = charCondition + val;
+        } else if(target == 1)
+        {
+            charMental = statusSet.mental;
+            changeValue = charMental + val;
+        }
+        StartCoroutine(StatusGuageChanging(target, val));
     }
 
     IEnumerator SetConditionGuageRunning()
@@ -68,12 +84,7 @@ public class StatusUIManager : MonoBehaviour
         }
     }
 
-    // target : condition(0) OR mental(1) 
-    public void SetGuage(int target, int val)
-    {
-        statusSet.changeState(target, val);
-        StartCoroutine(StatusGuageChanging(target, val));
-    }
+
 
     IEnumerator StatusGuageChanging(int target, int val)
     {
@@ -116,6 +127,8 @@ public class StatusUIManager : MonoBehaviour
             {
                 yield return null;
             }
+
+            // Condition Guage º¯È­
         } else
         {
             if (val < 0)
@@ -160,7 +173,6 @@ public class StatusUIManager : MonoBehaviour
             }
         }
     }
-
 
 
     public void SetGuage(int target)

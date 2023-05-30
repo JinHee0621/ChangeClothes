@@ -62,17 +62,16 @@ public class WearManager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!streamManager.nowStream)
-        {
-            if (collision.GetComponent<WearObject>().CheckEquip())
-            {
-                collision.GetComponent<WearObject>().UnEquipped();
-                collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
-                collision.transform.localScale = new Vector3(1, 1);
-                CheckUnEquip(collision.gameObject);
-            }
-        }
-
+         if (!streamManager.nowStream)
+         {
+             if (collision.GetComponent<WearObject>().CheckEquip())
+             {
+                 collision.GetComponent<WearObject>().UnEquipped();
+                 collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
+                 collision.transform.localScale = new Vector3(1, 1);
+                 CheckUnEquip(collision.gameObject);
+             }
+         }
     }
 
     public void CheckUnEquip(GameObject target)

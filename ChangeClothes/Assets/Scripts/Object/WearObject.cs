@@ -9,6 +9,7 @@ public class WearObject : MonoBehaviour
     public bool weared = false;
     public string clothType = "";
     public int clothType_Part = 0;
+    public int clothRankPoint = 0;
     public CharStateManager stat;
     public Sprite[] whenWear;
     private Vector3 first_pos;
@@ -57,15 +58,24 @@ public class WearObject : MonoBehaviour
                     gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
                 }
 
+                //동일 파트의 경우는 변경
                 if (!stat.GetBody(clothType_Part).Equals("") && !stat.GetBody(clothType_Part).Equals(clothType))
                 {
                     Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
                     weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
                     weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
+                    stat.ClothRankRemove(weardObj.GetComponent<WearObject>().clothRankPoint);
 
                     if (isdecoObj) weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                     else weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+
+                } 
+                
+                if (!stat.GetBody(clothType_Part).Equals(clothType)) 
+                {
+                    stat.ClothRankAdd(clothRankPoint);
                 }
+
                 stat.SetBody(clothType, clothType_Part);
                 gameObject.transform.localPosition = new Vector3(0, 0);
                 gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
@@ -79,6 +89,8 @@ public class WearObject : MonoBehaviour
                     gameObject.transform.localPosition = first_pos;
                     if (isdecoObj) gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                     else gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                    stat.OutBody(clothType_Part);
+                    stat.ClothRankRemove(clothRankPoint);
                 }
             }
         }

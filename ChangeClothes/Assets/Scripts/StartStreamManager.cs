@@ -38,6 +38,7 @@ public class StartStreamManager : MonoBehaviour
     private int stream_minute = 0;
     private int stream_hour = 0;
 
+
     public void ReadyStream()
     {
         isStartStream = false;
@@ -65,6 +66,7 @@ public class StartStreamManager : MonoBehaviour
             StreamStateChange(1);
         } else
         {
+            uiManager.PopupCamScreen("김도가 전을 굽고 있다.");
             //방송 종료 후 
             SoundManager.PlaySFX(7);
             uiManager.MoniterOnOff(0);
@@ -153,6 +155,7 @@ public class StartStreamManager : MonoBehaviour
             {
                 AddScoreBasic();
             }
+
             StartCoroutine(TimeStatChange(ticks, new_checks));
         }
     }

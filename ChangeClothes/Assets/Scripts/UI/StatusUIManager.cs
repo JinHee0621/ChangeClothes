@@ -8,9 +8,15 @@ public class StatusUIManager : MonoBehaviour
     public GameObject conditionGuage;
     public GameObject conditionText;
     public GameObject conditionNum;
+
     public GameObject mentalGuage;
     public GameObject mentalText;
     public GameObject mentalNum;
+
+    public GameObject clothRankImg;
+    public Text clothRankTxt;
+    int currentRank = 0;
+
     public CharStateManager statusSet;
 
     string[] conditionTextSet = {"매우좋음", "좋음", "보통", "나쁨", "매우나쁨"};
@@ -21,6 +27,43 @@ public class StatusUIManager : MonoBehaviour
     int guageConditon = 0;
     int guageMental = 0;
     int changeValue = 0;
+
+    public void ChangeClothRankGuage()
+    {
+        int changeRank = 0;
+        
+        if(statusSet.clothRank != 0)
+        {
+            StartCoroutine(UpdateRank(changeRank, statusSet.clothRank - currentRank));
+            currentRank = statusSet.clothRank;
+        } else if(statusSet.clothRank == 0 && currentRank != 0)
+        {
+            StartCoroutine(UpdateRank(changeRank, statusSet.clothRank - currentRank));
+            currentRank = statusSet.clothRank;
+        }
+    }
+
+    IEnumerator UpdateRank(int temp, int next)
+    {
+        if(temp != next)
+        {
+            if (0 < next)
+            {
+                clothRankImg.GetComponent<Image>().fillAmount += 0.01f;
+                temp += 1;
+            } else
+            {
+                clothRankImg.GetComponent<Image>().fillAmount -= 0.01f;
+                temp -= 1;
+            }
+            clothRankTxt.text = ((int)currentRank / 10).ToString();
+            yield return new WaitForSeconds(0.01f);
+            StartCoroutine(UpdateRank(temp, next));
+        } else
+        {
+            yield return null;
+        }
+    }
 
     public void ReSetGuage()
     {

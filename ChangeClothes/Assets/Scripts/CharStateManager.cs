@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharStateManager : MonoBehaviour
 {
+    public StatusUIManager statusUI;
+
     public int minCondition = 60;
     public int maxCondition = 100;
     public int condition = 100;
@@ -23,6 +25,20 @@ public class CharStateManager : MonoBehaviour
     public string hair_type = "";
     public string glass_type = "";
     public string face_type = "";
+
+    public int clothRank = 0;
+
+    public void ClothRankAdd(int point)
+    {
+        clothRank = clothRank + point;
+        statusUI.ChangeClothRankGuage();
+    }
+
+    public void ClothRankRemove(int point)
+    {
+        clothRank = clothRank - point;
+        statusUI.ChangeClothRankGuage();
+    }
 
     public void changeState(int target, int val)
     {
@@ -132,6 +148,31 @@ public class CharStateManager : MonoBehaviour
             case 7:
                 return glass_type;
             case 8:
+                return face_type;
+            default:
+                return shirt_type;
+        }
+    }
+
+    public string GetBody(string part_tag)
+    {
+        switch (part_tag)
+        {
+            case "Shirt":
+                return shirt_type;
+            case "Pants":
+                return pants_type;
+            case "Outer":
+                return outer_type;
+            case "Left":
+                return left_type;
+            case "Right":
+                return right_type;
+            case "Hair":
+                return hair_type;
+            case "Glass":
+                return glass_type;
+            case "Face":
                 return face_type;
             default:
                 return shirt_type;

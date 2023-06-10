@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class UIMovingManager : MonoBehaviour
 {
+    public CharStateManager characterState;
+
     public GameObject screen;
     public GameObject dayUI;
     public GameObject dayNumUI;
@@ -15,6 +17,9 @@ public class UIMovingManager : MonoBehaviour
     public SelectGameManager gameSetManager;
     public GameObject gameUIScroll;
 
+    public GameObject CamSet;
+    public GameObject camScreenUI;
+    public Text camScreenTxt;
 
     public GameObject statusSetUI;
     public GameObject clothSetBtnUI;
@@ -22,6 +27,8 @@ public class UIMovingManager : MonoBehaviour
     public GameObject moniterScreen;
     public GameObject viewerUI;
     public GameObject viewerUIText;
+
+    public GameObject clothRankUI;
 
     public GameObject conditonPosition;
     public GameObject mentalPosition;
@@ -50,6 +57,21 @@ public class UIMovingManager : MonoBehaviour
     public void FadeInCover()
     {
         screen.GetComponent<SpriteRenderer>().DOColor(new Color(0f,0f,0f,0f), 3f);
+    }
+
+    public void PopupCamScreen(string text)
+    {
+        StartCoroutine(PopupCamScreenMove(text));
+    }
+
+    IEnumerator PopupCamScreenMove(string text)
+    {
+        CamSet.transform.DOLocalMoveX(CamSet.transform.localPosition.x - 450, 1.5f);
+        camScreenTxt.DOText(text, 2f);
+        yield return new WaitForSeconds(2.5f);
+        CamSet.transform.DOLocalMoveX(CamSet.transform.localPosition.x + 450, 1.5f);
+        yield return new WaitForSeconds(2f);
+        camScreenTxt.text = "";
     }
 
     public void ShowCharStatVal(int target, int value)
@@ -165,13 +187,13 @@ public class UIMovingManager : MonoBehaviour
 
     public void MoveUI()
     {
-        // dayUI.transform.DOMoveY(dayUI.transform.position.y - 83, 2f);
         StartCoroutine(DelayOpen(3f));
         StartCoroutine(DelayEffect(10, 1.0f));
         StartCoroutine(DelayEffect(10, 1.5f));
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 653, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 421, 2.5f);
         dayUI.transform.DOLocalMoveY(dayUI.transform.localPosition.y - 139, 2f);
+        clothRankUI.transform.DOLocalMoveX(clothRankUI.transform.localPosition.x + 155, 2f);
     }
 
 

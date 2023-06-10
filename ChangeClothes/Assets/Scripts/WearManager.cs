@@ -7,7 +7,7 @@ public class WearManager : MonoBehaviour
     //public GameObject[] clothes;
     public StartStreamManager streamManager;
     public List<GameObject> clothes;
-    public GameObject otherPos;
+    //public GameObject otherPos;
 
     private static bool catched = false;
     private bool confinedMouse = false;
@@ -69,16 +69,7 @@ public class WearManager : MonoBehaviour
                  collision.GetComponent<WearObject>().UnEquipped();
                  collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
                  collision.transform.localScale = new Vector3(1, 1);
-                 CheckUnEquip(collision.gameObject);
              }
          }
-    }
-
-    public void CheckUnEquip(GameObject target)
-    {
-        if(gameObject.transform.Find(target.tag).childCount == 0)
-        {
-            gameObject.GetComponentInParent<CharStateManager>().OutBody(target.GetComponent<WearObject>().clothType_Part);
-        }
     }
 }

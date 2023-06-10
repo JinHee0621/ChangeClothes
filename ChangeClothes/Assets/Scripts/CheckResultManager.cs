@@ -46,7 +46,10 @@ public class CheckResultManager : MonoBehaviour
             i.SetActive(true);
             i.GetComponent<BackGroundPattern>().FadeInPattern();
         }
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.5f);
+        uiManager.GetComponent<UIMovingManager>().PopUpRankUI();
+        yield return new WaitForSeconds(3.5f);
+        uiManager.GetComponent<UIMovingManager>().BackRankUI();
         uiManager.GetComponent<UIMovingManager>().OpenGameSetUI();
         yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().MoveStatusGuage();
@@ -55,6 +58,7 @@ public class CheckResultManager : MonoBehaviour
     IEnumerator ScreenOpen()
     {
         yield return new WaitForSeconds(2.5f);
+        uiManager.GetComponent<UIMovingManager>().ReMoveRankUI();
         uiManager.GetComponent<UIMovingManager>().CloseGameSetUI();
         uiManager.GetComponent<UIMovingManager>().FadeOutCover();
         yield return new WaitForSeconds(3.5f);
@@ -71,6 +75,7 @@ public class CheckResultManager : MonoBehaviour
         uiManager.GetComponent<UIMovingManager>().FadeInCover();
         yield return new WaitForSeconds(3f);
         uiManager.GetComponent<UIMovingManager>().ResetUI();
+        uiManager.GetComponent<UIMovingManager>().MoveRankUI();
         streamManager.StreamStateChange(0);
     }
 }

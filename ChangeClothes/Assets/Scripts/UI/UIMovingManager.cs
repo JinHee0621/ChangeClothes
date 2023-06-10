@@ -29,6 +29,7 @@ public class UIMovingManager : MonoBehaviour
     public GameObject viewerUIText;
 
     public GameObject clothRankUI;
+    public GameObject clothRankCenter;
 
     public GameObject conditonPosition;
     public GameObject mentalPosition;
@@ -41,12 +42,14 @@ public class UIMovingManager : MonoBehaviour
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 viewerUI_default_pos = new Vector3(0, 0, 0);
+    private Vector3 rankUI_default_pos = new Vector3(0, 0, 0);
 
     System.Random randomIndex = new System.Random();
 
     void Start()
     {
         ResetUI();
+        MoveRankUI();
     }
 
     public void FadeOutCover()
@@ -183,6 +186,9 @@ public class UIMovingManager : MonoBehaviour
         bottomUI_default_pos = bottomUI.transform.localPosition;
         viewerUI_default_pos = viewerUI.transform.localPosition;
         MoveUI();
+
+        rankUI_default_pos = clothRankUI.transform.localPosition;
+        rankUI_default_pos.x += 155;
     }
 
     public void MoveUI()
@@ -193,7 +199,31 @@ public class UIMovingManager : MonoBehaviour
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 653, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 421, 2.5f);
         dayUI.transform.DOLocalMoveY(dayUI.transform.localPosition.y - 139, 2f);
+    }
+
+    public void MoveRankUI()
+    {
         clothRankUI.transform.DOLocalMoveX(clothRankUI.transform.localPosition.x + 155, 2f);
+    }
+
+    public void ReMoveRankUI()
+    {
+        clothRankUI.transform.DOLocalMoveX(clothRankUI.transform.localPosition.x - 155, 2f);
+    }
+
+
+    public void PopUpRankUI()
+    {
+        clothRankUI.transform.DOLocalMove(clothRankCenter.transform.localPosition, 1f);
+        clothRankUI.transform.DOScaleX(1.75f, 1f);
+        clothRankUI.transform.DOScaleY(1.75f, 1f);
+    }
+
+    public void BackRankUI()
+    {
+        clothRankUI.transform.DOLocalMove(rankUI_default_pos, 1f);
+        clothRankUI.transform.DOScaleX(1f, 1f);
+        clothRankUI.transform.DOScaleY(1f, 1f);
     }
 
 

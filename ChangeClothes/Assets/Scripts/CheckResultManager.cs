@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class CheckResultManager : MonoBehaviour
 {
+    public CharStateManager charStateManager;
     public StartStreamManager streamManager;
     public GameObject uiManager;
     public GameObject objectBox;
     public GameObject cover1;
     public GameObject cover2;
+
+
     GameObject[] patterns;
     private void Start()
     {
@@ -48,11 +51,62 @@ public class CheckResultManager : MonoBehaviour
         }
         yield return new WaitForSeconds(0.5f);
         uiManager.GetComponent<UIMovingManager>().PopUpRankUI();
-        yield return new WaitForSeconds(3.5f);
+        //시너지 효과 등 출력
+        Dictionary<string, int> equipped = CharEquippedSetCheck();
+
+        foreach (KeyValuePair<string, int> ele in equipped)
+        {
+            if (ele.Key != "" && ele.Value >= 2)
+            {
+                uiManager.GetComponent<UIMovingManager>().MoveRankContentUI("세트효과 : " + ele.Key);
+                yield return new WaitForSeconds(1.5f);
+            }
+        }
+
+        yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().BackRankUI();
         uiManager.GetComponent<UIMovingManager>().OpenGameSetUI();
         yield return new WaitForSeconds(1.5f);
         uiManager.GetComponent<UIMovingManager>().MoveStatusGuage();
+    }
+
+    public Dictionary<string, int> CharEquippedSetCheck()
+    {
+        Dictionary<string, int> equipped = new Dictionary<string, int>();
+
+        string shirt_type = charStateManager.shirt_type;
+        string pants_type = charStateManager.pants_type;
+        string outer_type = charStateManager.outer_type;
+        string left_type = charStateManager.left_type;
+        string right_type = charStateManager.right_type;
+        string hair_type = charStateManager.hair_type;
+        string glass_type = charStateManager.glass_type;
+        string face_type = charStateManager.face_type;
+
+        equipped.Add(shirt_type, 1);
+
+        if (equipped.ContainsKey(pants_type))  equipped[pants_type] += 1;
+        else equipped.Add(pants_type, 1);
+
+        if (equipped.ContainsKey(outer_type)) equipped[outer_type] += 1;
+        else equipped.Add(outer_type, 1);
+
+        if (equipped.ContainsKey(left_type))  equipped[left_type] += 1;
+        else equipped.Add(left_type, 1);
+
+        if (equipped.ContainsKey(right_type)) equipped[right_type] += 1;
+        else equipped.Add(right_type, 1);
+
+        if (equipped.ContainsKey(hair_type))  equipped[hair_type] += 1;
+        else equipped.Add(hair_type, 1);
+
+        if (equipped.ContainsKey(glass_type)) equipped[glass_type] += 1;
+        else equipped.Add(glass_type, 1);
+
+        if (equipped.ContainsKey(face_type))equipped[face_type] += 1;
+        else equipped.Add(face_type, 1);
+
+        return equipped;
     }
 
     IEnumerator ScreenOpen()

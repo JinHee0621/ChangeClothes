@@ -14,7 +14,6 @@ public class StatusUIManager : MonoBehaviour
     public GameObject mentalNum;
 
     public GameObject clothRankImg;
-    public Text clothRankTxt;
     int currentRank = 0;
 
     public CharStateManager statusSet;
@@ -56,7 +55,6 @@ public class StatusUIManager : MonoBehaviour
                 clothRankImg.GetComponent<Image>().fillAmount -= 0.01f;
                 temp -= 1;
             }
-            clothRankTxt.text = ((int)currentRank / 10).ToString();
             yield return new WaitForSeconds(0.01f);
             StartCoroutine(UpdateRank(temp, next));
         } else

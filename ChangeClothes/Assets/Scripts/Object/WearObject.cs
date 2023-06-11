@@ -30,6 +30,7 @@ public class WearObject : MonoBehaviour
         }
     }
 
+
     private void OnMouseDrag()
     {
         if(!move)

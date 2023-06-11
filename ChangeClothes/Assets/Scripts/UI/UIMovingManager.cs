@@ -30,6 +30,8 @@ public class UIMovingManager : MonoBehaviour
 
     public GameObject clothRankUI;
     public GameObject clothRankCenter;
+    public GameObject clothRankContentSet;
+    public GameObject clothRankContent;
 
     public GameObject conditonPosition;
     public GameObject mentalPosition;
@@ -225,6 +227,22 @@ public class UIMovingManager : MonoBehaviour
         clothRankUI.transform.DOScaleX(1f, 1f);
         clothRankUI.transform.DOScaleY(1f, 1f);
     }
+
+
+    public void MoveRankContentUI(string contentText)
+    {
+        StartCoroutine(MoveRankContentCorutin(contentText));
+    }
+
+    IEnumerator MoveRankContentCorutin(string contentText)
+    {
+        GameObject content = Instantiate(clothRankContent, clothRankContentSet.transform);
+        yield return new WaitForSeconds(0.5f);
+        content.GetComponent<Text>().DOText(contentText, 1f);
+        yield return new WaitForSeconds(1.5f);
+        Destroy(content);
+    }
+
 
 
     public void RemoveUI()

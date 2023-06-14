@@ -32,6 +32,8 @@ public class UIMovingManager : MonoBehaviour
     public GameObject clothRankCenter;
     public GameObject clothRankContentSet;
     public GameObject clothRankContent;
+    private int rankCount = 0;
+ 
 
     public GameObject conditonPosition;
     public GameObject mentalPosition;
@@ -41,6 +43,7 @@ public class UIMovingManager : MonoBehaviour
     public GameObject[] scoreObjects;
 
     Sprite[] daySprite;
+
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 viewerUI_default_pos = new Vector3(0, 0, 0);
@@ -191,6 +194,7 @@ public class UIMovingManager : MonoBehaviour
 
         rankUI_default_pos = clothRankUI.transform.localPosition;
         rankUI_default_pos.x += 155;
+
     }
 
     public void MoveUI()
@@ -236,11 +240,43 @@ public class UIMovingManager : MonoBehaviour
 
     IEnumerator MoveRankContentCorutin(string contentText)
     {
+        if (rankCount > 0)
+        {
+            Transform[] rankChild = clothRankContentSet.GetComponentsInChildren<Transform>();
+            if (rankChild != null)
+            {
+                for (int i = 1; i < rankChild.Length; i++)
+                {
+                    if (rankChild[i] != clothRankContentSet.transform)
+                    {
+                        rankChild[i].transform.DOLocalMoveY(rankChild[i].transform.localPosition.y - 55, 0.5f);
+                    }
+                }
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
         GameObject content = Instantiate(clothRankContent, clothRankContentSet.transform);
         yield return new WaitForSeconds(0.5f);
-        content.GetComponent<Text>().DOText(contentText, 1f);
-        yield return new WaitForSeconds(1.5f);
-        Destroy(content);
+        content.GetComponent<Text>().DOText(contentText, 0.5f);
+        yield return new WaitForSeconds(0.5f);
+        rankCount += 1;
+    }
+
+    public void ResetRankContentUI()
+    {
+        rankCount = 0;
+        Transform[] rankChild = clothRankContentSet.GetComponentsInChildren<Transform>();
+
+        if(rankChild != null)
+        {
+            for(int i = 1; i < rankChild.Length; i++)
+            {
+                if(rankChild[i] != clothRankContentSet.transform)
+                {
+                    Destroy(rankChild[i].gameObject);
+                }
+            } 
+        }
     }
 
 

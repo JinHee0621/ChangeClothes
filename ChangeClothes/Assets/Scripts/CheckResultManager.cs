@@ -62,8 +62,8 @@ public class CheckResultManager : MonoBehaviour
                 yield return new WaitForSeconds(1.5f);
             }
         }
-
         yield return new WaitForSeconds(1.5f);
+        uiManager.GetComponent<UIMovingManager>().ResetRankContentUI();
         uiManager.GetComponent<UIMovingManager>().BackRankUI();
         uiManager.GetComponent<UIMovingManager>().OpenGameSetUI();
         yield return new WaitForSeconds(1.5f);

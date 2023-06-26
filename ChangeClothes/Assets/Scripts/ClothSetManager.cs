@@ -7,15 +7,17 @@ public class ClothSetManager : MonoBehaviour
     public GameObject shirtSet;
     public GameObject pantsSet;
     public GameObject outerSet;
+    public GameObject hairSet;
 
     GameObject[] hangerSet;
     GameObject[] pantsHangerSet;
     GameObject[] outerHangerSet;
-
+    GameObject[] hairHangerSet;
 
     private bool isShirtSetOpen = false;
     private bool isPantsSetOpen = false;
     private bool isOuterSetOpen = false;
+    private bool isHairSetOpen = false;
 
     private bool moving = false;
 
@@ -25,6 +27,7 @@ public class ClothSetManager : MonoBehaviour
         hangerSet = GameObject.FindGameObjectsWithTag("Hanger");
         pantsHangerSet = GameObject.FindGameObjectsWithTag("Hanger_Pants");
         outerHangerSet = GameObject.FindGameObjectsWithTag("Hanger_Outer");
+        hairHangerSet = GameObject.FindGameObjectsWithTag("Hanger_Hair");
     }
 
     public void ShirtSetOpen()
@@ -48,6 +51,7 @@ public class ClothSetManager : MonoBehaviour
                 isShirtSetOpen = true;
                 closePantsSet();
                 closeOtherSet();
+                closeHairSet();
             }
             else
             {
@@ -86,6 +90,7 @@ public class ClothSetManager : MonoBehaviour
                 isPantsSetOpen = true;
                 closeShirtSet();
                 closeOtherSet();
+                closeHairSet();
             }
             else
             {
@@ -125,6 +130,7 @@ public class ClothSetManager : MonoBehaviour
                 isOuterSetOpen = true;
                 closeShirtSet();
                 closePantsSet();
+                closeHairSet();
             }
             else
             {
@@ -141,6 +147,46 @@ public class ClothSetManager : MonoBehaviour
             }
         }
     }
+    public void HairSetOpen()
+    {
+        if (!moving)
+        {
+            moving = true;
+            StartCoroutine("WaitSceond");
+            SoundManager.PlaySFX(4);
+            if (!isHairSetOpen)
+            {
+                hairSet.GetComponent<Animator>().SetBool("Open", true);
+                foreach (GameObject ele in hairHangerSet)
+                {
+                    ele.GetComponent<Animator>().SetTrigger("GetClothSet");
+                    if (ele.GetComponentInChildren<WearObject>() != null)
+                    {
+                        ele.GetComponentInChildren<WearObject>().SetMove();
+                    }
+                }
+                isHairSetOpen = true;
+
+                closeShirtSet();
+                closeOtherSet();
+                closePantsSet();
+            }
+            else
+            {
+                hairSet.GetComponent<Animator>().SetBool("Open", false);
+                foreach (GameObject ele in hairHangerSet)
+                {
+                    ele.GetComponent<Animator>().SetTrigger("GetClothSet");
+                    if (ele.GetComponentInChildren<WearObject>() != null)
+                    {
+                        ele.GetComponentInChildren<WearObject>().SetMove();
+                    }
+                }
+                isHairSetOpen = false;
+            }
+        }
+    }
+
 
     IEnumerator WaitSceond()
     {
@@ -153,6 +199,7 @@ public class ClothSetManager : MonoBehaviour
         closeOtherSet();
         closePantsSet();
         closeShirtSet();
+        closeHairSet();
     }
 
     void closeShirtSet()
@@ -206,4 +253,20 @@ public class ClothSetManager : MonoBehaviour
         }
     }
 
+    void closeHairSet()
+    {
+        if (isHairSetOpen)
+        {
+            hairSet.GetComponent<Animator>().SetBool("Open", false);
+            foreach (GameObject ele in hairHangerSet)
+            {
+                ele.GetComponent<Animator>().SetTrigger("GetClothSet");
+                if (ele.GetComponentInChildren<WearObject>() != null)
+                {
+                    ele.GetComponentInChildren<WearObject>().SetMove();
+                }
+            }
+            isHairSetOpen = false;
+        }
+    }
 }

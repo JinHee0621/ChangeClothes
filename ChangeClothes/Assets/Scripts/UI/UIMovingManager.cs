@@ -9,17 +9,11 @@ public class UIMovingManager : MonoBehaviour
     public CharStateManager characterState;
 
     public GameObject screen;
-    public GameObject dayUI;
-    public GameObject dayNumUI;
     public GameObject bottomUI;
 
     public GameObject gameSetUI;
     public SelectGameManager gameSetManager;
     public GameObject gameUIScroll;
-
-    public GameObject CamSet;
-    public GameObject camScreenUI;
-    public Text camScreenTxt;
 
     public GameObject statusSetUI;
     public GameObject clothSetBtnUI;
@@ -27,13 +21,6 @@ public class UIMovingManager : MonoBehaviour
     public GameObject moniterScreen;
     public GameObject viewerUI;
     public GameObject viewerUIText;
-
-    public GameObject clothRankUI;
-    public GameObject clothRankCenter;
-    public GameObject clothRankContentSet;
-    public GameObject clothRankContent;
-    private int rankCount = 0;
- 
 
     public GameObject conditonPosition;
     public GameObject mentalPosition;
@@ -54,7 +41,6 @@ public class UIMovingManager : MonoBehaviour
     void Start()
     {
         ResetUI();
-        MoveRankUI();
     }
 
     public void FadeOutCover()
@@ -67,20 +53,22 @@ public class UIMovingManager : MonoBehaviour
         screen.GetComponent<SpriteRenderer>().DOColor(new Color(0f,0f,0f,0f), 3f);
     }
 
-    public void PopupCamScreen(string text)
+    public void MoveCharacter()
     {
-        StartCoroutine(PopupCamScreenMove(text));
+        StartCoroutine(MoveCharacterAnim());
     }
 
-    IEnumerator PopupCamScreenMove(string text)
+    IEnumerator MoveCharacterAnim()
     {
-        CamSet.transform.DOLocalMoveX(CamSet.transform.localPosition.x - 450, 1.5f);
-        camScreenTxt.DOText(text, 2f);
-        yield return new WaitForSeconds(2.5f);
-        CamSet.transform.DOLocalMoveX(CamSet.transform.localPosition.x + 450, 1.5f);
-        yield return new WaitForSeconds(2f);
-        camScreenTxt.text = "";
+        characterState.gameObject.transform.localPosition = new Vector3(characterState.gameObject.transform.localPosition.x, characterState.gameObject.transform.localPosition.y, -8);
+        characterState.gameObject.transform.DOLocalMoveX(characterState.gameObject.transform.localPosition.x - 2.0f, 2.5f);
+        characterState.gameObject.transform.DOLocalMoveY(characterState.gameObject.transform.localPosition.y - 1.15f, 2.5f);
+        characterState.gameObject.transform.DOScaleX(1.15f, 1.5f);
+        characterState.gameObject.transform.DOScaleY(1.15f, 1.5f);
+
+        yield return null;
     }
+
 
     public void ShowCharStatVal(int target, int value)
     {
@@ -160,12 +148,6 @@ public class UIMovingManager : MonoBehaviour
         }
     }
 
-
-    public void dayCheck(int num)
-    {
-        dayNumUI.GetComponent<Image>().sprite = daySprite[num];
-    }
-
     public void MoniterOnOff(int plag)
     {
         if (plag == 0)
@@ -186,104 +168,23 @@ public class UIMovingManager : MonoBehaviour
     public void ResetUI()
     {
         daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
-        dayCheck(gameObject.GetComponent<StatusUIManager>().statusSet.streaming_date);
-        dayUI_default_pos = dayUI.transform.localPosition;
         bottomUI_default_pos = bottomUI.transform.localPosition;
         viewerUI_default_pos = viewerUI.transform.localPosition;
         MoveUI();
-
-        rankUI_default_pos = clothRankUI.transform.localPosition;
         rankUI_default_pos.x += 155;
-
     }
 
     public void MoveUI()
     {
         StartCoroutine(DelayOpen(3f));
-        StartCoroutine(DelayEffect(10, 1.0f));
         StartCoroutine(DelayEffect(10, 1.5f));
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 653, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 421, 2.5f);
-        dayUI.transform.DOLocalMoveY(dayUI.transform.localPosition.y - 139, 2f);
     }
-
-    public void MoveRankUI()
-    {
-        clothRankUI.transform.DOLocalMoveX(clothRankUI.transform.localPosition.x + 155, 2f);
-    }
-
-    public void ReMoveRankUI()
-    {
-        clothRankUI.transform.DOLocalMoveX(clothRankUI.transform.localPosition.x - 155, 2f);
-    }
-
-
-    public void PopUpRankUI()
-    {
-        clothRankUI.transform.DOLocalMove(clothRankCenter.transform.localPosition, 1f);
-        clothRankUI.transform.DOScaleX(1.75f, 1f);
-        clothRankUI.transform.DOScaleY(1.75f, 1f);
-    }
-
-    public void BackRankUI()
-    {
-        clothRankUI.transform.DOLocalMove(rankUI_default_pos, 1f);
-        clothRankUI.transform.DOScaleX(1f, 1f);
-        clothRankUI.transform.DOScaleY(1f, 1f);
-    }
-
-
-    public void MoveRankContentUI(string contentText)
-    {
-        StartCoroutine(MoveRankContentCorutin(contentText));
-    }
-
-    IEnumerator MoveRankContentCorutin(string contentText)
-    {
-        if (rankCount > 0)
-        {
-            Transform[] rankChild = clothRankContentSet.GetComponentsInChildren<Transform>();
-            if (rankChild != null)
-            {
-                for (int i = 1; i < rankChild.Length; i++)
-                {
-                    if (rankChild[i] != clothRankContentSet.transform)
-                    {
-                        rankChild[i].transform.DOLocalMoveY(rankChild[i].transform.localPosition.y - 55, 0.5f);
-                    }
-                }
-            }
-            yield return new WaitForSeconds(0.5f);
-        }
-        GameObject content = Instantiate(clothRankContent, clothRankContentSet.transform);
-        yield return new WaitForSeconds(0.5f);
-        content.GetComponent<Text>().DOText(contentText, 0.5f);
-        yield return new WaitForSeconds(0.5f);
-        rankCount += 1;
-    }
-
-    public void ResetRankContentUI()
-    {
-        rankCount = 0;
-        Transform[] rankChild = clothRankContentSet.GetComponentsInChildren<Transform>();
-
-        if(rankChild != null)
-        {
-            for(int i = 1; i < rankChild.Length; i++)
-            {
-                if(rankChild[i] != clothRankContentSet.transform)
-                {
-                    Destroy(rankChild[i].gameObject);
-                }
-            } 
-        }
-    }
-
 
 
     public void RemoveUI()
     {
-        dayUI.transform.DOLocalMoveY(dayUI_default_pos.y, 2f);
         bottomUI.transform.DOLocalMoveX(bottomUI_default_pos.x, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI_default_pos.y, 2.5f);
         clothSetBtnUI.GetComponent<ClothSetManager>().CloseAll();

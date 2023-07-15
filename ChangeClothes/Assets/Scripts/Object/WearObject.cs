@@ -33,79 +33,81 @@ public class WearObject : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        if(!move)
+        if (!gameObject.GetComponent<MouseDrag>().nowCheck)
         {
-            Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
-            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-            gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-            transform.position = objPosition;
-            WearManager.ChangeCatch(true);
+            if (!move)
+            {
+                Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
+                Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+                gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+                transform.position = objPosition;
+                WearManager.ChangeCatch(true);
+            }
         }
     }
 
     private void OnMouseUp()
     {
-        if(!move)
+        if(!gameObject.GetComponent<MouseDrag>().nowCheck)
         {
-            gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            WearManager.ChangeCatch(false);
-
-            if (weared)
+            if (!move)
             {
-                //옷 장착
-                SoundManager.PlaySFX(1);
-                if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+                gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+                WearManager.ChangeCatch(false);
+
+                if (weared)
                 {
-                    gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
+                    //옷 장착
+                    SoundManager.PlaySFX(1);
+                    if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+                    {
+                        gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
+                    }
+
+                    //동일 파트의 경우는 변경
+                    if (!stat.GetBody(clothType_Part).Equals("") && !stat.GetBody(clothType_Part).Equals(clothType))
+                    {
+                        Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
+                        weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
+                        weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
+                        if (weardObj.gameObject.tag.Equals("Outer") || weardObj.gameObject.tag.Equals("Right") || weardObj.gameObject.tag.Equals("Hair"))
+                        {
+                            weardObj.GetComponent<SpriteRenderer>().sprite = weardObj.GetComponent<WearObject>().whenWear[0];
+                        }
+                        stat.ClothRankRemove(weardObj.GetComponent<WearObject>().clothRankPoint);
+
+                        if (isdecoObj) weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                        else weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+
+                    }
+
+                    stat.SetBody(clothType, clothType_Part);
+                    gameObject.transform.localPosition = new Vector3(0, 0);
+                    gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
                 }
-
-                //동일 파트의 경우는 변경
-                if (!stat.GetBody(clothType_Part).Equals("") && !stat.GetBody(clothType_Part).Equals(clothType))
+                else
                 {
-                    Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
-                    weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
-                    weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
-                    stat.ClothRankRemove(weardObj.GetComponent<WearObject>().clothRankPoint);
-
-                    if (isdecoObj) weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-                    else weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-
-                } 
-                
-                if (!stat.GetBody(clothType_Part).Equals(clothType)) 
-                {
-                    stat.ClothRankAdd(clothRankPoint);
-                }
-
-                stat.SetBody(clothType, clothType_Part);
-                gameObject.transform.localPosition = new Vector3(0, 0);
-                gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
-
-            }
-            else
-            {
-                SoundManager.PlaySFX(2);
-                if (!weared)
-                {
+                    SoundManager.PlaySFX(2);
                     gameObject.transform.localPosition = first_pos;
                     if (isdecoObj) gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                     else gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-                    stat.OutBody(clothType_Part);
-                    stat.ClothRankRemove(clothRankPoint);
+                    stat.OutBody(clothType_Part, clothRankPoint);
                 }
             }
         }
-
     }
 
     private void OnMouseDown()
     {
-        if(!move)
+        if (!gameObject.GetComponent<MouseDrag>().nowCheck)
         {
-            SoundManager.PlaySFX(0);
-            if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+            if (!move)
             {
-                gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
+                SoundManager.PlaySFX(0);
+                if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+                {
+                    gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
+                }
             }
         }
     }
@@ -185,4 +187,12 @@ public class WearObject : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         move = false;
     }
+    public void RollBack()
+    {
+        gameObject.transform.localPosition = first_pos;
+        if (isdecoObj) gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        else gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        stat.OutBody(clothType_Part, clothRankPoint);
+    }
+
 }

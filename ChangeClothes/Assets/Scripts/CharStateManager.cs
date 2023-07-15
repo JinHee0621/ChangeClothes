@@ -26,7 +26,48 @@ public class CharStateManager : MonoBehaviour
     public string glass_type = "";
     public string face_type = "";
 
+    private GameObject shirt_part;
+    private GameObject pants_part;
+    private GameObject outer_part;
+    private GameObject left_part;
+    private GameObject right_part;
+    private GameObject hair_part;
+    private GameObject glass_part;
+    private GameObject face_part;
+
     public int clothRank = 0;
+    private void Start()
+    {
+        shirt_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject;
+        pants_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(1).gameObject;
+        outer_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(2).gameObject;
+        left_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(3).gameObject;
+        right_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(4).gameObject;
+        hair_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject;
+        glass_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(6).gameObject;
+        face_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(7).gameObject;
+    }
+
+    public void StopFixCloth()
+    {
+        ColliderOff(shirt_part);
+        ColliderOff(pants_part);
+        ColliderOff(outer_part);
+        ColliderOff(left_part);
+        ColliderOff(right_part);
+        ColliderOff(hair_part);
+        ColliderOff(glass_part);
+        ColliderOff(face_part);
+    }
+
+    public void ColliderOff(GameObject part)
+    {
+        MouseDrag[] partObj = part.GetComponentsInChildren<MouseDrag>();
+        foreach(MouseDrag ele in partObj)
+        {
+            ele.nowCheck = true;
+        }
+    }
 
     public void ClothRankAdd(int point)
     {
@@ -98,33 +139,58 @@ public class CharStateManager : MonoBehaviour
         }
     }
 
-    public void OutBody(int part_type)
+    public void OutBody(int part_type, int part_score)
     {
+
         switch (part_type)
         {
             case 1:
-                shirt_type = "";
+                if (shirt_part.transform.childCount == 0)
+                {
+                    shirt_type = "";
+                }
                 break;
             case 2:
-                pants_type = "";
+                if (pants_part.transform.childCount == 0)
+                {
+                    pants_type = "";
+                }
                 break;
             case 3:
-                outer_type = "";
+                if (outer_part.transform.childCount == 0)
+                {
+                    outer_type = "";
+                }
                 break;
             case 4:
-                left_type = "";
+                if (left_part.transform.childCount == 0)
+                {
+                    left_type = "";
+                }
                 break;
             case 5:
-                right_type = "";
+                if (right_part.transform.childCount == 0)
+                {
+                    right_type = "";
+                }
                 break;
             case 6:
-                hair_type = "";
+                if (hair_part.transform.childCount == 0)
+                {
+                    hair_type = "";
+                }
                 break;
             case 7:
-                glass_type = "";
+                if (glass_part.transform.childCount == 0)
+                {
+                    glass_type = "";
+                }
                 break;
             case 8:
-                face_type = "";
+                if (face_part.transform.childCount == 0)
+                {
+                    face_type = "";
+                }
                 break;
         }
     }

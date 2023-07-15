@@ -66,7 +66,6 @@ public class StartStreamManager : MonoBehaviour
             StreamStateChange(1);
         } else
         {
-            uiManager.PopupCamScreen("김도가 전을 굽고 있다.");
             //방송 종료 후 
             SoundManager.PlaySFX(7);
             uiManager.MoniterOnOff(0);

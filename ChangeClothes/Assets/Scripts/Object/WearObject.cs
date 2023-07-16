@@ -74,7 +74,6 @@ public class WearObject : MonoBehaviour
                         {
                             weardObj.GetComponent<SpriteRenderer>().sprite = weardObj.GetComponent<WearObject>().whenWear[0];
                         }
-                        stat.ClothRankRemove(weardObj.GetComponent<WearObject>().clothRankPoint);
 
                         if (isdecoObj) weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                         else weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
@@ -189,6 +188,12 @@ public class WearObject : MonoBehaviour
     }
     public void RollBack()
     {
+        
+        if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+        {
+            gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
+        }
+        gameObject.transform.SetParent(GetThisHanger().transform);
         gameObject.transform.localPosition = first_pos;
         if (isdecoObj) gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         else gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;

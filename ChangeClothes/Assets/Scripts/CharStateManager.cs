@@ -69,6 +69,27 @@ public class CharStateManager : MonoBehaviour
         }
     }
 
+    public void AllWearRollBack()
+    {
+        WearRollback(shirt_part);
+        WearRollback(pants_part);
+        WearRollback(outer_part);
+        WearRollback(left_part);
+        WearRollback(right_part);
+        WearRollback(hair_part);
+        WearRollback(glass_part);
+        WearRollback(face_part);
+    }
+
+    public void WearRollback(GameObject part)
+    {
+        WearObject[] partObj = part.GetComponentsInChildren<WearObject>();
+        foreach (WearObject ele in partObj)
+        {
+            ele.RollBack();
+        }
+    }
+
     public void ClothRankAdd(int point)
     {
         clothRank = clothRank + point;

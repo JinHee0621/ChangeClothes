@@ -8,8 +8,9 @@ public class SpecialEffectsScript : MonoBehaviour
     private static SpecialEffectsScript instance;
 
     // Prefabs
-    public ParticleSystem explosionEffect, vortexEffect;
+    public ParticleSystem explosionEffect, explosionEffect2, vortexEffect;
     public GameObject trailPrefab;
+    public GameObject canvas;
 
     void Awake()
     {
@@ -40,12 +41,16 @@ public class SpecialEffectsScript : MonoBehaviour
             Debug.LogError("There is no SpecialEffectsScript in the scene!");
             return null;
         }
-        position = new Vector3(position.x, position.y, position.z + 1);
-        ParticleSystem effect = Instantiate(instance.explosionEffect) as ParticleSystem;
+        position = new Vector3(position.x, position.y, position.z+1);
+        ParticleSystem effect = Instantiate(instance.explosionEffect, instance.canvas.transform) as ParticleSystem;
         effect.transform.position = position;
+
+        ParticleSystem effect2 = Instantiate(instance.explosionEffect2, instance.canvas.transform) as ParticleSystem;
+        effect2.transform.position = position;
 
         // Program destruction at the end of the effect
         Destroy(effect.gameObject, 0.5f);
+        Destroy(effect2.gameObject, 0.5f);
 
         return effect;
     }

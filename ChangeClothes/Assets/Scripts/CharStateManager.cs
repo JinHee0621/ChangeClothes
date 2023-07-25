@@ -71,6 +71,7 @@ public class CharStateManager : MonoBehaviour
 
     public void AllWearRollBack()
     {
+        SoundManager.PlaySFX(2);
         WearRollback(shirt_part);
         WearRollback(pants_part);
         WearRollback(outer_part);

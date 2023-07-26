@@ -9,8 +9,6 @@ public class SoundManager : MonoBehaviour
     static AudioSource Mouse_Sound;
     static AudioSource SFX_Sound;
     static AudioSource BGM_Sound;
-    static AudioSource Condition_SFX;
-    static AudioSource Mental_SFX;
     static public List<AudioClip> SFX;
 
     void Start()
@@ -18,9 +16,7 @@ public class SoundManager : MonoBehaviour
         SFX = SFX_List;
         Mouse_Sound = transform.Find("MouseSFX").gameObject.GetComponent<AudioSource>();
         SFX_Sound = transform.Find("EffectMusic").gameObject.GetComponent<AudioSource>();
-        BGM_Sound = transform.Find("BackgrounddMusic").gameObject.GetComponent<AudioSource>();
-        Condition_SFX = transform.Find("ConditionGuageSFX").gameObject.GetComponent<AudioSource>();
-        Mental_SFX = transform.Find("MentalGuageSFX").gameObject.GetComponent<AudioSource>();
+        BGM_Sound = transform.Find("BackgroundMusic").gameObject.GetComponent<AudioSource>();
         BGM_Sound.Play();
         StartCoroutine(FadeInBGM(BGM_Sound));
     }
@@ -40,17 +36,6 @@ public class SoundManager : MonoBehaviour
         Mouse_Sound.clip = SFX[code];
         Mouse_Sound.Play();
     }
-
-
-    static public void PlayConditionSound()
-    {
-        Condition_SFX.Play();
-    }
-    static public void PlayMentalSound()
-    {
-        Mental_SFX.Play();
-    }
-
 
     IEnumerator FadeInBGM(AudioSource source)
     {

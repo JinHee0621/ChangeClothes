@@ -8,6 +8,8 @@ public class UIMovingManager : MonoBehaviour
 {
     public CharStateManager characterState;
 
+    public Image fadeOut;
+
     public GameObject screen;
     public GameObject bottomUI;
 
@@ -219,8 +221,26 @@ public class UIMovingManager : MonoBehaviour
 
     IEnumerator DelayOpen(float time)
     {
+        StartCoroutine(FirstFadeOut());
         yield return new WaitForSeconds(time);
     }
+
+    IEnumerator FirstFadeOut()
+    {
+        Color nextColor = fadeOut.color;
+        nextColor.a -= 0.025f;
+        fadeOut.color = nextColor;
+        yield return new WaitForSeconds(0.05f);
+        if(fadeOut.color.a > 0)
+        {
+            StartCoroutine(FirstFadeOut());
+        } else
+        {
+            fadeOut.gameObject.SetActive(false);
+            yield return null;
+        }
+    }
+
 
     IEnumerator DelayEffect(int sfxCode, float time)
     {

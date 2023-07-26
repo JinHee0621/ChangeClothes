@@ -94,7 +94,6 @@ public class StatusUIManager : MonoBehaviour
     {
         if(guageConditon < charCondition)
         {
-            SoundManager.PlayConditionSound();
             guageConditon += 1;
             conditionNum.GetComponent<Text>().text = guageConditon.ToString();
             SetGuage(0);
@@ -111,7 +110,6 @@ public class StatusUIManager : MonoBehaviour
     {
         if (guageMental < charMental)
         {
-            SoundManager.PlayMentalSound();
             guageMental += 1;
             mentalNum.GetComponent<Text>().text = guageMental.ToString();
             SetGuage(1);
@@ -133,7 +131,6 @@ public class StatusUIManager : MonoBehaviour
         {
             if(val < 0)
             {
-                SoundManager.PlayConditionSound();
                 if(guageConditon > 0)
                 {
                     guageConditon -= 1;
@@ -149,7 +146,6 @@ public class StatusUIManager : MonoBehaviour
                 StartCoroutine(StatusGuageChanging(0,val));
             } else if(val > 0)
             {
-                SoundManager.PlayConditionSound();
                 if(guageConditon < 100)
                 {
                     guageConditon += 1;
@@ -174,7 +170,6 @@ public class StatusUIManager : MonoBehaviour
         {
             if (val < 0)
             {
-                SoundManager.PlayMentalSound();
                 if (guageMental > 0)
                 {
                     guageMental -= 1;
@@ -192,7 +187,6 @@ public class StatusUIManager : MonoBehaviour
             }
             else if (val > 0)
             {
-                SoundManager.PlayMentalSound();
                 if (guageMental < 100)
                 {
                     guageMental += 1;

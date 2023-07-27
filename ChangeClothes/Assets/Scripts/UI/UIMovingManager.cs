@@ -13,6 +13,11 @@ public class UIMovingManager : MonoBehaviour
     public GameObject screen;
     public GameObject bottomUI;
 
+    public GameObject evaluatorCat;
+    public GameObject checkResutCover1;
+    public GameObject checkResutCover2;
+    public GameObject speechBalloon;
+
     public GameObject gameSetUI;
     public SelectGameManager gameSetManager;
     public GameObject gameUIScroll;
@@ -57,6 +62,7 @@ public class UIMovingManager : MonoBehaviour
 
     public void MoveCharacter()
     {
+
         StartCoroutine(MoveCharacterAnim());
     }
 
@@ -67,9 +73,32 @@ public class UIMovingManager : MonoBehaviour
         characterState.gameObject.transform.DOLocalMoveY(characterState.gameObject.transform.localPosition.y - 1.15f, 2.5f);
         characterState.gameObject.transform.DOScaleX(1.15f, 1.5f);
         characterState.gameObject.transform.DOScaleY(1.15f, 1.5f);
-
-        yield return null;
+        yield return new WaitForSeconds(2.5f);
+        CheckResultMove();
+        yield return new WaitForSeconds(2.5f);
+        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 1000f, 2.5f);
+        yield return new WaitForSeconds(2.5f);
+        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 10f, 0.05f);
+        yield return new WaitForSeconds(0.05f);
+        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 10f, 0.05f);
+        yield return new WaitForSeconds(0.05f);
+        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 5f, 0.05f);
+        yield return new WaitForSeconds(0.05f);
+        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 5f, 0.05f);
+        yield return new WaitForSeconds(0.05f);
+        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 2.5f, 0.05f);
+        yield return new WaitForSeconds(0.05f);
+        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 2.5f, 0.05f);
+        yield return new WaitForSeconds(0.25f);
+        speechBalloon.transform.DORotate(new Vector3(0, 0, 0), 0.5f).SetEase(Ease.Linear);
     }
+
+    public void CheckResultMove()
+    {
+        checkResutCover1.transform.DOLocalMoveY(checkResutCover1.transform.localPosition.y - 100f, 2.5f);
+        checkResutCover2.transform.DOLocalMoveY(checkResutCover2.transform.localPosition.y + 100f, 2.5f);
+    }
+
 
 
     public void ShowCharStatVal(int target, int value)

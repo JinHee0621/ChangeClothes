@@ -19,6 +19,7 @@ public class OptionManager : MonoBehaviour
     public Slider sfxSlider;
     
     public bool nowTitle;
+    public bool nowCheckResult;
 
     public float bgmSize;
     public float sfxSize;
@@ -43,7 +44,7 @@ public class OptionManager : MonoBehaviour
     {
         if (!nowTitle)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && nowCheckResult == false)
             {
                 SoundManager.PlaySFX(7);
                 if (!optionOpen)

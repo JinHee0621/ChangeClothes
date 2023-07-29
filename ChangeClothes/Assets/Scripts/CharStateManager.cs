@@ -6,6 +6,8 @@ public class CharStateManager : MonoBehaviour
 {
     public StatusUIManager statusUI;
 
+    public bool playable = true;
+
     public int minCondition = 60;
     public int maxCondition = 100;
     public int condition = 100;
@@ -68,6 +70,30 @@ public class CharStateManager : MonoBehaviour
             ele.nowCheck = true;
         }
     }
+
+    public void StartFixCloth()
+    {
+        ColliderOn(shirt_part);
+        ColliderOn(pants_part);
+        ColliderOn(outer_part);
+        ColliderOn(left_part);
+        ColliderOn(right_part);
+        ColliderOn(hair_part);
+        ColliderOn(glass_part);
+        ColliderOn(face_part);
+    }
+
+    public void ColliderOn(GameObject part)
+    {
+        MouseDrag[] partObj = part.GetComponentsInChildren<MouseDrag>();
+        foreach (MouseDrag ele in partObj)
+        {
+            ele.nowCheck = false;
+        }
+    }
+
+
+
 
     public void AllWearRollBack()
     {

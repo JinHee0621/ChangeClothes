@@ -11,6 +11,7 @@ public class CheckResultManager : MonoBehaviour
     public GameObject cover1;
     public GameObject cover2;
 
+    private bool nowRestarting = false;
 
     GameObject[] patterns;
     private void Start()
@@ -23,13 +24,19 @@ public class CheckResultManager : MonoBehaviour
         uiManager.FadeInCover();
     }
 
-    public void NextDay()
+    public void RestartDay()
     {
-        StartCoroutine(ScreenOpen());
+        if(nowRestarting == false)
+        {
+            StartCoroutine(ScreenOpen());
+
+            nowRestarting = true;
+        }
     }
 
     public void startCheckResult()
     {
+        OptionManager.instance.nowCheckResult = true;
         SoundManager.PlaySFX(5);
         uiManager.RemoveUI();
         StartCoroutine(ScreenClose());
@@ -37,6 +44,7 @@ public class CheckResultManager : MonoBehaviour
 
     IEnumerator ScreenClose()
     {
+        CharEquippedSetCheck();
         charStateManager.StopFixCloth();
         yield return new WaitForSeconds(1.5f);
         SoundManager.OffBGM();
@@ -51,13 +59,11 @@ public class CheckResultManager : MonoBehaviour
             i.GetComponent<BackGroundPattern>().FadeInPattern();
         }
         yield return new WaitForSeconds(0.5f);
-        //시너지 효과 등 출력
-        Dictionary<string, int> equipped = CharEquippedSetCheck();
 
     }
-
-    public Dictionary<string, int> CharEquippedSetCheck()
+    public void CharEquippedSetCheck()
     {
+        int score = 0;
         Dictionary<string, int> equipped = new Dictionary<string, int>();
 
         string shirt_type = charStateManager.shirt_type;
@@ -69,44 +75,26 @@ public class CheckResultManager : MonoBehaviour
         string glass_type = charStateManager.glass_type;
         string face_type = charStateManager.face_type;
 
-        equipped.Add(shirt_type, 1);
-
-        if (equipped.ContainsKey(pants_type))  equipped[pants_type] += 1;
-        else equipped.Add(pants_type, 1);
-
-        if (equipped.ContainsKey(outer_type)) equipped[outer_type] += 1;
-        else equipped.Add(outer_type, 1);
-
-        if (equipped.ContainsKey(left_type))  equipped[left_type] += 1;
-        else equipped.Add(left_type, 1);
-
-        if (equipped.ContainsKey(right_type)) equipped[right_type] += 1;
-        else equipped.Add(right_type, 1);
-
-        if (equipped.ContainsKey(hair_type))  equipped[hair_type] += 1;
-        else equipped.Add(hair_type, 1);
-
-        if (equipped.ContainsKey(glass_type)) equipped[glass_type] += 1;
-        else equipped.Add(glass_type, 1);
-
-        if (equipped.ContainsKey(face_type))equipped[face_type] += 1;
-        else equipped.Add(face_type, 1);
-
-        return equipped;
+        if (shirt_type.Equals(""))
+        {
+            uiManager.CheckResultText("게이밍 슈트");
+            score += 80;
+        }
+        if (shirt_type.Equals("") && pants_type.Equals("") && outer_type.Equals("")) {
+            uiManager.CheckResultText("속옷만 걸치고 \n 나왔");
+            score += 10;
+        }
+        uiManager.ScoreVal(score);
     }
-
     IEnumerator ScreenOpen()
     {
-        yield return new WaitForSeconds(2.5f);
-        uiManager.GetComponent<UIMovingManager>().CloseGameSetUI();
-        uiManager.GetComponent<UIMovingManager>().FadeOutCover();
+        yield return new WaitForSeconds(0.5f);
+        uiManager.FadeOutCover();
         yield return new WaitForSeconds(3.5f);
         foreach (GameObject i in patterns)
         {
             i.SetActive(false);
         }
-        //SoundManager.OffBGM();
-        //SoundManager.PlaySFX(3);
         yield return new WaitForSeconds(1f);
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");
@@ -114,7 +102,9 @@ public class CheckResultManager : MonoBehaviour
         uiManager.FadeInCover();
         yield return new WaitForSeconds(3f);
         uiManager.ResetUI();
-        //streamManager.StreamStateChange(0);
+        yield return new WaitForSeconds(3f);
+        nowRestarting = false;
+        OptionManager.instance.nowCheckResult = false;
     }
 
 

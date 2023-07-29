@@ -32,7 +32,6 @@ public class ScoreObject : MonoBehaviour
         {
             currentNum += 1;
             charScore.viewer_Like += 1;
-            uiMovingManager.ChangeViewerTxt();
             yield return new WaitForSeconds(cntTime);
         }
         EndMove();

@@ -10,6 +10,7 @@ public class TitleManager : MonoBehaviour
     public Image fadeIn;
     public void GoToMain()
     {
+        SoundManager.PlaySFX(5);
         fadeIn.enabled = true;
         StartCoroutine(SceneChangeFadeIn());
     }

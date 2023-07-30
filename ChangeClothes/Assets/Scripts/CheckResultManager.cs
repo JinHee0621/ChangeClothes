@@ -7,6 +7,7 @@ public class CheckResultManager : MonoBehaviour
 {
     public CharStateManager charStateManager;
     public UIMovingManager uiManager;
+    public AddClothManager addClothManager;
     public GameObject objectBox;
     public GameObject cover1;
     public GameObject cover2;
@@ -26,7 +27,8 @@ public class CheckResultManager : MonoBehaviour
 
     public void RestartDay()
     {
-        if(nowRestarting == false)
+        SoundManager.PlaySFX(5);
+        if (nowRestarting == false)
         {
             StartCoroutine(ScreenOpen());
 
@@ -98,13 +100,13 @@ public class CheckResultManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.5f);
         uiManager.FadeInCover();
-        yield return new WaitForSeconds(3f);
         uiManager.ResetUI();
         yield return new WaitForSeconds(3f);
         nowRestarting = false;
         OptionManager.instance.nowCheckResult = false;
+        addClothManager.UnLockSet("Squid");
     }
 
 

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AddClothManager : MonoBehaviour
 {
+    public UIMovingManager uiManager;
+    public ClothSetManager clothSetManager;
+
     public GameObject shirtHanger;
     public GameObject pantsHanger;
     public GameObject outerHanger;
@@ -17,11 +20,6 @@ public class AddClothManager : MonoBehaviour
     public Transform latestOuterPos;
     public Transform latestPantsPos;
     // Start is called before the first frame update
-    void Start()
-    {
-        UnLockSet("Squid");
-        UnLockSet("Baby");
-    }
 
     public void UnLockSet(string clothType)
     {
@@ -87,5 +85,7 @@ public class AddClothManager : MonoBehaviour
             }
 
         }
+        clothSetManager.ReNewHangers();
+        uiManager.PopUpOpen();
     }
 }

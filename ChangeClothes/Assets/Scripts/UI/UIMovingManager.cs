@@ -26,6 +26,9 @@ public class UIMovingManager : MonoBehaviour
     public Text scoreNumText;
     public GameObject restartButton;
 
+    public GameObject popupWindow;
+    private bool isPopupOpen = false;
+
     public GameObject statusSetUI;
     public GameObject clothSetBtnUI;
     public GameObject backgorundSetBtnUI;
@@ -52,6 +55,34 @@ public class UIMovingManager : MonoBehaviour
     {
         ResetUI();
     }
+
+    public void PopUpOpen()
+    {
+        if (isPopupOpen == false)
+        {
+            SoundManager.PlaySFX(16);
+            isPopupOpen = true;
+            popupWindow.transform.DOScaleX(1f, 0.25f).SetEase(Ease.OutQuad);
+            popupWindow.transform.DOScaleY(1f, 0.25f).SetEase(Ease.OutQuad);
+            StartCoroutine(PopUpWait());
+        }
+
+    }
+
+    IEnumerator PopUpWait()
+    {
+        yield return new WaitForSeconds(3f);
+        PopUpClose();
+        yield return new WaitForSeconds(0.5f);
+        isPopupOpen = false;
+    }
+
+    public void PopUpClose()
+    {
+        popupWindow.transform.DOScaleX(0f, 0.25f).SetEase(Ease.OutQuad);
+        popupWindow.transform.DOScaleY(0f, 0.25f).SetEase(Ease.OutQuad);
+    }
+
 
     public void FadeOutCover()
     {
@@ -128,7 +159,9 @@ public class UIMovingManager : MonoBehaviour
     IEnumerator MovevaluatorCat()
     {
         evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 1000f, 2.5f).SetEase(Ease.OutQuad);
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(1f);
+        SoundManager.PlaySFX(15);
+        yield return new WaitForSeconds(1.5f);
         evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 10f, 0.05f);
         yield return new WaitForSeconds(0.05f);
         evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 10f, 0.05f);
@@ -334,7 +367,7 @@ public class UIMovingManager : MonoBehaviour
 
     public void MoveUI()
     {
-        StartCoroutine(DelayOpen(2f));
+        StartCoroutine(DelayOpen(1.5f));
         StartCoroutine(DelayEffect(10, 1.5f));
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 653, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 421, 2.5f);

@@ -24,11 +24,17 @@ public class ClothSetManager : MonoBehaviour
 
     private void Start()
     {
+        ReNewHangers();
+    }
+
+    public void ReNewHangers()
+    {
         hangerSet = GameObject.FindGameObjectsWithTag("Hanger");
         pantsHangerSet = GameObject.FindGameObjectsWithTag("Hanger_Pants");
         outerHangerSet = GameObject.FindGameObjectsWithTag("Hanger_Outer");
         hairHangerSet = GameObject.FindGameObjectsWithTag("Hanger_Hair");
     }
+
 
     public void ShirtSetOpen()
     {

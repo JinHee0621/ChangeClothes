@@ -38,7 +38,7 @@ public class CheckResultManager : MonoBehaviour
 
     public void startCheckResult()
     {
-        OptionManager.instance.nowCheckResult = true;
+        //OptionManager.instance.nowCheckResult = true;
         SoundManager.PlaySFX(5);
         uiManager.RemoveUI();
         StartCoroutine(ScreenClose());
@@ -105,8 +105,9 @@ public class CheckResultManager : MonoBehaviour
         uiManager.ResetUI();
         yield return new WaitForSeconds(3f);
         nowRestarting = false;
-        OptionManager.instance.nowCheckResult = false;
+        //OptionManager.instance.nowCheckResult = false;
         addClothManager.UnLockSet("Squid");
+        addClothManager.UnLockSet("Baby");
     }
 
 

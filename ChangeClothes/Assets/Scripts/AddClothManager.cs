@@ -49,13 +49,19 @@ public class AddClothManager : MonoBehaviour
                 {
                     case "Shirt":
                         nextPos = latestShirtPos.localPosition;
-                        nextPos.x += 1f;
+                        if (nextPos.x >= 3.5f)
+                        {
+                            nextPos.x = -3.5f;
+                            nextPos.y -= 2.5f;
+                        }
+                        else nextPos.x += 1f;
                         nextPos.z -= 0.1f;
 
                         new_hanger = Instantiate(shirtHanger, shirtSetPos);
                         new_hanger.transform.localPosition = nextPos;
                         target_ele.SetParent(new_hanger.transform);
                         target_ele.localPosition = first_ele_pos;
+                        latestShirtPos = new_hanger.transform;
 
                         continue;
 
@@ -68,6 +74,7 @@ public class AddClothManager : MonoBehaviour
                         new_hanger.transform.localPosition = nextPos;
                         target_ele.SetParent(new_hanger.transform);
                         target_ele.localPosition = first_ele_pos;
+                        latestOuterPos = new_hanger.transform;
 
                         continue;
                     case "Pants":
@@ -79,6 +86,8 @@ public class AddClothManager : MonoBehaviour
                         new_hanger.transform.localPosition = nextPos;
                         target_ele.SetParent(new_hanger.transform);
                         target_ele.localPosition = first_ele_pos;
+
+                        latestPantsPos = new_hanger.transform;
                         continue;
                 }
 

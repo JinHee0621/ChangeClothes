@@ -5,8 +5,9 @@ using UnityEngine;
 public class WearObject : MonoBehaviour
 {
     float distance = 4;
-    public bool isdecoObj;
     public bool weared = false;
+    public bool isdecoObj;
+    public bool wearedChange;
     public string clothType = "";
     public int clothType_Part = 0;
     public int clothRankPoint = 0;
@@ -18,17 +19,23 @@ public class WearObject : MonoBehaviour
     private bool move = false;
     private void Start()
     {
+        InitObject();
+    }
+
+    public void InitObject()
+    {
         hanger = transform.parent.gameObject;
 
         first_pos = gameObject.transform.localPosition;
         stat = GameObject.Find("Kimdoe").GetComponent<CharStateManager>();
         clothType_Part = SetObjectPart(gameObject.tag);
 
-        if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+        if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange)
         {
-            whenWear = Resources.LoadAll<Sprite>(gameObject.tag + "/" + gameObject.name.Substring(0,gameObject.name.Length - 2));
+            whenWear = Resources.LoadAll<Sprite>(gameObject.tag + "/" + gameObject.name.Substring(0, gameObject.name.Length - 2));
         }
     }
+
 
 
     private void OnMouseDrag()
@@ -59,7 +66,7 @@ public class WearObject : MonoBehaviour
                 {
                     //¿Ê ÀåÂø
                     SoundManager.PlaySFX(1);
-                    if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+                    if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange)
                     {
                         gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
                     }
@@ -70,12 +77,12 @@ public class WearObject : MonoBehaviour
                         Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
                         weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
                         weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
-                        if (weardObj.gameObject.tag.Equals("Outer") || weardObj.gameObject.tag.Equals("Right") || weardObj.gameObject.tag.Equals("Hair"))
+                        if (weardObj.gameObject.tag.Equals("Outer") || weardObj.gameObject.tag.Equals("Right") || weardObj.gameObject.tag.Equals("Hair") || weardObj.GetComponent<WearObject>().wearedChange)
                         {
                             weardObj.GetComponent<SpriteRenderer>().sprite = weardObj.GetComponent<WearObject>().whenWear[0];
                         }
 
-                        if (isdecoObj) weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                        if (weardObj.GetComponent<WearObject>().isdecoObj) weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
                         else weardObj.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
 
                     }
@@ -103,7 +110,7 @@ public class WearObject : MonoBehaviour
             if (!move)
             {
                 SoundManager.PlaySFX(0);
-                if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+                if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange)
                 {
                     gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
                 }
@@ -189,7 +196,7 @@ public class WearObject : MonoBehaviour
     public void RollBack()
     {
         
-        if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair"))
+        if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange )
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
         }

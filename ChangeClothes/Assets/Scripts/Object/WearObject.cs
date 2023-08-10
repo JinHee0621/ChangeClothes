@@ -30,7 +30,7 @@ public class WearObject : MonoBehaviour
         stat = GameObject.Find("Kimdoe").GetComponent<CharStateManager>();
         clothType_Part = SetObjectPart(gameObject.tag);
 
-        if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange)
+        if (wearedChange)
         {
             whenWear = Resources.LoadAll<Sprite>(gameObject.tag + "/" + gameObject.name.Substring(0, gameObject.name.Length - 2));
         }
@@ -66,7 +66,7 @@ public class WearObject : MonoBehaviour
                 {
                     //¿Ê ÀåÂø
                     SoundManager.PlaySFX(1);
-                    if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange)
+                    if (wearedChange)
                     {
                         gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[1];
                     }
@@ -110,7 +110,7 @@ public class WearObject : MonoBehaviour
             if (!move)
             {
                 SoundManager.PlaySFX(0);
-                if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange)
+                if (wearedChange)
                 {
                     gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
                 }
@@ -196,7 +196,7 @@ public class WearObject : MonoBehaviour
     public void RollBack()
     {
         
-        if (gameObject.tag.Equals("Outer") || gameObject.tag.Equals("Right") || gameObject.tag.Equals("Hair") || wearedChange )
+        if ( wearedChange )
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];
         }

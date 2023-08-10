@@ -147,8 +147,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07480e517cf723244a559e5f486f82e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isdecoObj: 0
   weared: 0
+  isdecoObj: 0
+  wearedChange: 1
   clothType: yone
   clothType_Part: 0
   clothRankPoint: 15

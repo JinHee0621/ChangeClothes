@@ -147,10 +147,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07480e517cf723244a559e5f486f82e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isdecoObj: 1
   weared: 0
+  isdecoObj: 1
+  wearedChange: 1
   clothType: chu
   clothType_Part: 0
+  clothRankPoint: 0
   stat: {fileID: 0}
   whenWear: []
 --- !u!114 &288444137842337903
@@ -165,3 +167,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57b3285d4cb739b4688e6a268a90ff8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nowCheck: 0

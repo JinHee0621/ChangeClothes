@@ -8,6 +8,8 @@ public class CharStateManager : MonoBehaviour
 
     public bool playable = true;
 
+    public bool isbald;
+
     public int minCondition = 60;
     public int maxCondition = 100;
     public int condition = 100;
@@ -110,6 +112,8 @@ public class CharStateManager : MonoBehaviour
         WearRollback(hair_part);
         WearRollback(glass_part);
         WearRollback(face_part);
+        WearManager.ChangeCharSprite(0);
+        isbald = false;
     }
 
     public void WearRollback(GameObject part)

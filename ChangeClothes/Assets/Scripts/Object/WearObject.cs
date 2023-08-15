@@ -6,6 +6,7 @@ public class WearObject : MonoBehaviour
 {
     float distance = 4;
     public bool weared = false;
+    private bool char_change = false;
     public bool isdecoObj;
     public bool wearedChange;
     public string clothType = "";
@@ -77,7 +78,7 @@ public class WearObject : MonoBehaviour
                         Transform weardObj = stat.transform.Find("Char_stand").transform.Find(gameObject.tag).GetChild(0);
                         weardObj.transform.SetParent(weardObj.GetComponent<WearObject>().GetThisHanger().transform);
                         weardObj.transform.localPosition = weardObj.GetComponent<WearObject>().GetFirstPos();
-                        if (weardObj.gameObject.tag.Equals("Outer") || weardObj.gameObject.tag.Equals("Right") || weardObj.gameObject.tag.Equals("Hair") || weardObj.GetComponent<WearObject>().wearedChange)
+                        if ( weardObj.GetComponent<WearObject>().wearedChange)
                         {
                             weardObj.GetComponent<SpriteRenderer>().sprite = weardObj.GetComponent<WearObject>().whenWear[0];
                         }
@@ -90,6 +91,12 @@ public class WearObject : MonoBehaviour
                     stat.SetBody(clothType, clothType_Part);
                     gameObject.transform.localPosition = new Vector3(0, 0);
                     gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+                }
+                else if (char_change)
+                {
+                    WearManager.ChangeCharSprite(1);
+                    ResetChanged();
+                    gameObject.transform.localPosition = first_pos;
                 }
                 else
                 {
@@ -118,6 +125,15 @@ public class WearObject : MonoBehaviour
         }
     }
 
+    public void Changed()
+    {
+        char_change = true;
+    }
+
+    public void ResetChanged()
+    {
+        char_change = false;
+    }
 
     public void Equipped()
     {
@@ -127,6 +143,11 @@ public class WearObject : MonoBehaviour
     public void UnEquipped()
     {
         weared = false;
+    }
+
+    public bool CheckChange()
+    {
+        return char_change;
     }
 
     public bool CheckEquip()
@@ -195,7 +216,6 @@ public class WearObject : MonoBehaviour
     }
     public void RollBack()
     {
-        
         if ( wearedChange )
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = whenWear[0];

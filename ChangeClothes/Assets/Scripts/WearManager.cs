@@ -5,10 +5,21 @@ using UnityEngine;
 public class WearManager : MonoBehaviour
 {
     public List<GameObject> clothes;
+    public SpriteRenderer char_sprite;
+    public Sprite bald_img;
+    public Sprite common_img;
 
+    private static WearManager wearManager;
     private static bool catched = false;
     private bool confinedMouse = false;
-    
+
+
+    private void Awake()
+    {
+        wearManager = gameObject.GetComponent<WearManager>();
+    }
+
+
     public static void ChangeCatch(bool check)
     {
         catched = check;
@@ -39,10 +50,23 @@ public class WearManager : MonoBehaviour
             {
                 if (!collision.GetComponent<WearObject>().CheckEquip())
                 {
-                    collision.gameObject.transform.SetParent(transform.Find(collision.gameObject.tag));
-                    collision.transform.localScale = new Vector3(1, 1);
-                    collision.GetComponent<WearObject>().Equipped();
-                    break;
+                    if (!collision.gameObject.tag.Equals("Hair_change"))
+                    {
+                        collision.gameObject.transform.SetParent(transform.Find(collision.gameObject.tag));
+                        collision.transform.localScale = new Vector3(1, 1);
+                        collision.GetComponent<WearObject>().Equipped();
+                        break;
+                    }
+                }
+
+                if (!collision.GetComponent<WearObject>().CheckChange())
+                {
+                    if (collision.gameObject.tag.Equals("Hair_change"))
+                    {
+                        collision.transform.localScale = new Vector3(1, 1);
+                        collision.GetComponent<WearObject>().Changed();
+                        break;
+                    }
                 }
             }
         }
@@ -52,9 +76,34 @@ public class WearManager : MonoBehaviour
     {
         if (collision.GetComponent<WearObject>() != null && collision.GetComponent<WearObject>().CheckEquip())
         {
-            collision.GetComponent<WearObject>().UnEquipped();
-            collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
-            collision.transform.localScale = new Vector3(1, 1);
+            if (!collision.gameObject.tag.Equals("Hair_change"))
+            {
+                collision.GetComponent<WearObject>().UnEquipped();
+                collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
+                collision.transform.localScale = new Vector3(1, 1);
+            }
+        }
+
+        if(collision.GetComponent<WearObject>() != null && collision.GetComponent<WearObject>().CheckChange())
+        {
+            if (collision.gameObject.tag.Equals("Hair_change"))
+            {
+                collision.transform.localScale = new Vector3(1, 1);
+                collision.GetComponent<WearObject>().ResetChanged();
+            }
+        }
+    }
+
+    public static void ChangeCharSprite(int flag)
+    {
+        if(flag == 0)
+        {
+            wearManager.char_sprite.sprite = wearManager.common_img;
+        } else if(flag == 1)
+        {
+            SoundManager.PlaySFX(17);
+            wearManager.char_sprite.sprite = wearManager.bald_img;
+            wearManager.transform.GetComponentInParent<CharStateManager>().isbald = true;
         }
     }
 }

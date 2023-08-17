@@ -19,6 +19,7 @@ public class ClothSetManager : MonoBehaviour
     private bool isOuterSetOpen = false;
     private bool isHairSetOpen = false;
 
+    public bool openAlert = false;
     private bool moving = false;
 
 
@@ -38,7 +39,7 @@ public class ClothSetManager : MonoBehaviour
 
     public void ShirtSetOpen()
     {
-        if (!moving)
+        if (!moving && !openAlert)
         {
             moving = true;
             StartCoroutine("WaitSceond");
@@ -56,7 +57,7 @@ public class ClothSetManager : MonoBehaviour
                 }
                 isShirtSetOpen = true;
                 closePantsSet();
-                closeOtherSet();
+                closeOutherSet();
                 closeHairSet();
             }
             else
@@ -77,7 +78,7 @@ public class ClothSetManager : MonoBehaviour
 
     public void PantsSetOpen()
     {
-        if (!moving)
+        if (!moving && !openAlert)
         {
             moving = true;
             StartCoroutine("WaitSceond");
@@ -95,7 +96,7 @@ public class ClothSetManager : MonoBehaviour
                 }
                 isPantsSetOpen = true;
                 closeShirtSet();
-                closeOtherSet();
+                closeOutherSet();
                 closeHairSet();
             }
             else
@@ -117,7 +118,7 @@ public class ClothSetManager : MonoBehaviour
     public void OuterSetOpen()
     {
         SoundManager.PlaySFX(6);
-        if (!moving)
+        if (!moving && !openAlert)
         {
             moving = true;
             StartCoroutine("WaitSceond");
@@ -155,7 +156,7 @@ public class ClothSetManager : MonoBehaviour
     }
     public void HairSetOpen()
     {
-        if (!moving)
+        if (!moving && !openAlert)
         {
             moving = true;
             StartCoroutine("WaitSceond");
@@ -174,7 +175,7 @@ public class ClothSetManager : MonoBehaviour
                 isHairSetOpen = true;
 
                 closeShirtSet();
-                closeOtherSet();
+                closeOutherSet();
                 closePantsSet();
             }
             else
@@ -202,7 +203,7 @@ public class ClothSetManager : MonoBehaviour
 
     public void CloseAll()
     {
-        closeOtherSet();
+        closeOutherSet();
         closePantsSet();
         closeShirtSet();
         closeHairSet();
@@ -242,7 +243,7 @@ public class ClothSetManager : MonoBehaviour
         }
     }
 
-    void closeOtherSet()
+    void closeOutherSet()
     {
         if (isOuterSetOpen)
         {

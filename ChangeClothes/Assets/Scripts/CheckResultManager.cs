@@ -12,6 +12,8 @@ public class CheckResultManager : MonoBehaviour
     public GameObject cover1;
     public GameObject cover2;
 
+    public Animator[] stars;
+
     private bool nowRestarting = false;
 
     GameObject[] patterns;
@@ -24,6 +26,8 @@ public class CheckResultManager : MonoBehaviour
         }
         uiManager.FadeInCover();
     }
+
+
 
     public void RestartDay()
     {
@@ -46,6 +50,7 @@ public class CheckResultManager : MonoBehaviour
 
     IEnumerator ScreenClose()
     {
+        addClothManager.clothSetManager.openAlert = true;
         CharEquippedSetCheck();
         charStateManager.StopFixCloth();
         yield return new WaitForSeconds(1.5f);
@@ -76,7 +81,7 @@ public class CheckResultManager : MonoBehaviour
         string hair_type = charStateManager.hair_type;
         string glass_type = charStateManager.glass_type;
         string face_type = charStateManager.face_type;
-
+        
         if (shirt_type.Equals(""))
         {
             uiManager.CheckResultText("∞‘¿Ãπ÷ Ω¥∆Æ");
@@ -105,6 +110,7 @@ public class CheckResultManager : MonoBehaviour
         uiManager.ResetUI();
         yield return new WaitForSeconds(3f);
         nowRestarting = false;
+        addClothManager.clothSetManager.openAlert = false;
         //OptionManager.instance.nowCheckResult = false;
         addClothManager.UnLockSet("Squid");
         addClothManager.UnLockSet("Baby");

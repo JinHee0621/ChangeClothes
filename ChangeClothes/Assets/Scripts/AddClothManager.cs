@@ -23,6 +23,7 @@ public class AddClothManager : MonoBehaviour
 
     public void UnLockSet(string clothType)
     {
+        clothSetManager.openAlert = true;
         GameObject target = null;
         int setEleCount = 0;
         foreach(GameObject ele in clothSet)
@@ -79,7 +80,12 @@ public class AddClothManager : MonoBehaviour
                         continue;
                     case "Pants":
                         nextPos = latestPantsPos.localPosition;
-                        nextPos.x += 1f;
+                        if (nextPos.x >= 3.5f)
+                        {
+                            nextPos.x = -3.5f;
+                            nextPos.y -= 3f;
+                        }
+                        else nextPos.x += 1f;
                         nextPos.z -= 0.1f;
 
                         new_hanger = Instantiate(pantsHanger, pantSetPos);
@@ -96,5 +102,12 @@ public class AddClothManager : MonoBehaviour
         }
         clothSetManager.ReNewHangers();
         uiManager.PopUpOpen();
+        StartCoroutine(WaitAlert());
+    }
+
+    IEnumerator WaitAlert()
+    {
+        yield return new WaitForSeconds(2f);
+        clothSetManager.openAlert = false;
     }
 }

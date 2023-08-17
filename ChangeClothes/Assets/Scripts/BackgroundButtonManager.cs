@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class BackgroundButtonManager : MonoBehaviour
 {
+    public ClothSetManager clothSetManager;
     public GameObject button;
     public Sprite common_button_img;
     public Sprite hovered_button_img;
@@ -30,19 +31,22 @@ public class BackgroundButtonManager : MonoBehaviour
     {
         if (enteredMouse && !moving)
         {
-            if (!openedMenu)
+            if(!clothSetManager.openAlert)
             {
-                StartCoroutine("Moving");
-                OpenMenu();
-                moving = true;
-                openedMenu = true;
-            }
-            else
-            {
-                StartCoroutine("Moving");
-                CloseMenu();
-                moving = true;
-                openedMenu = false;
+                if (!openedMenu)
+                {
+                    StartCoroutine("Moving");
+                    OpenMenu();
+                    moving = true;
+                    openedMenu = true;
+                }
+                else
+                {
+                    StartCoroutine("Moving");
+                    CloseMenu();
+                    moving = true;
+                    openedMenu = false;
+                }
             }
         }
     }

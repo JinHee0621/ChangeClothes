@@ -25,6 +25,8 @@ public class UIMovingManager : MonoBehaviour
     private float score;
     public Text scoreNumText;
     public GameObject restartButton;
+    public GameObject RankStarObj;
+    public Animator[] stars;
 
     public GameObject popupWindow;
     private bool isPopupOpen = false;
@@ -51,6 +53,8 @@ public class UIMovingManager : MonoBehaviour
 
     System.Random randomIndex = new System.Random();
 
+    private int checkedRank = 0;
+
     void Start()
     {
         ResetUI();
@@ -71,7 +75,7 @@ public class UIMovingManager : MonoBehaviour
 
     IEnumerator PopUpWait()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.5f);
         PopUpClose();
         yield return new WaitForSeconds(0.5f);
         isPopupOpen = false;
@@ -128,6 +132,7 @@ public class UIMovingManager : MonoBehaviour
         speech3.text = "";
         scoreNumText.text =  "0/100";
         scoreStar.fillAmount = 0;
+        ResetScoreObj();
     }
 
     IEnumerator MoveCharacterAnim()
@@ -154,6 +159,9 @@ public class UIMovingManager : MonoBehaviour
         StartCoroutine(TextSoundPlay((0.5f / 6), 0, 6));
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(FadeInScoreUI());
+        MoveScoreObj();
+        yield return new WaitForSeconds(1f);
+        PopUpRunning(5);
     }
 
     IEnumerator MovevaluatorCat()
@@ -207,7 +215,7 @@ public class UIMovingManager : MonoBehaviour
         else
         {
             yield return new WaitForSeconds(0.5f);
-            StartCoroutine(ScoreUIMove(0, score));
+            //StartCoroutine(ScoreUIMove(0, score));
             yield return null;
         }
     }
@@ -250,6 +258,44 @@ public class UIMovingManager : MonoBehaviour
     {
         checkResutCover1.transform.DOLocalMoveY(checkResutCover1.transform.localPosition.y + 100f, 2.5f);
         checkResutCover2.transform.DOLocalMoveY(checkResutCover2.transform.localPosition.y - 100f, 2.5f);
+    }
+
+    public void MoveScoreObj()
+    {
+        RankStarObj.transform.DOLocalMoveY(RankStarObj.transform.localPosition.y + 5f, 1f).SetEase(Ease.OutQuad);
+    }
+
+    public void ResetScoreObj()
+    {
+        ResetStars();
+        checkedRank = 0;
+        RankStarObj.transform.DOLocalMoveY(RankStarObj.transform.localPosition.y - 5f, 0f);
+    }
+
+
+    public void PopUpRunning(int rank)
+    {
+        StartCoroutine(PopUpStars(rank));
+    }
+
+    IEnumerator PopUpStars(int rank)
+    {
+        checkedRank = rank;
+        for (int i = 0; i < rank; i++)
+        {
+            stars[i].SetTrigger("StarPop");
+            yield return new WaitForSeconds(0.5f);
+            SoundManager.PlaySFX(18);
+        }
+        MoveRestartBtn();
+    }
+
+    public void ResetStars()
+    {
+        for (int i = 0; i < checkedRank; i++)
+        {
+            stars[i].SetTrigger("StarPop");
+        }
     }
 
 

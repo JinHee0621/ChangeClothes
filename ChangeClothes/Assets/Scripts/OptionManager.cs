@@ -26,7 +26,7 @@ public class OptionManager : MonoBehaviour
     public float bgmSize;
     public float sfxSize;
 
-    private bool optionOpen;
+    public bool optionOpen;
 
     private void Awake()
     {
@@ -54,12 +54,12 @@ public class OptionManager : MonoBehaviour
                     backgroundBtnUI.CloseMenuPub();
                     clothSetBtnUI.CloseAll();
                     optionWindow.SetActive(true);
-                    optionOpen = true;
+                    instance.optionOpen = true;
                 }
                 else
                 {
                     optionWindow.SetActive(false);
-                    optionOpen = false;
+                    instance.optionOpen = false;
                 }
             }
         }
@@ -128,14 +128,14 @@ public class OptionManager : MonoBehaviour
     {
         SoundManager.PlaySFX(7);
         optionWindow.SetActive(true);
-        optionOpen = true;
+        instance.optionOpen = true;
     }
 
     public void TitleCloseOption()
     {
         SoundManager.PlaySFX(7);
         optionWindow.SetActive(false);
-        optionOpen = false;
+        instance.optionOpen = false;
     }
 
     public void OpenOptionWindow()
@@ -144,14 +144,14 @@ public class OptionManager : MonoBehaviour
         clothSetBtnUI.CloseAll();
         SoundManager.PlaySFX(7);
         optionWindow.SetActive(true);
-        optionOpen = true;
+        instance.optionOpen = true;
     }
 
     public void CloseOptionWindow()
     {
         SoundManager.PlaySFX(7);
         optionWindow.SetActive(false);
-        optionOpen = false;
+        instance.optionOpen = false;
     }
 
 

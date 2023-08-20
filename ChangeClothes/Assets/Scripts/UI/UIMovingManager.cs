@@ -13,7 +13,6 @@ public class UIMovingManager : MonoBehaviour
     public GameObject screen;
     public GameObject bottomUI;
 
-    public GameObject evaluatorCat;
     public GameObject checkResutCover1;
     public GameObject checkResutCover2;
     public GameObject speechBalloon;
@@ -27,6 +26,9 @@ public class UIMovingManager : MonoBehaviour
     public GameObject restartButton;
     public GameObject RankStarObj;
     public Animator[] stars;
+    public ParticleSystem[] starPopEffect;
+
+    public GameObject challengeUI;
 
     public GameObject popupWindow;
     private bool isPopupOpen = false;
@@ -48,12 +50,14 @@ public class UIMovingManager : MonoBehaviour
     private string checkResultData = "";
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
+    private Vector3 challengeUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 viewerUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 rankUI_default_pos = new Vector3(0, 0, 0);
 
     System.Random randomIndex = new System.Random();
 
     private int checkedRank = 0;
+    private bool challengeOpen = false;
 
     void Start()
     {
@@ -112,7 +116,7 @@ public class UIMovingManager : MonoBehaviour
     IEnumerator ResetCharacterAnim()
     {
         characterState.gameObject.transform.localPosition = new Vector3(characterState.gameObject.transform.localPosition.x, characterState.gameObject.transform.localPosition.y, 8);
-        characterState.gameObject.transform.DOLocalMoveX(characterState.gameObject.transform.localPosition.x + 2.0f, 0.5f);
+        characterState.gameObject.transform.DOLocalMoveX(characterState.gameObject.transform.localPosition.x - 2.0f, 0.5f);
         characterState.gameObject.transform.DOLocalMoveY(characterState.gameObject.transform.localPosition.y + 1.15f, 0.5f);
         characterState.gameObject.transform.DOScaleX(1f, 0.5f);
         characterState.gameObject.transform.DOScaleY(1f, 0.5f);
@@ -120,7 +124,7 @@ public class UIMovingManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         characterState.AllWearRollBack();
         CheckResultCoverReset();
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 1000f, 0.5f).SetEase(Ease.OutQuad);
+        speechBalloon.transform.DOLocalMoveY(speechBalloon.transform.localPosition.y - 1000f, 0.5f).SetEase(Ease.OutQuad);
         speechBalloon.transform.DORotate(new Vector3(-90, 0, 0), 0.25f).SetEase(Ease.Linear);
         ReMoveRestartBtn();
         Color nextColor = scoreBackground.color;
@@ -138,14 +142,13 @@ public class UIMovingManager : MonoBehaviour
     IEnumerator MoveCharacterAnim()
     {
         characterState.gameObject.transform.localPosition = new Vector3(characterState.gameObject.transform.localPosition.x, characterState.gameObject.transform.localPosition.y, -8);
-        characterState.gameObject.transform.DOLocalMoveX(characterState.gameObject.transform.localPosition.x - 2.0f, 2.5f);
+        characterState.gameObject.transform.DOLocalMoveX(characterState.gameObject.transform.localPosition.x + 2.0f, 2.5f);
         characterState.gameObject.transform.DOLocalMoveY(characterState.gameObject.transform.localPosition.y - 1.15f, 2.5f);
         characterState.gameObject.transform.DOScaleX(1.15f, 1.5f);
         characterState.gameObject.transform.DOScaleY(1.15f, 1.5f);
         yield return new WaitForSeconds(2.5f);
         CheckResultMove();
-        yield return new WaitForSeconds(2.5f);
-        StartCoroutine(MovevaluatorCat());
+        speechBalloon.transform.DOLocalMoveY(speechBalloon.transform.localPosition.y + 1000f, 2.5f).SetEase(Ease.OutQuad);
         yield return new WaitForSeconds(2.5f);
         speechBalloon.transform.DORotate(new Vector3(0, 0, 0), 0.25f).SetEase(Ease.Linear);
         yield return new WaitForSeconds(0.75f);
@@ -162,25 +165,6 @@ public class UIMovingManager : MonoBehaviour
         MoveScoreObj();
         yield return new WaitForSeconds(1f);
         PopUpRunning(5);
-    }
-
-    IEnumerator MovevaluatorCat()
-    {
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 1000f, 2.5f).SetEase(Ease.OutQuad);
-        yield return new WaitForSeconds(1f);
-        SoundManager.PlaySFX(15);
-        yield return new WaitForSeconds(1.5f);
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 10f, 0.05f);
-        yield return new WaitForSeconds(0.05f);
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 10f, 0.05f);
-        yield return new WaitForSeconds(0.05f);
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 5f, 0.05f);
-        yield return new WaitForSeconds(0.05f);
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 5f, 0.05f);
-        yield return new WaitForSeconds(0.05f);
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y - 2.5f, 0.05f);
-        yield return new WaitForSeconds(0.05f);
-        evaluatorCat.transform.DOLocalMoveY(evaluatorCat.transform.localPosition.y + 2.5f, 0.05f);
     }
 
 
@@ -286,6 +270,9 @@ public class UIMovingManager : MonoBehaviour
             stars[i].SetTrigger("StarPop");
             yield return new WaitForSeconds(0.5f);
             SoundManager.PlaySFX(18);
+            ParticleSystem effect = Instantiate(starPopEffect[i], stars[i].transform) as ParticleSystem;
+            effect.transform.position = stars[i].transform.position;
+            Destroy(effect.gameObject, 1f);
         }
         MoveRestartBtn();
     }
@@ -404,10 +391,25 @@ public class UIMovingManager : MonoBehaviour
         gameObject.GetComponent<StatusUIManager>().ReSetGuage();
     }
 
+    public void ChallengeBtnClicked()
+    {
+        if (!challengeOpen)
+        {
+            challengeUI.transform.DOLocalMoveX(-330, 0.5f).SetEase(Ease.OutQuad);
+            challengeOpen = true;
+        } else
+        {
+            challengeUI.transform.DOLocalMoveX(-730, 0.5f).SetEase(Ease.OutQuad);
+            challengeOpen = false;
+        }
+    }
+
     public void ResetUI()
     {
         //daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
         bottomUI_default_pos = bottomUI.transform.localPosition;
+        challengeUI_default_pos = challengeUI.transform.localPosition;
+
         MoveUI();
     }
 
@@ -415,8 +417,9 @@ public class UIMovingManager : MonoBehaviour
     {
         StartCoroutine(DelayOpen(1.5f));
         StartCoroutine(DelayEffect(10, 1.5f));
-        bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 653, 2.5f);
-        bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 421, 2.5f);
+        bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 668, 2.5f).SetEase(Ease.OutQuad); 
+        bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 418, 2.5f).SetEase(Ease.OutQuad); 
+        challengeUI.transform.DOLocalMoveX(-730, 2.5f).SetEase(Ease.OutQuad); 
     }
 
     public void RemoveUI()
@@ -425,6 +428,7 @@ public class UIMovingManager : MonoBehaviour
         bottomUI.transform.DOLocalMoveY(bottomUI_default_pos.y, 2.5f);
         clothSetBtnUI.GetComponent<ClothSetManager>().CloseAll();
         backgorundSetBtnUI.GetComponent<BackgroundButtonManager>().CloseMenuPub();
+        challengeUI.transform.DOLocalMoveX(challengeUI_default_pos.x, 2.5f);
     }
 
     IEnumerator DelayOpen(float time)

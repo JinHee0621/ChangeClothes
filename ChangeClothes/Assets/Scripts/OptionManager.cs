@@ -15,6 +15,7 @@ public class OptionManager : MonoBehaviour
     public GameObject optionWindow;
     public AudioSource bgmSource;
     public AudioSource sfxSource;
+    public AudioSource sfxSource2;
     public AudioSource mouseSFXSource;
 
     public Slider bgmSlider;
@@ -80,6 +81,7 @@ public class OptionManager : MonoBehaviour
         optionWindow = GameObject.Find("OptionSet");
         bgmSource = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
         sfxSource = GameObject.Find("EffectMusic").GetComponent<AudioSource>();
+        sfxSource2 = GameObject.Find("EffectMusic2").GetComponent<AudioSource>();
         mouseSFXSource = GameObject.Find("MouseSFX").GetComponent<AudioSource>();
         bgmSlider = GameObject.Find("BGMSize").GetComponent<Slider>();
         sfxSlider = GameObject.Find("SFXSize").GetComponent<Slider>();
@@ -101,6 +103,7 @@ public class OptionManager : MonoBehaviour
     {
         sfxSize = sfxSlider.value;
         sfxSource.volume = sfxSize;
+        sfxSource2.volume = sfxSize;
         mouseSFXSource.volume = sfxSize;
 
     }
@@ -114,6 +117,7 @@ public class OptionManager : MonoBehaviour
     {
         sfxSize = sfxSlider.value;
         sfxSource.volume = sfxSize;
+        sfxSource2.volume = sfxSize;
         mouseSFXSource.volume = sfxSize;
     }
 

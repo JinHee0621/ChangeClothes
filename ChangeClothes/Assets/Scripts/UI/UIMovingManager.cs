@@ -29,6 +29,11 @@ public class UIMovingManager : MonoBehaviour
     public ParticleSystem[] starPopEffect;
 
     public GameObject challengeUI;
+    public GameObject challengeAlert;
+    public Text challengeNm;
+    public Image[] challengeIcon;
+    public GameObject challengeEffectPos;
+    public ParticleSystem challengeEffect;
 
     public GameObject popupWindow;
     private bool isPopupOpen = false;
@@ -91,11 +96,16 @@ public class UIMovingManager : MonoBehaviour
         popupWindow.transform.DOScaleY(0f, 0.25f).SetEase(Ease.OutQuad);
     }
 
-
     public void FadeOutCover()
     {
         fadeOut.gameObject.SetActive(true);
         StartCoroutine(ResetFadeIn());
+    }
+
+    public void FadeOutClear()
+    {
+        fadeOut.gameObject.SetActive(true);
+        StartCoroutine(ClearFadeIn());
     }
 
     public void FadeInCover()
@@ -404,6 +414,38 @@ public class UIMovingManager : MonoBehaviour
         }
     }
 
+    public void AlertChallengeClear()
+    {
+        SoundManager.PlaySFX(5);
+        ParticleSystem effect = Instantiate(challengeEffect, challengeEffectPos.transform) as ParticleSystem;
+        effect.transform.position = challengeEffectPos.transform.position;
+        Destroy(effect.gameObject, 1f);
+        StartCoroutine(AlertChallenge());
+    }
+
+    IEnumerator AlertChallenge() 
+    {
+        challengeAlert.transform.DOLocalMoveX(-570, 0.5f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.5f);
+        challengeAlert.transform.DOLocalMoveX(-590, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.05f);
+        challengeAlert.transform.DOLocalMoveX(-570, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.05f);
+        challengeAlert.transform.DOLocalMoveX(-585, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.05f);
+        challengeAlert.transform.DOLocalMoveX(-570, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.05f);
+        challengeAlert.transform.DOLocalMoveX(-580, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.05f);
+        challengeAlert.transform.DOLocalMoveX(-570, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.05f);
+        challengeAlert.transform.DOLocalMoveX(-580, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(0.05f);
+        challengeAlert.transform.DOLocalMoveX(-585, 0.05f).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(1.5f);
+        challengeAlert.transform.DOLocalMoveX(-970, 0.5f).SetEase(Ease.OutQuad);
+    }
+
     public void ResetUI()
     {
         //daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
@@ -467,6 +509,45 @@ public class UIMovingManager : MonoBehaviour
         {
             StartCoroutine(ResetCharacterAnim());
             yield return new WaitForSeconds(2.5f);
+            StartCoroutine(FirstFadeOut());
+            yield return null;
+        }
+    }
+
+    IEnumerator ClearFadeIn()
+    {
+        Color nextColor = fadeOut.color;
+        nextColor.a += 0.025f;
+        fadeOut.color = nextColor;
+        yield return new WaitForSeconds(0.05f);
+        if (fadeOut.color.a < 1)
+        {
+            StartCoroutine(ClearFadeIn());
+        }
+        else
+        {
+            StartCoroutine(ResetCharacterAnim());
+            yield return new WaitForSeconds(2.5f);
+            yield return null;
+        }
+    }
+
+
+    IEnumerator ResetFadeIn(float waitTime)
+    {
+        Color nextColor = fadeOut.color;
+        nextColor.a += 0.025f;
+        fadeOut.color = nextColor;
+        yield return new WaitForSeconds(0.05f);
+        if (fadeOut.color.a < 1)
+        {
+            StartCoroutine(ResetFadeIn(waitTime));
+        }
+        else
+        {
+            StartCoroutine(ResetCharacterAnim());
+            Debug.Log("도전과제대기타임: "  + waitTime);
+            yield return new WaitForSeconds(waitTime);
             StartCoroutine(FirstFadeOut());
             yield return null;
         }

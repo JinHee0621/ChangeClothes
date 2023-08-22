@@ -15,6 +15,7 @@ public class BackgroundButtonManager : MonoBehaviour
     private bool openedMenu = false;
 
     private bool moving = false;
+
     private void OnMouseEnter()
     {
         enteredMouse = true;
@@ -64,13 +65,13 @@ public class BackgroundButtonManager : MonoBehaviour
 
     private void OpenMenu()
     {
-        SoundManager.PlaySFX(9);
+        SoundManager.PlaySFX2(9);
         button_target_obj.transform.DOMoveY(button_target_obj.transform.localPosition.y + 5, 1.5f);
     }
 
     private void CloseMenu()
     {
-        SoundManager.PlaySFX(9);
+        SoundManager.PlaySFX2(9);
         button_target_obj.transform.DOMoveY(button_target_obj.transform.localPosition.y - 5, 1.5f);
     }
 

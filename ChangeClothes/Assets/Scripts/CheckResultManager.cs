@@ -8,6 +8,8 @@ public class CheckResultManager : MonoBehaviour
     public CharStateManager charStateManager;
     public UIMovingManager uiManager;
     public AddClothManager addClothManager;
+    public ChallengeManager challengeManager;
+    public int clearCount;
     public GameObject objectBox;
     public GameObject cover1;
     public GameObject cover2;
@@ -28,7 +30,6 @@ public class CheckResultManager : MonoBehaviour
     }
 
 
-
     public void RestartDay()
     {
         SoundManager.PlaySFX(5);
@@ -43,6 +44,8 @@ public class CheckResultManager : MonoBehaviour
     public void startCheckResult()
     {
         //OptionManager.instance.nowCheckResult = true;
+        if (clearCount == 0) ChallengeManager.AddChellengeClearId(0);
+
         SoundManager.PlaySFX(5);
         uiManager.RemoveUI();
         StartCoroutine(ScreenClose());
@@ -89,15 +92,20 @@ public class CheckResultManager : MonoBehaviour
         }
         if (shirt_type.Equals("") && pants_type.Equals("") && outer_type.Equals("")) {
             uiManager.CheckResultText("속옷만 걸치고 \n 나왔");
+            ChallengeManager.AddChellengeClearId(1);
             score += 10;
         }
         uiManager.ScoreVal(score);
     }
     IEnumerator ScreenOpen()
     {
+        float waitTime = ChallengeManager.checkTime;
+        if (waitTime == 0f) waitTime = 2.5f;
+
         yield return new WaitForSeconds(0.5f);
-        uiManager.FadeOutCover();
-        yield return new WaitForSeconds(3.5f);
+        uiManager.FadeOutClear();
+        yield return new WaitForSeconds(2.0f);
+        challengeManager.CheckChallenge();
         foreach (GameObject i in patterns)
         {
             i.SetActive(false);
@@ -105,15 +113,17 @@ public class CheckResultManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(waitTime);
         uiManager.FadeInCover();
         uiManager.ResetUI();
+        ChallengeManager.ResetWaitTime();
         yield return new WaitForSeconds(3f);
         nowRestarting = false;
         addClothManager.clothSetManager.openAlert = false;
         //OptionManager.instance.nowCheckResult = false;
-        addClothManager.UnLockSet("Squid");
-        addClothManager.UnLockSet("Baby");
+        
+        //addClothManager.UnLockSet("Squid");
+        //addClothManager.UnLockSet("Baby");
     }
 
 

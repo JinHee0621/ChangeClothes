@@ -36,6 +36,7 @@ public class UIMovingManager : MonoBehaviour
     public ParticleSystem challengeEffect;
 
     public GameObject popupWindow;
+    public Text popupWindowTxt;
     private bool isPopupOpen = false;
 
     public GameObject statusSetUI;
@@ -69,12 +70,13 @@ public class UIMovingManager : MonoBehaviour
         ResetUI();
     }
 
-    public void PopUpOpen()
+    public void PopUpOpen(string text)
     {
         if (isPopupOpen == false)
         {
             SoundManager.PlaySFX(16);
             isPopupOpen = true;
+            popupWindowTxt.text = text;
             popupWindow.transform.DOScaleX(1f, 0.25f).SetEase(Ease.OutQuad);
             popupWindow.transform.DOScaleY(1f, 0.25f).SetEase(Ease.OutQuad);
             StartCoroutine(PopUpWait());
@@ -84,8 +86,9 @@ public class UIMovingManager : MonoBehaviour
 
     IEnumerator PopUpWait()
     {
-        yield return new WaitForSeconds(2.5f);
+        yield return new WaitForSeconds(4f);
         PopUpClose();
+        popupWindowTxt.text = "";
         yield return new WaitForSeconds(0.5f);
         isPopupOpen = false;
     }

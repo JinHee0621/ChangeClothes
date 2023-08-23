@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class ChallengeManager : MonoBehaviour
 {
+    public AddClothManager addClothManager;
+    public bool addCloth;
+
     public UIMovingManager uiMovingObject;
     static UIMovingManager uiMovingManager;
     static Stack<int> clearChellengeIdStack = new Stack<int>();
@@ -63,14 +66,28 @@ public class ChallengeManager : MonoBehaviour
             clearCnt += 1;
             challengeCheck[challengeNum] = true;
             uiMovingManager.AlertChallengeClear();
+
+            switch (challengeNum) {
+                case 0:
+                    addClothManager.UnLockSet("Squid");
+                    addCloth = true;
+                    break;
+                case 1:
+                    addClothManager.UnLockSet("HunsuBell");
+                    addCloth = true;
+                    break;
+            }
         }
         UpdateChallengeCnt();
     }
-
-
 
     public static void UpdateChallengeCnt()
     {
         clearCntTxt.text = clearCnt.ToString();
     }
+    public void ResetAddCloth()
+    {
+        addCloth = false;
+    }
+
 }

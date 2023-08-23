@@ -121,9 +121,13 @@ public class CheckResultManager : MonoBehaviour
         nowRestarting = false;
         addClothManager.clothSetManager.openAlert = false;
         //OptionManager.instance.nowCheckResult = false;
-        
-        //addClothManager.UnLockSet("Squid");
-        //addClothManager.UnLockSet("Baby");
+        if(challengeManager.addCloth)
+        {
+            uiManager.PopUpOpen(addClothManager.addMessage);
+            yield return new WaitForSeconds(1f);
+            challengeManager.ResetAddCloth();
+            addClothManager.ResetAddState();
+        }
     }
 
 

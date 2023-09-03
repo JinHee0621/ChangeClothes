@@ -17,7 +17,7 @@ public class WearObject : MonoBehaviour
     private Vector3 first_pos;
     private GameObject hanger;
 
-    [HideInInspector]
+    //[HideInInspector]
     public bool move = false;
     private void Start()
     {

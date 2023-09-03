@@ -64,6 +64,7 @@ public class CharStateManager : MonoBehaviour
         ColliderOff(hair_part);
         ColliderOff(glass_part);
         ColliderOff(face_part);
+        ColliderOff(cat_part);
     }
 
     public void ColliderOff(GameObject part)
@@ -101,32 +102,43 @@ public class CharStateManager : MonoBehaviour
     public void ClickRollBackBtn()
     {
         SoundManager.PlaySFX(14);
-        AllWearRollBack();
+        AllWearRollBack(false);
     }
 
 
-    public void AllWearRollBack()
+    public void AllWearRollBack(bool nextDay)
     {
-        WearRollback(shirt_part);
-        WearRollback(pants_part);
-        WearRollback(outer_part);
-        WearRollback(left_part);
-        WearRollback(right_part);
-        WearRollback(hair_part);
-        WearRollback(glass_part);
-        WearRollback(face_part);
-        WearRollback(cat_part);
+        WearRollback(shirt_part, nextDay);
+        WearRollback(pants_part, nextDay);
+        WearRollback(outer_part, nextDay);
+        WearRollback(left_part, nextDay);
+        WearRollback(right_part, nextDay);
+        WearRollback(hair_part, nextDay);
+        WearRollback(glass_part, nextDay);
+        WearRollback(face_part, nextDay);
+        WearRollback(cat_part, nextDay);
         WearManager.ChangeCharSprite(0);
         isbald = false;
     }
 
-    public void WearRollback(GameObject part)
+    public void WearRollback(GameObject part, bool nextDay)
     {
-        WearObject[] partObj = part.GetComponentsInChildren<WearObject>();
-        foreach (WearObject ele in partObj)
+        if (part.name == "Cat")
         {
-            ele.RollBack();
+            CatObject partObj = part.GetComponentInChildren<CatObject>();
+            if (partObj != null)
+            {
+                partObj.RollBack(nextDay);
+            }
+        } else
+        {
+            WearObject[] partObj = part.GetComponentsInChildren<WearObject>();
+            foreach (WearObject ele in partObj)
+            {
+                ele.RollBack();
+            }
         }
+
     }
 
     public void ClothRankAdd(int point)

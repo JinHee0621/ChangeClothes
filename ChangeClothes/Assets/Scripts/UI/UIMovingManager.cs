@@ -135,7 +135,7 @@ public class UIMovingManager : MonoBehaviour
         characterState.gameObject.transform.DOScaleY(1f, 0.5f);
         characterState.StartFixCloth();
         yield return new WaitForSeconds(1.5f);
-        characterState.AllWearRollBack(); // 게임 재시작시 캐릭터가 장착한 모든 옷 해제
+        characterState.AllWearRollBack(true); // 게임 재시작시 캐릭터가 장착한 모든 옷 해제
         CheckResultCoverReset();
         speechBalloon.transform.DOLocalMoveY(speechBalloon.transform.localPosition.y - 1000f, 0.5f).SetEase(Ease.OutQuad);
         speechBalloon.transform.DORotate(new Vector3(-90, 0, 0), 0.25f).SetEase(Ease.Linear);

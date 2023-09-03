@@ -10,6 +10,7 @@ public class CheckResultManager : MonoBehaviour
     public AddClothManager addClothManager;
     public ChallengeManager challengeManager;
     public int clearCount;
+    public CatObject cat;
     public GameObject objectBox;
     public GameObject cover1;
     public GameObject cover2;
@@ -110,6 +111,12 @@ public class CheckResultManager : MonoBehaviour
         {
             i.SetActive(false);
         }
+
+        if(cat.weared == false)
+        {
+            cat.SetPostion();
+        }
+
         yield return new WaitForSeconds(1f);
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");

@@ -79,7 +79,12 @@ public class AddClothManager : MonoBehaviour
 
                     case "Outer":
                         nextPos = latestOuterPos.localPosition;
-                        nextPos.x -= 1f;
+                        if (nextPos.x <= -3f)
+                        {
+                            nextPos.x = 3f;
+                            nextPos.y -= 3.3f;
+                        }
+                        nextPos.x -= 1.5f;
                         nextPos.z -= 0.1f;
 
                         new_hanger = Instantiate(outerHanger, outerSetPos);

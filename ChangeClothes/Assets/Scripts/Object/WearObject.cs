@@ -17,7 +17,8 @@ public class WearObject : MonoBehaviour
     private Vector3 first_pos;
     private GameObject hanger;
 
-    private bool move = false;
+    [HideInInspector]
+    public bool move = false;
     private void Start()
     {
         InitObject();
@@ -214,6 +215,7 @@ public class WearObject : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         move = false;
     }
+
     public void RollBack()
     {
         if ( wearedChange )

@@ -50,10 +50,17 @@ public class WearManager : MonoBehaviour
             {
                 if (!collision.GetComponent<WearObject>().CheckEquip())
                 {
-                    if (!collision.gameObject.tag.Equals("Hair_change"))
+                    if (!collision.gameObject.tag.Equals("Hair_change") && !collision.gameObject.tag.Equals("Cat"))
                     {
                         collision.gameObject.transform.SetParent(transform.Find(collision.gameObject.tag));
                         collision.transform.localScale = new Vector3(1, 1);
+                        collision.GetComponent<WearObject>().Equipped();
+                        break;
+                    }
+
+                    if(collision.gameObject.tag.Equals("Cat"))
+                    {
+                        collision.gameObject.transform.SetParent(transform.Find(collision.gameObject.tag));
                         collision.GetComponent<WearObject>().Equipped();
                         break;
                     }
@@ -68,6 +75,8 @@ public class WearManager : MonoBehaviour
                         break;
                     }
                 }
+
+
             }
         }
     }
@@ -76,11 +85,17 @@ public class WearManager : MonoBehaviour
     {
         if (collision.GetComponent<WearObject>() != null && collision.GetComponent<WearObject>().CheckEquip())
         {
-            if (!collision.gameObject.tag.Equals("Hair_change"))
+            if (!collision.gameObject.tag.Equals("Hair_change") && !collision.gameObject.tag.Equals("Cat"))
             {
                 collision.GetComponent<WearObject>().UnEquipped();
                 collision.gameObject.transform.SetParent(collision.GetComponent<WearObject>().GetThisHanger().transform);
                 collision.transform.localScale = new Vector3(1, 1);
+            }
+
+            if(collision.gameObject.tag.Equals("Cat"))
+            {
+                collision.GetComponent<WearObject>().UnEquipped();
+                collision.gameObject.transform.SetParent(collision.GetComponent<CatObject>().ReturnFirstPos());
             }
         }
 

@@ -38,6 +38,7 @@ public class CharStateManager : MonoBehaviour
     private GameObject hair_part;
     private GameObject glass_part;
     private GameObject face_part;
+    private GameObject cat_part;
 
     public int clothRank = 0;
     private void Start()
@@ -50,6 +51,7 @@ public class CharStateManager : MonoBehaviour
         hair_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(5).gameObject;
         glass_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(6).gameObject;
         face_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(7).gameObject;
+        cat_part = gameObject.transform.GetChild(0).gameObject.transform.GetChild(8).gameObject;
     }
 
     public void StopFixCloth()
@@ -83,6 +85,7 @@ public class CharStateManager : MonoBehaviour
         ColliderOn(hair_part);
         ColliderOn(glass_part);
         ColliderOn(face_part);
+        ColliderOn(cat_part);
     }
 
     public void ColliderOn(GameObject part)
@@ -112,6 +115,7 @@ public class CharStateManager : MonoBehaviour
         WearRollback(hair_part);
         WearRollback(glass_part);
         WearRollback(face_part);
+        WearRollback(cat_part);
         WearManager.ChangeCharSprite(0);
         isbald = false;
     }

@@ -60,23 +60,16 @@ public class ChallengeManager : MonoBehaviour
 
     public void ClearChallenge(int challengeNum)
     {
-        if (challengeCheck[challengeNum] == false)
+        if (challengeCheck[challengeNum-1] == false)
         {
-            challengeElements[challengeNum].transform.Find("UnlockCover").gameObject.SetActive(false);
+            challengeElements[challengeNum-1].transform.Find("UnlockCover").gameObject.SetActive(false);
             clearCnt += 1;
-            challengeCheck[challengeNum] = true;
-            uiMovingManager.AlertChallengeClear();
+            challengeCheck[challengeNum-1] = true;
+            uiMovingManager.AlertChallengeClear(challengeElements[challengeNum - 1].transform.GetChild(0).GetComponent<Image>().sprite, challengeElements[challengeNum - 1].transform.GetChild(1).GetComponent<Text>().text);
 
-            switch (challengeNum) {
-                case 0:
-                    addClothManager.UnLockSet("Squid");
-                    addCloth = true;
-                    break;
-                case 1:
-                    addClothManager.UnLockSet("HunsuBell");
-                    addCloth = true;
-                    break;
-            }
+
+            addClothManager.UnLockSet("Challenge" + challengeNum);
+            addCloth = true;
         }
         UpdateChallengeCnt();
     }

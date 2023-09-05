@@ -408,7 +408,7 @@ public class UIMovingManager : MonoBehaviour
     {
         if (!challengeOpen)
         {
-            challengeUI.transform.DOLocalMoveX(-330, 0.5f).SetEase(Ease.OutQuad);
+            challengeUI.transform.DOLocalMoveX(-295, 0.5f).SetEase(Ease.OutQuad);
             challengeOpen = true;
         } else
         {
@@ -417,9 +417,11 @@ public class UIMovingManager : MonoBehaviour
         }
     }
 
-    public void AlertChallengeClear()
+    public void AlertChallengeClear(Sprite icon, string challengeName)
     {
         SoundManager.PlaySFX(5);
+        challengeAlert.transform.GetChild(0).transform.GetChild(0).GetComponent<Image>().sprite = icon;
+        challengeAlert.transform.GetChild(0).transform.GetChild(1).GetComponent<Text>().text = challengeName;
         ParticleSystem effect = Instantiate(challengeEffect, challengeEffectPos.transform) as ParticleSystem;
         effect.transform.position = challengeEffectPos.transform.position;
         Destroy(effect.gameObject, 1f);

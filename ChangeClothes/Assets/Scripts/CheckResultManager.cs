@@ -44,8 +44,11 @@ public class CheckResultManager : MonoBehaviour
 
     public void startCheckResult()
     {
-        //OptionManager.instance.nowCheckResult = true;
-        if (clearCount == 0) ChallengeManager.AddChellengeClearId(0);
+        //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
+        OptionManager.instance.nowCheckResult = true;
+
+        if (clearCount == 0) ChallengeManager.AddChellengeClearId(1);
+        else if (clearCount == 3) ChallengeManager.AddChellengeClearId(2);
 
         SoundManager.PlaySFX(5);
         uiManager.RemoveUI();
@@ -93,10 +96,11 @@ public class CheckResultManager : MonoBehaviour
         }
         if (shirt_type.Equals("") && pants_type.Equals("") && outer_type.Equals("")) {
             uiManager.CheckResultText("속옷만 걸치고 \n 나왔");
-            ChallengeManager.AddChellengeClearId(1);
+            ChallengeManager.AddChellengeClearId(3);
             score += 10;
         }
         uiManager.ScoreVal(score);
+        clearCount += 1;
     }
     IEnumerator ScreenOpen()
     {
@@ -127,8 +131,11 @@ public class CheckResultManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
         nowRestarting = false;
         addClothManager.clothSetManager.openAlert = false;
-        //OptionManager.instance.nowCheckResult = false;
-        if(challengeManager.addCloth)
+
+        //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
+        OptionManager.instance.nowCheckResult = false;
+
+        if (challengeManager.addCloth)
         {
             uiManager.PopUpOpen(addClothManager.addMessage);
             yield return new WaitForSeconds(1f);

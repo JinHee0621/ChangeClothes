@@ -18,6 +18,7 @@ public class AddClothManager : MonoBehaviour
     public Transform outerSetPos;
     public Transform pantSetPos;
     public Transform itemSetPos;
+    public Transform[] etcItemPos;
 
     public Transform latestHairPos;
     public Transform latestShirtPos;
@@ -60,21 +61,29 @@ public class AddClothManager : MonoBehaviour
                 switch (target_ele.tag)
                 {
                     case "Shirt":
-                        nextPos = latestShirtPos.localPosition;
-                        if (nextPos.x >= 3.5f)
+                        if (target_ele.gameObject.name.Equals("Shirt_1tong_0"))
                         {
-                            nextPos.x = -3.5f;
-                            nextPos.y -= 2.5f;
+                            target_ele.SetParent(itemSetPos);
+                            target_ele.localPosition = first_ele_pos;
+                            itemAdd = true;
+                        } else
+                        {
+                            nextPos = latestShirtPos.localPosition;
+                            if (nextPos.x >= 3.5f)
+                            {
+                                nextPos.x = -3.5f;
+                                nextPos.y -= 2.5f;
+                            }
+                            else nextPos.x += 1f;
+                            nextPos.z -= 0.1f;
+                            new_hanger = Instantiate(shirtHanger, shirtSetPos);
+                            new_hanger.transform.localPosition = nextPos;
+                            target_ele.SetParent(new_hanger.transform);
+                            target_ele.localPosition = first_ele_pos;
+                            latestShirtPos = new_hanger.transform;
+                            shirtAdd = true;
                         }
-                        else nextPos.x += 1f;
-                        nextPos.z -= 0.1f;
-
-                        new_hanger = Instantiate(shirtHanger, shirtSetPos);
-                        new_hanger.transform.localPosition = nextPos;
-                        target_ele.SetParent(new_hanger.transform);
-                        target_ele.localPosition = first_ele_pos;
-                        latestShirtPos = new_hanger.transform;
-                        shirtAdd = true;
+                        
                         continue;
 
                     case "Outer":
@@ -84,7 +93,7 @@ public class AddClothManager : MonoBehaviour
                             nextPos.x = 3f;
                             nextPos.y -= 3.3f;
                         }
-                        nextPos.x -= 1.5f;
+                        else nextPos.x -= 1.5f;
                         nextPos.z -= 0.1f;
 
                         new_hanger = Instantiate(outerHanger, outerSetPos);
@@ -113,25 +122,40 @@ public class AddClothManager : MonoBehaviour
                         pantsAdd = true;
                         continue;
                     case "Hair":
-                        nextPos = latestHairPos.localPosition;
-                        if (nextPos.x >= 3.5f)
+                        if (target_ele.gameObject.name.Equals("Hair_Atchan_0"))
                         {
-                            nextPos.x = -3.5f;
-                            nextPos.y -= 1.5f;
+                            target_ele.SetParent(etcItemPos[1]);
+                            target_ele.localPosition = first_ele_pos;
+                            itemAdd = true;
                         }
-                        else nextPos.x += 1f;
-                        nextPos.z -= 0.1f;
+                        else
+                        {
+                            nextPos = latestHairPos.localPosition;
+                            if (nextPos.x >= 3.5f)
+                            {
+                                nextPos.x = -3.5f;
+                                nextPos.y -= 1.5f;
+                            }
+                            else nextPos.x += 1f;
+                            nextPos.z -= 0.1f;
 
-                        new_hanger = Instantiate(hairHanger, hairSetPos);
-                        new_hanger.transform.localPosition = nextPos;
-                        target_ele.SetParent(new_hanger.transform);
-                        target_ele.localPosition = first_ele_pos;
+                            new_hanger = Instantiate(hairHanger, hairSetPos);
+                            new_hanger.transform.localPosition = nextPos;
+                            target_ele.SetParent(new_hanger.transform);
+                            target_ele.localPosition = first_ele_pos;
 
-                        latestHairPos = new_hanger.transform;
-                        hairAdd = true;
+                            latestHairPos = new_hanger.transform;
+                            hairAdd = true;
+                        }
                         continue;
                     default:
-                        target_ele.SetParent(itemSetPos);
+                        if(target_ele.gameObject.name.Equals("right_genji_0"))
+                        {
+                            target_ele.SetParent(etcItemPos[0]);
+                        } else
+                        {
+                            target_ele.SetParent(itemSetPos);
+                        }
                         target_ele.localPosition = first_ele_pos;
                         itemAdd = true;
                         continue;
@@ -141,11 +165,12 @@ public class AddClothManager : MonoBehaviour
 
         }
 
-        if (shirtAdd && !addMessage.Contains("상의")) addMessage += "신규 상의\n";
-        if (pantsAdd && !addMessage.Contains("하의")) addMessage += "신규 하의\n";
-        if (outerAdd && !addMessage.Contains("외투")) addMessage += "신규 외투\n";
-        if (hairAdd && !addMessage.Contains("모자")) addMessage += "신규 모자\n";
-        if (itemAdd && !addMessage.Contains("도구")) addMessage += "신규 도구\n";
+
+        if (shirtAdd && !addMessage.Contains("상의")) addMessage += "[상의] ";
+        if (pantsAdd && !addMessage.Contains("하의")) addMessage += "[하의] ";
+        if (outerAdd && !addMessage.Contains("외투")) addMessage += "[외투] ";
+        if (hairAdd && !addMessage.Contains("모자")) addMessage += "[모자] ";
+        if (itemAdd && !addMessage.Contains("장식")) addMessage += "[장식] ";
 
         clothSetManager.ReNewHangers();
         StartCoroutine(WaitAlert());

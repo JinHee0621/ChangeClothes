@@ -48,7 +48,9 @@ public class CatObject : WearObject
     IEnumerator RunningMotion(int code)
     {
         int movingPercent = random.Next(0,100);
-        if(!cat_Pick && !weared)
+        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        catAnim.SetBool("Moving", false);
+        if (!cat_Pick && !weared)
         {
             if (code == 0)
             {
@@ -74,7 +76,6 @@ public class CatObject : WearObject
                         }
                         yield return new WaitForSeconds(movingTime);
                         gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
-
                     }
                     cat_first_pos = gameObject.transform.localPosition;
                     catAnim.SetBool("Moving", false);

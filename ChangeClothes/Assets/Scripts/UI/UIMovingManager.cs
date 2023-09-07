@@ -7,6 +7,7 @@ using DG.Tweening;
 public class UIMovingManager : MonoBehaviour
 {
     public CharStateManager characterState;
+    public BackgroundButtonManager backBtnManager;
 
     public Image fadeOut;
 
@@ -18,7 +19,9 @@ public class UIMovingManager : MonoBehaviour
     public GameObject speechBalloon;
     public Text speech1;
     public Text speech2;
-    public Text speech3;
+    public Text[] partText;
+    private string[] partArr = {"머리","얼굴","상의","하의","외투","장식" };
+
     public Image scoreBackground;
     public Image scoreStar;
     private float score;
@@ -31,7 +34,6 @@ public class UIMovingManager : MonoBehaviour
     public GameObject challengeUI;
     public GameObject challengeAlert;
     public Text challengeNm;
-    public Image[] challengeIcon;
     public GameObject challengeEffectPos;
     public ParticleSystem challengeEffect;
 
@@ -41,19 +43,12 @@ public class UIMovingManager : MonoBehaviour
 
     public GameObject statusSetUI;
     public GameObject clothSetBtnUI;
-    public GameObject backgorundSetBtnUI;
-    public GameObject moniterScreen;
-
-    public GameObject conditonPosition;
-    public GameObject mentalPosition;
-    public GameObject conditionValObj;
-    public GameObject mentalValObj;
 
     public GameObject[] scoreObjects;
 
     Sprite[] daySprite;
 
-    private string checkResultData = "";
+    private Dictionary<string,string> checkResultData = new Dictionary<string, string>();
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 challengeUI_default_pos = new Vector3(0, 0, 0);
@@ -121,9 +116,15 @@ public class UIMovingManager : MonoBehaviour
         StartCoroutine(MoveCharacterAnim());
     }
 
-    public void CheckResultText(string text)
+    public void CheckResultText(string part, string clothType)
     {
-        checkResultData = text;
+        if(checkResultData.ContainsKey(part)) checkResultData[part] =  clothType;
+        else checkResultData.Add(part, clothType);
+    }
+    
+    public Dictionary<string,string> ReturnResultDic()
+    {
+        return checkResultData;
     }
 
     IEnumerator ResetCharacterAnim()
@@ -138,7 +139,6 @@ public class UIMovingManager : MonoBehaviour
         characterState.AllWearRollBack(true); // 게임 재시작시 캐릭터가 장착한 모든 옷 해제
         CheckResultCoverReset();
         speechBalloon.transform.DOLocalMoveY(speechBalloon.transform.localPosition.y - 1000f, 0.5f).SetEase(Ease.OutQuad);
-        speechBalloon.transform.DORotate(new Vector3(-90, 0, 0), 0.25f).SetEase(Ease.Linear);
         ReMoveRestartBtn();
         Color nextColor = scoreBackground.color;
         nextColor.a = 0f;
@@ -146,7 +146,12 @@ public class UIMovingManager : MonoBehaviour
         scoreNumText.color = nextColor;
         speech1.text = "";
         speech2.text = "";
-        speech3.text = "";
+
+        for (int i = 0; i < partText.Length - 1; i++)
+        {
+            partText[i].text = "";
+        }
+        checkResultData.Clear();
         scoreNumText.text =  "0/100";
         scoreStar.fillAmount = 0;
         ResetScoreObj();
@@ -161,19 +166,29 @@ public class UIMovingManager : MonoBehaviour
         characterState.gameObject.transform.DOScaleY(1.15f, 1.5f);
         yield return new WaitForSeconds(2.5f);
         CheckResultMove();
+
+
         speechBalloon.transform.DOLocalMoveY(speechBalloon.transform.localPosition.y + 1000f, 2.5f).SetEase(Ease.OutQuad);
         yield return new WaitForSeconds(2.5f);
         speechBalloon.transform.DORotate(new Vector3(0, 0, 0), 0.25f).SetEase(Ease.Linear);
         yield return new WaitForSeconds(0.75f);
-        speech1.DOText("오늘 입은 옷은..", 0.75f).SetEase(Ease.Linear);
-        StartCoroutine(TextSoundPlay((0.75f/10), 0, 10));
+        speech1.DOText("이번에 입은 옷은..", 0.75f).SetEase(Ease.Linear);
+        StartCoroutine(TextSoundPlay((0.75f/11), 0, 11));
         yield return new WaitForSeconds(0.85f);
-        speech2.DOText(checkResultData + " 구나!", 0.75f).SetEase(Ease.Linear);
-        StartCoroutine(TextSoundPlay((0.75f / (checkResultData.Length + 4)), 0, checkResultData.Length + 4));
+
+        for(int i = 0; i < partText.Length-1; i++)
+        {
+            speech2.DOText(speech2.text + partArr[i] + " : \n", 0.75f).SetEase(Ease.Linear);
+            StartCoroutine(TextSoundPlay((0.75f / 2), 0, 2));
+            yield return new WaitForSeconds(0.75f);
+            partText[i].text = checkResultData[partArr[i]];
+            yield return new WaitForSeconds(0.75f);
+        }
+
         yield return new WaitForSeconds(0.75f);
-        speech3.DOText("만족도 : ", 0.5f).SetEase(Ease.Linear);
-        StartCoroutine(TextSoundPlay((0.5f / 6), 0, 6));
-        yield return new WaitForSeconds(0.5f);
+
+
+        yield return new WaitForSeconds(0.75f);
         StartCoroutine(FadeInScoreUI());
         MoveScoreObj();
         yield return new WaitForSeconds(1f);
@@ -309,33 +324,6 @@ public class UIMovingManager : MonoBehaviour
         restartButton.transform.DOLocalMoveY(restartButton.transform.localPosition.y - 350f, 1f).SetEase(Ease.OutQuad);
     }
 
-
-    public void ShowCharStatVal(int target, int value)
-    {
-        GameObject popVal;
-        value *= -1; // UI에서 보여지는 값은 감소값에 해당됨
-
-        string showValue = value.ToString();
-        if (value >= 0)
-        {
-            showValue = "+" + value.ToString();
-        } 
-
-        // target 0: Condition , 1 : Mental
-        if (target == 0)
-        {
-            popVal = Instantiate(conditionValObj, conditonPosition.transform);
-            popVal.GetComponent<Text>().text = showValue;
-            popVal.transform.DOLocalMoveY(popVal.transform.localPosition.y + 15, 3f);
-            StartCoroutine(RemoveValObj(popVal));
-        }  else if (target == 1)
-        {
-            popVal = Instantiate(mentalValObj, mentalPosition.transform);
-            popVal.GetComponent<Text>().text = showValue;
-            popVal.transform.DOLocalMoveY(popVal.transform.localPosition.y + 15, 3f);
-            StartCoroutine(RemoveValObj(popVal));
-        }
-    }
     
     IEnumerator RemoveValObj(GameObject target)
     {
@@ -384,18 +372,6 @@ public class UIMovingManager : MonoBehaviour
                 scoreObjects[index].GetComponent<ScoreObject>().StartMove();
                 i += 1;
             }
-        }
-    }
-
-    public void MoniterOnOff(int plag)
-    {
-        if (plag == 0)
-        {
-            moniterScreen.transform.DOScale(new Vector3(0f, 0f, 1f), 0.5f).SetEase(Ease.InOutExpo);
-        } else
-        {
-            moniterScreen.transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f).SetEase(Ease.InOutExpo);
-
         }
     }
 
@@ -474,7 +450,7 @@ public class UIMovingManager : MonoBehaviour
         bottomUI.transform.DOLocalMoveX(bottomUI_default_pos.x, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI_default_pos.y, 2.5f);
         clothSetBtnUI.GetComponent<ClothSetManager>().CloseAll();
-        backgorundSetBtnUI.GetComponent<BackgroundButtonManager>().CloseMenuPub();
+        backBtnManager.CloseMenuPub();
         challengeUI.transform.DOLocalMoveX(challengeUI_default_pos.x, 2.5f);
     }
 

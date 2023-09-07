@@ -45,7 +45,7 @@ public class CheckResultManager : MonoBehaviour
     public void startCheckResult()
     {
         //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
-        OptionManager.instance.nowCheckResult = true;
+        //OptionManager.instance.nowCheckResult = true;
 
         if (clearCount == 0) ChallengeManager.AddChellengeClearId(1);
         else if (clearCount == 3) ChallengeManager.AddChellengeClearId(2);
@@ -65,6 +65,7 @@ public class CheckResultManager : MonoBehaviour
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");
         SoundManager.PlaySFX(3);
+       
         uiManager.MoveCharacter();
         yield return new WaitForSeconds(0.2f);
         foreach(GameObject i in patterns)
@@ -75,33 +76,94 @@ public class CheckResultManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
     }
+
     public void CharEquippedSetCheck()
     {
         int score = 0;
-        Dictionary<string, int> equipped = new Dictionary<string, int>();
+        string hair_type = charStateManager.hair_type.Trim();
+        string face_type = charStateManager.face_type.Trim();
+        string glass_type = charStateManager.glass_type.Trim();
+        string shirt_type = charStateManager.shirt_type.Trim();
+        string pants_type = charStateManager.pants_type.Trim();
+        string outer_type = charStateManager.outer_type.Trim();
+        string left_type = charStateManager.left_type.Trim();
+        string right_type = charStateManager.right_type.Trim();
 
-        string shirt_type = charStateManager.shirt_type;
-        string pants_type = charStateManager.pants_type;
-        string outer_type = charStateManager.outer_type;
-        string left_type = charStateManager.left_type;
-        string right_type = charStateManager.right_type;
-        string hair_type = charStateManager.hair_type;
-        string glass_type = charStateManager.glass_type;
-        string face_type = charStateManager.face_type;
-        
-        if (shirt_type.Equals(""))
+        if (hair_type.StartsWith("일반")) hair_type = "일반";
+        if (face_type.StartsWith("일반")) face_type = "일반";
+        if (glass_type.StartsWith("일반")) glass_type = "일반안경";
+        if (shirt_type.StartsWith("일반")) shirt_type = "일반";
+        if (pants_type.StartsWith("일반")) pants_type = "일반";
+        if (outer_type.StartsWith("일반")) outer_type = "일반";
+        if (left_type.StartsWith("일반")) left_type = "일반장식1";
+        if (right_type.StartsWith("일반")) right_type = "일반장식2";
+
+        if (hair_type.Equals("")) uiManager.CheckResultText("머리", "없음");
+        else uiManager.CheckResultText("머리", hair_type);
+
+        if (face_type.Equals("")) face_type = "없음";
+        if (!glass_type.Equals(""))
         {
-            uiManager.CheckResultText("게이밍 슈트");
-            score += 80;
+            if (face_type.Equals("없음"))
+                face_type = glass_type;
+            else
+                face_type = face_type + ", " + glass_type;
         }
-        if (shirt_type.Equals("") && pants_type.Equals("") && outer_type.Equals("")) {
-            uiManager.CheckResultText("속옷만 걸치고 \n 나왔");
-            ChallengeManager.AddChellengeClearId(3);
-            score += 10;
+        uiManager.CheckResultText("얼굴", face_type);
+
+        if (shirt_type.Equals("")) uiManager.CheckResultText("상의", "없음");
+        else uiManager.CheckResultText("상의", shirt_type);
+
+        if (pants_type.Equals("")) uiManager.CheckResultText("하의", "없음");
+        else uiManager.CheckResultText("하의", pants_type);
+
+        if (outer_type.Equals("")) uiManager.CheckResultText("외투", "없음");
+        else uiManager.CheckResultText("외투", outer_type);
+
+        if (left_type.Equals("")) left_type = "없음";
+        if (!right_type.Equals(""))
+        {
+            if (left_type.Equals("없음"))
+                left_type = right_type;
+            else
+                left_type = left_type + ", " + right_type;
         }
+        uiManager.CheckResultText("장식", left_type);
+
+        CheckChellengeCleard();
         uiManager.ScoreVal(score);
         clearCount += 1;
     }
+
+    public void CheckChellengeCleard()
+    {
+        Dictionary<string, string> charStatus = uiManager.ReturnResultDic();
+
+        if(charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
+        {
+            uiManager.CheckResultText("상의", "게이밍슈트 MK2");
+            uiManager.CheckResultText("종합", "게이밍슈트");
+            ChallengeManager.AddChellengeClearId(4);
+        } 
+        
+        if(charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
+        {
+            uiManager.CheckResultText("종합", "옷좀입어요;");
+            ChallengeManager.AddChellengeClearId(3);
+        } 
+        
+        if(charStatus["얼굴"].Equals("광대 코, 외계인안경") && charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
+        {
+            uiManager.CheckResultText("종합", "훈수가필요해");
+            ChallengeManager.AddChellengeClearId(5);
+        } 
+        
+        if(!charStatus.ContainsKey("종합"))
+        {
+            uiManager.CheckResultText("종합", "나름 평범한 복장");
+        }
+    }
+
     IEnumerator ScreenOpen()
     {
         float waitTime = ChallengeManager.checkTime;
@@ -133,7 +195,7 @@ public class CheckResultManager : MonoBehaviour
         addClothManager.clothSetManager.openAlert = false;
 
         //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
-        OptionManager.instance.nowCheckResult = false;
+        //OptionManager.instance.nowCheckResult = false;
 
         if (challengeManager.addCloth)
         {

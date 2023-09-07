@@ -48,13 +48,13 @@ public class CatObject : WearObject
     IEnumerator RunningMotion(int code)
     {
         int movingPercent = random.Next(0,100);
-        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
         catAnim.SetBool("Moving", false);
         if (!cat_Pick && !weared)
         {
+            gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
             if (code == 0)
             {
-                if (( movingPercent < 70 && movingPercent >= 50) && !firstStand)
+                if (( movingPercent < 80 && movingPercent >= 20) && !firstStand)
                 {
                     movingPercent = random.Next(0, 100);
                     float movingRange = random.Next(0, 35) / 10f;
@@ -82,17 +82,17 @@ public class CatObject : WearObject
                     yield return new WaitForSeconds(10f);
                     runningCatMove = StartCoroutine(RunningMotion(code));
                 }
-                else if (movingPercent >= 70 && movingPercent < 80)
+                else if (movingPercent >= 80 && movingPercent < 90)
                 {
                     firstStand = false;
                     catAnim.SetTrigger("Sit");
-                    yield return new WaitForSeconds(60f);
+                    yield return new WaitForSeconds(15f);
                     runningCatMove = StartCoroutine(RunningMotion(code));
                 }
                 else
                 {
                     firstStand = false;
-                    yield return new WaitForSeconds(30f);
+                    yield return new WaitForSeconds(15f);
                     runningCatMove = StartCoroutine(RunningMotion(code));
                 }
             }

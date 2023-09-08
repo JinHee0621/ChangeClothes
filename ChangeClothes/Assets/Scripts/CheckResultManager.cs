@@ -88,7 +88,8 @@ public class CheckResultManager : MonoBehaviour
         string outer_type = charStateManager.outer_type.Trim();
         string left_type = charStateManager.left_type.Trim();
         string right_type = charStateManager.right_type.Trim();
-
+        string cat_check = charStateManager.cat_type.Trim();
+        
         if (hair_type.StartsWith("일반")) hair_type = "일반";
         if (face_type.StartsWith("일반")) face_type = "일반";
         if (glass_type.StartsWith("일반")) glass_type = "일반안경";
@@ -97,6 +98,11 @@ public class CheckResultManager : MonoBehaviour
         if (outer_type.StartsWith("일반")) outer_type = "일반";
         if (left_type.StartsWith("일반")) left_type = "일반장식1";
         if (right_type.StartsWith("일반")) right_type = "일반장식2";
+
+        if(!cat_check.Equals(""))
+        {
+            uiManager.CheckResultText("고양이", "커비");
+        }
 
         if (hair_type.Equals("")) uiManager.CheckResultText("머리", "없음");
         else uiManager.CheckResultText("머리", hair_type);
@@ -143,24 +149,28 @@ public class CheckResultManager : MonoBehaviour
         {
             uiManager.CheckResultText("상의", "게이밍슈트 MK2");
             uiManager.CheckResultText("종합", "게이밍슈트");
+            uiManager.multiVal = 10;
             ChallengeManager.AddChellengeClearId(4);
         } 
         
         if(charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
         {
             uiManager.CheckResultText("종합", "옷좀입어요;");
+            uiManager.multiVal = 0;
             ChallengeManager.AddChellengeClearId(3);
         } 
         
         if(charStatus["얼굴"].Equals("광대 코, 외계인안경") && charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
         {
             uiManager.CheckResultText("종합", "훈수가필요해");
+            uiManager.multiVal = 10;
             ChallengeManager.AddChellengeClearId(5);
         } 
         
         if(!charStatus.ContainsKey("종합"))
         {
-            uiManager.CheckResultText("종합", "나름 평범한 복장");
+            uiManager.multiVal = 5;
+            uiManager.CheckResultText("종합", "일반 복장");
         }
     }
 

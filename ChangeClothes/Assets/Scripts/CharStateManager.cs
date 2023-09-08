@@ -29,6 +29,7 @@ public class CharStateManager : MonoBehaviour
     public string hair_type = "";
     public string glass_type = "";
     public string face_type = "";
+    public string cat_type = "";
 
     private GameObject shirt_part;
     private GameObject pants_part;
@@ -208,6 +209,9 @@ public class CharStateManager : MonoBehaviour
             case 8:
                 face_type = object_type;
                 break;
+            case 9:
+               cat_type = object_type;
+                break;
         }
     }
 
@@ -264,6 +268,12 @@ public class CharStateManager : MonoBehaviour
                     face_type = "";
                 }
                 break;
+            case 9:
+                if (cat_part.transform.childCount == 0)
+                {
+                    cat_type = "";
+                }
+                break;
         }
     }
 
@@ -287,6 +297,8 @@ public class CharStateManager : MonoBehaviour
                 return glass_type;
             case 8:
                 return face_type;
+            case 9:
+                return cat_type;
             default:
                 return shirt_type;
         }
@@ -312,6 +324,8 @@ public class CharStateManager : MonoBehaviour
                 return glass_type;
             case "Face":
                 return face_type;
+            case "Cat":
+                return cat_type;
             default:
                 return shirt_type;
         }

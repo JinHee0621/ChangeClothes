@@ -21,11 +21,17 @@ public class UIMovingManager : MonoBehaviour
     public Text speech2;
     public Text[] partText;
     private string[] partArr = {"머리","얼굴","상의","하의","외투","장식" };
+    public GameObject scoreNumText;
+    public GameObject scoreMessageText;
+    public GameObject multiScoreText;
+    public Text scoreText;
+    public int multiVal;
+    private int scoreVal = 0;
 
     public Image scoreBackground;
     public Image scoreStar;
     private float score;
-    public Text scoreNumText;
+
     public GameObject restartButton;
     public GameObject RankStarObj;
     public Animator[] stars;
@@ -63,6 +69,7 @@ public class UIMovingManager : MonoBehaviour
     void Start()
     {
         ResetUI();
+        multiVal = 1;
     }
 
     public void PopUpOpen(string text)
@@ -143,19 +150,21 @@ public class UIMovingManager : MonoBehaviour
         Color nextColor = scoreBackground.color;
         nextColor.a = 0f;
         scoreBackground.color = nextColor;
-        scoreNumText.color = nextColor;
         speech1.text = "";
         speech2.text = "";
 
-        for (int i = 0; i < partText.Length - 1; i++)
+        for (int i = 0; i < partText.Length; i++)
         {
             partText[i].text = "";
         }
+        scoreVal = 0;
+        scoreText.text = "";
+
         checkResultData.Clear();
-        scoreNumText.text =  "0/100";
         scoreStar.fillAmount = 0;
         ResetScoreObj();
     }
+
 
     IEnumerator MoveCharacterAnim()
     {
@@ -166,7 +175,6 @@ public class UIMovingManager : MonoBehaviour
         characterState.gameObject.transform.DOScaleY(1.15f, 1.5f);
         yield return new WaitForSeconds(2.5f);
         CheckResultMove();
-
 
         speechBalloon.transform.DOLocalMoveY(speechBalloon.transform.localPosition.y + 1000f, 2.5f).SetEase(Ease.OutQuad);
         yield return new WaitForSeconds(2.5f);
@@ -182,19 +190,92 @@ public class UIMovingManager : MonoBehaviour
             StartCoroutine(TextSoundPlay((0.75f / 2), 0, 2));
             yield return new WaitForSeconds(0.75f);
             partText[i].text = checkResultData[partArr[i]];
+            if(!checkResultData[partArr[i]].Equals("없음"))
+            {
+                scoreNumText.GetComponent<Text>().text = "+1";
+                GameObject popScore = Instantiate(scoreNumText, partText[i].transform);
+                SoundManager.PlaySFX(19);
+                scoreVal += 1;
+                StartCoroutine(DestroyScore(popScore));
+            }
             yield return new WaitForSeconds(0.75f);
         }
+        scoreText.text = "0 점";
+        int half_val = scoreVal / 2;
+        for (int i = 0; i <= half_val; i++)
+        {
+            scoreText.text = i.ToString() + " 점";
+            SoundManager.PlaySFX(20);
+            yield return new WaitForSeconds(0.15f);
+        }
 
+        for (int i = half_val + 1; i <= scoreVal; i++)
+        {
+            scoreText.text = i.ToString() + " 점";
+            SoundManager.PlaySFX(20);
+            yield return new WaitForSeconds(0.45f);
+        }
         yield return new WaitForSeconds(0.75f);
 
+        partText[partText.Length-1].DOText(checkResultData["종합"], 1f).SetEase(Ease.Linear);
+        StartCoroutine(FinalTextSoundPlay((0.75f / checkResultData["종합"].Length), 0, checkResultData["종합"].Length));
+        yield return new WaitForSeconds(1f);
+        multiScoreText.GetComponent<Text>().text = "X" + multiVal;
+        GameObject instantMultiScoreText = Instantiate(multiScoreText, scoreText.transform);
+        yield return new WaitForSeconds(0.5f);
+        SoundManager.PlaySFX(22);
+        yield return new WaitForSeconds(0.5f);
 
-        yield return new WaitForSeconds(0.75f);
+        if(scoreVal > scoreVal * multiVal)
+        {
+            for (int i = scoreVal; i >= scoreVal * multiVal; i--)
+            {
+                scoreText.text = i.ToString() + " 점";
+                SoundManager.PlaySFX(20);
+                yield return new WaitForSeconds(0.075f);
+            }
+        } else
+        {
+            for (int i = scoreVal; i <= scoreVal * multiVal; i++)
+            {
+                scoreText.text = i.ToString() + " 점";
+                SoundManager.PlaySFX(20);
+                yield return new WaitForSeconds(0.075f);
+            }
+        }
+
+
+        scoreVal *= multiVal;
+        yield return new WaitForSeconds(0.5f);
+        Destroy(instantMultiScoreText);
+
+        if(checkResultData.ContainsKey("고양이"))
+        {
+            scoreNumText.GetComponent<Text>().text = "+10"; 
+            GameObject popMessage = Instantiate(scoreMessageText, scoreText.transform);
+            SoundManager.PlaySFX(22);
+            for (int i = scoreVal; i <= scoreVal + 10; i++)
+            {
+                scoreText.text = i.ToString() + " 점";
+                SoundManager.PlaySFX(20);
+                yield return new WaitForSeconds(0.025f);
+            }
+            scoreVal += 10;
+            StartCoroutine(DestroyScore(popMessage));
+        }
+
+        // 최종 스코어 랭크 표기 로직
         StartCoroutine(FadeInScoreUI());
         MoveScoreObj();
         yield return new WaitForSeconds(1f);
-        PopUpRunning(5);
+        PopUpRunning(scoreVal / 10);
     }
 
+    IEnumerator DestroyScore(GameObject target)
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(target);
+    }
 
     IEnumerator TextSoundPlay(float repeatTime, int textIndex, int destIndex)
     {
@@ -210,6 +291,21 @@ public class UIMovingManager : MonoBehaviour
         }
     }
 
+    IEnumerator FinalTextSoundPlay(float repeatTime, int textIndex, int destIndex)
+    {
+        textIndex += 1;
+        SoundManager.PlaySFX(21);
+        yield return new WaitForSeconds(repeatTime);
+        if (textIndex < destIndex)
+        {
+            StartCoroutine(FinalTextSoundPlay(repeatTime, textIndex, destIndex));
+        }
+        else
+        {
+            yield return null;
+        }
+    }
+
 
     IEnumerator FadeInScoreUI()
     {
@@ -217,7 +313,6 @@ public class UIMovingManager : MonoBehaviour
 
         nextColor.a += 0.025f;
         scoreBackground.color = nextColor;
-        scoreNumText.color = nextColor;
 
         yield return new WaitForSeconds(0.05f);
         if (scoreBackground.color.a < 1)
@@ -248,7 +343,6 @@ public class UIMovingManager : MonoBehaviour
 
             string text = "" + (int)(nextAmount * 100);
 
-            scoreNumText.text = text + "/100";
             scoreStar.fillAmount = nextAmount;
             StartCoroutine(ScoreUIMove(nextAmount, destAmount));
         } else

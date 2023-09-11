@@ -19,7 +19,7 @@ public class ChallengeManager : MonoBehaviour
     static int clearCnt = 0;
     public static float checkTime = 0f;
 
-    private void Start()
+    private void Awake()
     {
         int index = 0;
         foreach (GameObject items in challengeObjects)
@@ -50,11 +50,21 @@ public class ChallengeManager : MonoBehaviour
     {
         checkTime += 2.5f;
         clearChellengeIdStack.Push(id);
+        DataManager.ChanegeChallengeState(id);
     }
 
     public static void ResetWaitTime()
     {
         checkTime = 0f;
+    }
+
+    public void LoadClearChallenge(int challengeNum)
+    {
+        challengeElements[challengeNum].transform.Find("UnlockCover").gameObject.SetActive(false);
+        clearCnt += 1;
+        challengeCheck[challengeNum] = true;
+        addClothManager.UnLockSet("Challenge" + (challengeNum + 1));
+        UpdateChallengeCnt();
     }
 
 

@@ -32,7 +32,6 @@ public class AddClothManager : MonoBehaviour
     public bool hairAdd;
     public bool itemAdd;
     // Start is called before the first frame update
-
     public void UnLockSet(string clothType)
     {
         clothSetManager.openAlert = true;

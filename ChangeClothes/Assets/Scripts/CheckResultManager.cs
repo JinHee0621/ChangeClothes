@@ -139,35 +139,35 @@ public class CheckResultManager : MonoBehaviour
         CheckChellengeCleard();
         uiManager.ScoreVal(score);
         clearCount += 1;
+        DataManager.dataClearCount = clearCount;
+        DataManager.SaveFile();
     }
 
     public void CheckChellengeCleard()
     {
         Dictionary<string, string> charStatus = uiManager.ReturnResultDic();
 
-        if(charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
-        {
-            uiManager.CheckResultText("상의", "게이밍슈트 MK2");
-            uiManager.CheckResultText("종합", "게이밍슈트");
-            uiManager.multiVal = 10;
-            ChallengeManager.AddChellengeClearId(4);
-        } 
-        
         if(charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
         {
             uiManager.CheckResultText("종합", "옷좀입어요;");
             uiManager.multiVal = 0;
             ChallengeManager.AddChellengeClearId(3);
-        } 
-        
-        if(charStatus["얼굴"].Equals("광대 코, 외계인안경") && charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
+        }
+        else if (charStatus["얼굴"].Equals("광대 코, 외계인안경") && !charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
         {
-            uiManager.CheckResultText("종합", "훈수가필요해");
+            uiManager.CheckResultText("종합", "훈수허용");
             uiManager.multiVal = 10;
             ChallengeManager.AddChellengeClearId(5);
-        } 
-        
-        if(!charStatus.ContainsKey("종합"))
+        }
+        else if (charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
+        {
+            uiManager.CheckResultText("상의", "게이밍슈트 MK2");
+            uiManager.CheckResultText("종합", "게이밍슈트");
+            uiManager.multiVal = 10;
+            ChallengeManager.AddChellengeClearId(4);
+        }
+
+        if (!charStatus.ContainsKey("종합"))
         {
             uiManager.multiVal = 5;
             uiManager.CheckResultText("종합", "일반 복장");

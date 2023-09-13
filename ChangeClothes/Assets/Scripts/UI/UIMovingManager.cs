@@ -43,6 +43,11 @@ public class UIMovingManager : MonoBehaviour
     public GameObject challengeEffectPos;
     public ParticleSystem challengeEffect;
 
+    public GameObject challengeHintUI;
+    public Image challengeHintIcon;
+    public Text challengeHintName;
+    public Text challengeHintContent;
+
     public GameObject popupWindow;
     public Text popupWindowTxt;
     private bool isPopupOpen = false;
@@ -473,12 +478,12 @@ public class UIMovingManager : MonoBehaviour
     {
         gameObject.GetComponent<StatusUIManager>().ReSetGuage();
     }
-
+    // 도전과제 관련
     public void ChallengeBtnClicked()
     {
         if (!challengeOpen)
         {
-            challengeUI.transform.DOLocalMoveX(-295, 0.5f).SetEase(Ease.OutQuad);
+            challengeUI.transform.DOLocalMoveX(-275, 0.5f).SetEase(Ease.OutQuad);
             challengeOpen = true;
         } else
         {
@@ -520,6 +525,20 @@ public class UIMovingManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         challengeAlert.transform.DOLocalMoveX(-970, 0.5f).SetEase(Ease.OutQuad);
     }
+
+    public void OpenHintUI(Sprite hintIcon, string hintName, string hintContent)
+    {
+        challengeHintIcon.sprite = hintIcon;
+        challengeHintName.text = hintName;
+        challengeHintContent.text = hintContent;
+        challengeHintUI.transform.DOLocalMoveX(117, 0.5f).SetEase(Ease.OutQuad);
+    }
+
+    public void CloseHintUI()
+    {
+        challengeHintUI.transform.DOLocalMoveX(-293, 0.5f).SetEase(Ease.OutQuad);
+    }
+
 
     public void ResetUI()
     {

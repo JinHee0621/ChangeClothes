@@ -37,7 +37,9 @@ public class DataManager : MonoBehaviour
     {
         if (!File.Exists(filePath))
         {
-            File.CreateText(filePath);
+            //File.CreateText(filePath);
+            string json = JsonConvert.SerializeObject(data);
+            File.WriteAllText(filePath, json);
         } else
         {
             StreamReader file = File.OpenText(filePath);
@@ -90,7 +92,7 @@ public class DataManager : MonoBehaviour
 
     public static void SaveFile()
     {
-        string filePath = "./SaveData/data";
+        string filePath = "SaveData/data";
         DataVo data = new DataVo
         {
             Challenge1 = challengeClearArr[0],

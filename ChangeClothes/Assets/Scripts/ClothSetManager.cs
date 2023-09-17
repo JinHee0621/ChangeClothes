@@ -117,7 +117,6 @@ public class ClothSetManager : MonoBehaviour
 
     public void OuterSetOpen()
     {
-        SoundManager.PlaySFX(6);
         if (!moving && !openAlert)
         {
             moving = true;

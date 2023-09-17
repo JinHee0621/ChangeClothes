@@ -122,14 +122,15 @@ public class ChallengeManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.02f);
         checkHintClickTime = StartCoroutine(HintClickTime());
-        if(clickTime > 1f && !openHint)
+        if(clickTime > 1.3f && !openHint)
         {
+            SoundManager.PlaySFX(14);
             int contentIndex = int.Parse(EventSystem.current.currentSelectedGameObject.name.Replace("Challenge", "").ToString());
             uiMovingObject.OpenHintUI(EventSystem.current.currentSelectedGameObject.transform.GetChild(0).GetComponent<Image>().sprite, EventSystem.current.currentSelectedGameObject.transform.GetChild(1).GetComponent<Text>().text, hintContent[contentIndex-1]);
             openHint = true;
         }else
         {
-            EventSystem.current.currentSelectedGameObject.transform.GetChild(4).GetComponent<Image>().fillAmount += 0.02f;
+            if(clickTime > 0.3f) EventSystem.current.currentSelectedGameObject.transform.GetChild(4).GetComponent<Image>().fillAmount += 0.02f;
             clickTime += 0.02f;
         }
     }

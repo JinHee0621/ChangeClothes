@@ -45,10 +45,10 @@ public class CheckResultManager : MonoBehaviour
     public void startCheckResult()
     {
         //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
-        //OptionManager.instance.nowCheckResult = true;
+        OptionManager.instance.nowCheckResult = true;
 
         if (clearCount == 0) ChallengeManager.AddChellengeClearId(1);
-        else if (clearCount == 3) ChallengeManager.AddChellengeClearId(2);
+        else if (clearCount == 2) ChallengeManager.AddChellengeClearId(2);
 
         SoundManager.PlaySFX(5);
         uiManager.RemoveUI();
@@ -205,7 +205,7 @@ public class CheckResultManager : MonoBehaviour
         addClothManager.clothSetManager.openAlert = false;
 
         //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
-        //OptionManager.instance.nowCheckResult = false;
+        OptionManager.instance.nowCheckResult = false;
 
         if (challengeManager.addCloth)
         {

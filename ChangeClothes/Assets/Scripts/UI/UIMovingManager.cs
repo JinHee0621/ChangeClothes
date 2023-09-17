@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-
+using UnityEngine.SceneManagement;
 public class UIMovingManager : MonoBehaviour
 {
     public CharStateManager characterState;
@@ -273,6 +273,8 @@ public class UIMovingManager : MonoBehaviour
         StartCoroutine(FadeInScoreUI());
         MoveScoreObj();
         yield return new WaitForSeconds(1f);
+
+
         PopUpRunning(scoreVal / 10);
     }
 
@@ -386,6 +388,8 @@ public class UIMovingManager : MonoBehaviour
 
     public void PopUpRunning(int rank)
     {
+        //최고점수는 60점 고정
+        if (rank >= 6) rank = 6;
         StartCoroutine(PopUpStars(rank));
     }
 
@@ -394,9 +398,19 @@ public class UIMovingManager : MonoBehaviour
         checkedRank = rank;
         for (int i = 0; i < rank; i++)
         {
-            stars[i].SetTrigger("StarPop");
-            yield return new WaitForSeconds(0.5f);
-            SoundManager.PlaySFX(18);
+            if (i < 5)
+            {
+                stars[i].SetTrigger("StarPop");
+                yield return new WaitForSeconds(0.5f);
+                SoundManager.PlaySFX(18);
+            }
+            else
+            {
+                stars[i].SetTrigger("BigStarPop");
+                yield return new WaitForSeconds(0.5f);
+                SoundManager.PlaySFX(23);
+            }
+
             ParticleSystem effect = Instantiate(starPopEffect[i], stars[i].transform) as ParticleSystem;
             effect.transform.position = stars[i].transform.position;
             Destroy(effect.gameObject, 1f);
@@ -408,7 +422,8 @@ public class UIMovingManager : MonoBehaviour
     {
         for (int i = 0; i < checkedRank; i++)
         {
-            stars[i].SetTrigger("StarPop");
+            if (i < 5) stars[i].SetTrigger("StarPop");
+            else stars[i].SetTrigger("BigStarPop");
         }
     }
 
@@ -481,6 +496,7 @@ public class UIMovingManager : MonoBehaviour
     // 도전과제 관련
     public void ChallengeBtnClicked()
     {
+        SoundManager.PlaySFX(4);
         if (!challengeOpen)
         {
             challengeUI.transform.DOLocalMoveX(-275, 0.5f).SetEase(Ease.OutQuad);
@@ -589,6 +605,8 @@ public class UIMovingManager : MonoBehaviour
         }
     }
 
+
+
     IEnumerator ResetFadeIn()
     {
         Color nextColor = fadeOut.color;
@@ -640,11 +658,34 @@ public class UIMovingManager : MonoBehaviour
         else
         {
             StartCoroutine(ResetCharacterAnim());
-            Debug.Log("도전과제대기타임: "  + waitTime);
             yield return new WaitForSeconds(waitTime);
             StartCoroutine(FirstFadeOut());
             yield return null;
         }
+    }
+
+    IEnumerator GoTitleFadeIn()
+    {
+        Color nextColor = fadeOut.color;
+        nextColor.a += 0.025f;
+        fadeOut.color = nextColor;
+        yield return new WaitForSeconds(0.05f);
+        if (fadeOut.color.a < 1)
+        {
+            StartCoroutine(GoTitleFadeIn());
+        }
+        else
+        {
+            SceneManager.LoadScene("Title");
+            OptionManager.instance.GoTitle();
+            yield return null;
+        }
+    }
+
+    public void GoTitle()
+    {
+        fadeOut.gameObject.SetActive(true);
+        StartCoroutine(GoTitleFadeIn());
     }
 
 

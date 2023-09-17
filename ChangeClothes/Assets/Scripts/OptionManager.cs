@@ -10,6 +10,8 @@ public class OptionManager : MonoBehaviour
 
     public static OptionManager instance = null;
 
+    public UIMovingManager uiMovingManager;
+
     public BackgroundButtonManager backgroundBtnUI;
     public ClothSetManager clothSetBtnUI;
     public GameObject optionWindow;
@@ -20,6 +22,7 @@ public class OptionManager : MonoBehaviour
 
     public Slider bgmSlider;
     public Slider sfxSlider;
+    public Button goTitleBtn;
     
     public bool nowTitle;
     public bool nowCheckResult;
@@ -29,18 +32,35 @@ public class OptionManager : MonoBehaviour
 
     public bool optionOpen;
 
+    public Dropdown screenSizeOption;
+    public Text screenSize;
+    Dropdown screenLocalOption;
+    string selectedScreenSize = "1600 x 900 ";
+
+    public GameObject titleWindow;
+    public Button returnTitleBtn;
+    public Button closeTitleBtn;
+    public bool titleOpen;
+
+    private Button optionBtn;
+    private Button optionCloseBtn;
+
     private void Awake()
     {
         if (instance == null)
         {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Screen.SetResolution(1600, 900, false);
             instance = this;
             nowTitle = true;
             DontDestroyOnLoad(this.gameObject);
+            SoundValueInit();
+            screenLocalOption = screenSizeOption;
+            optionWindow.SetActive(false);
         } else
         {
             if (instance != this) Destroy(this.gameObject);
         }
-        SoundValueInit();
     }
 
     void Update()
@@ -74,20 +94,76 @@ public class OptionManager : MonoBehaviour
 
     IEnumerator WaitChangeScene()
     {
-        yield return new WaitForSeconds(0.05f);
+        //메인 씬으로 이동 후 
+        yield return new WaitForSeconds(0.025f);
         nowTitle = false;
+        uiMovingManager = GameObject.Find("UIManager").GetComponent<UIMovingManager>();
         backgroundBtnUI = GameObject.Find("deco_box_btn").GetComponent<BackgroundButtonManager>();
         clothSetBtnUI = GameObject.Find("SetButton").GetComponent<ClothSetManager>();
         optionWindow = GameObject.Find("OptionSet");
         bgmSource = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
+        goTitleBtn = GameObject.Find("TitleBtn").GetComponent<Button>();
+        goTitleBtn.onClick.AddListener(OpenReturnTitleWindow);
+
         sfxSource = GameObject.Find("EffectMusic").GetComponent<AudioSource>();
         sfxSource2 = GameObject.Find("EffectMusic2").GetComponent<AudioSource>();
         mouseSFXSource = GameObject.Find("MouseSFX").GetComponent<AudioSource>();
         bgmSlider = GameObject.Find("BGMSize").GetComponent<Slider>();
         sfxSlider = GameObject.Find("SFXSize").GetComponent<Slider>();
 
+        screenSizeOption = GameObject.Find("ScreenSize").GetComponent<Dropdown>();
+        screenSize = GameObject.Find("ScreenLabel").GetComponent<Text>();
+        screenSize.text = selectedScreenSize;
+        screenSizeOption.onValueChanged.AddListener(SelectScreenSize);
+        screenSizeOption.value = screenLocalOption.value;
+
+        titleWindow = GameObject.Find("TitleReturnSet");
+        returnTitleBtn = GameObject.Find("ReturnTitleYes").GetComponent<Button>();
+        closeTitleBtn = GameObject.Find("ReturnTitleNo").GetComponent<Button>();
+        returnTitleBtn.onClick.AddListener(GoReturnTitle);
+        closeTitleBtn.onClick.AddListener(CloseReturnTitle);
+
         bgmSlider.onValueChanged.AddListener(BGMValueChange);
         sfxSlider.onValueChanged.AddListener(SFXValueChange);
+
+        SoundValueInit();
+        optionWindow.SetActive(false);
+        titleWindow.SetActive(false);
+    }
+
+    public void GoTitle()
+    {
+        StartCoroutine(WaitReturnScene());
+    }
+
+    IEnumerator WaitReturnScene()
+    {
+        yield return new WaitForSeconds(0.025f);
+        //타이틀 씬으로 이동 후 
+        nowTitle = true;
+        optionWindow = GameObject.Find("OptionSet");
+        bgmSource = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
+
+        sfxSource = GameObject.Find("EffectMusic").GetComponent<AudioSource>();
+        sfxSource2 = GameObject.Find("EffectMusic2").GetComponent<AudioSource>();
+        mouseSFXSource = GameObject.Find("MouseSFX").GetComponent<AudioSource>();
+        bgmSlider = GameObject.Find("BGMSize").GetComponent<Slider>();
+        sfxSlider = GameObject.Find("SFXSize").GetComponent<Slider>();
+
+        screenSizeOption = GameObject.Find("ScreenSize").GetComponent<Dropdown>();
+        screenSize = GameObject.Find("ScreenLabel").GetComponent<Text>();
+        screenSize.text = selectedScreenSize;
+        screenSizeOption.onValueChanged.AddListener(SelectScreenSize);
+        screenSizeOption.value = screenLocalOption.value;
+
+        bgmSlider.onValueChanged.AddListener(BGMValueChange);
+        sfxSlider.onValueChanged.AddListener(SFXValueChange);
+
+        optionBtn = GameObject.Find("OptionBtn").GetComponent<Button>();
+        optionBtn.onClick.AddListener(TitleOpenOption);
+
+        optionCloseBtn = GameObject.Find("CloseBtn").GetComponent<Button>();
+        optionCloseBtn.onClick.AddListener(TitleCloseOption);
 
         SoundValueInit();
         optionWindow.SetActive(false);
@@ -158,7 +234,6 @@ public class OptionManager : MonoBehaviour
         instance.optionOpen = false;
     }
 
-
     void SoundValueInit()
     {
         bgmSource.volume = bgmSize * 0.5f;
@@ -168,5 +243,50 @@ public class OptionManager : MonoBehaviour
         sfxSlider.value = sfxSize;
         bgmSlider.value = bgmSize;
     }
+    public void SelectScreenSize()
+    {
+        screenLocalOption.value = screenSizeOption.value;
+        selectedScreenSize = screenSize.text;
+        int xSize = int.Parse(screenSize.text.Substring(0, 5).Trim());
+        int ySize = int.Parse(screenSize.text.Substring(6, 5).Trim());
 
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Screen.SetResolution(xSize, ySize, false);
+    }
+
+
+    private void SelectScreenSize(int arg0)
+    {
+        screenLocalOption.value = screenSizeOption.value;
+        selectedScreenSize = screenSize.text;
+        int xSize = int.Parse(screenSize.text.Substring(0, 5).Trim());
+        int ySize = int.Parse(screenSize.text.Substring(6, 5).Trim());
+
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        Screen.SetResolution(xSize, ySize, false);
+    }
+
+    public void OpenReturnTitleWindow()
+    {
+        SoundManager.PlaySFX(7);
+        titleWindow.SetActive(true);
+        instance.titleOpen = true;
+    }
+
+
+    public void CloseReturnTitleWindow()
+    {
+        SoundManager.PlaySFX(7);
+        titleWindow.SetActive(false);
+        instance.titleOpen = false;
+    }
+    private void GoReturnTitle()
+    {
+        SoundManager.PlaySFX(7);
+        uiMovingManager.GoTitle();
+    }
+    private void CloseReturnTitle()
+    {
+        CloseReturnTitleWindow();
+    }
 }

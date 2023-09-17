@@ -157,7 +157,7 @@ public class CatObject : WearObject
                     SoundManager.PlaySFX(1);
                     catAnim.SetBool("Equip", true);
                     stat.SetBody(clothType, clothType_Part);
-                    gameObject.transform.localPosition = new Vector3(0, 0);
+                    gameObject.transform.localPosition = new Vector3(0, 0, 0);
                     gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
 
                 }

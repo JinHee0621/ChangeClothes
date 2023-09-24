@@ -97,6 +97,7 @@ public class OptionManager : MonoBehaviour
         //메인 씬으로 이동 후 
         yield return new WaitForSeconds(0.025f);
         nowTitle = false;
+        optionOpen = false;
         uiMovingManager = GameObject.Find("UIManager").GetComponent<UIMovingManager>();
         backgroundBtnUI = GameObject.Find("deco_box_btn").GetComponent<BackgroundButtonManager>();
         clothSetBtnUI = GameObject.Find("SetButton").GetComponent<ClothSetManager>();
@@ -140,6 +141,7 @@ public class OptionManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.025f);
         //타이틀 씬으로 이동 후 
+        optionOpen = false;
         nowTitle = true;
         optionWindow = GameObject.Find("OptionSet");
         bgmSource = GameObject.Find("BackgroundMusic").GetComponent<AudioSource>();
@@ -245,25 +247,42 @@ public class OptionManager : MonoBehaviour
     }
     public void SelectScreenSize()
     {
-        screenLocalOption.value = screenSizeOption.value;
-        selectedScreenSize = screenSize.text;
-        int xSize = int.Parse(screenSize.text.Substring(0, 5).Trim());
-        int ySize = int.Parse(screenSize.text.Substring(6, 5).Trim());
+        if (screenSizeOption.value == 3)
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Screen.SetResolution(1600, 900, true);
+        } else
+        {
 
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        Screen.SetResolution(xSize, ySize, false);
+            screenLocalOption.value = screenSizeOption.value;
+            selectedScreenSize = screenSize.text;
+            int xSize = int.Parse(screenSize.text.Substring(0, 5).Trim());
+            int ySize = int.Parse(screenSize.text.Substring(6, 5).Trim());
+
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Screen.SetResolution(xSize, ySize, false);
+        }
+
     }
 
 
     private void SelectScreenSize(int arg0)
     {
-        screenLocalOption.value = screenSizeOption.value;
-        selectedScreenSize = screenSize.text;
-        int xSize = int.Parse(screenSize.text.Substring(0, 5).Trim());
-        int ySize = int.Parse(screenSize.text.Substring(6, 5).Trim());
+        if (screenSizeOption.value == 3)
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Screen.SetResolution(1600, 900, true);
+        }
+        else
+        {
+            screenLocalOption.value = screenSizeOption.value;
+            selectedScreenSize = screenSize.text;
+            int xSize = int.Parse(screenSize.text.Substring(0, 5).Trim());
+            int ySize = int.Parse(screenSize.text.Substring(6, 5).Trim());
 
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        Screen.SetResolution(xSize, ySize, false);
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
+            Screen.SetResolution(xSize, ySize, false);
+        }
     }
 
     public void OpenReturnTitleWindow()

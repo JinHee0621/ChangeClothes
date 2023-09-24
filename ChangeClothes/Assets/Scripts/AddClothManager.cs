@@ -32,6 +32,15 @@ public class AddClothManager : MonoBehaviour
     public bool hairAdd;
     public bool itemAdd;
     // Start is called before the first frame update
+    public void ResetMessage()
+    {
+        addMessage = "";
+        shirtAdd = false;
+        pantsAdd = false;
+        outerAdd = false;
+        hairAdd = false;
+        itemAdd = false;
+    }
     public void UnLockSet(string clothType)
     {
         clothSetManager.openAlert = true;
@@ -151,7 +160,11 @@ public class AddClothManager : MonoBehaviour
                         if(target_ele.gameObject.name.Equals("right_genji_0"))
                         {
                             target_ele.SetParent(etcItemPos[0]);
-                        } else
+                        } else if(target_ele.gameObject.name.Equals("Other_groovcoster_0"))
+                        {
+                            target_ele.SetParent(etcItemPos[2]);
+                        }
+                        else
                         {
                             target_ele.SetParent(itemSetPos);
                         }
@@ -169,7 +182,7 @@ public class AddClothManager : MonoBehaviour
         if (pantsAdd && !addMessage.Contains("하의")) addMessage += "[하의] ";
         if (outerAdd && !addMessage.Contains("외투")) addMessage += "[외투] ";
         if (hairAdd && !addMessage.Contains("모자")) addMessage += "[모자] ";
-        if (itemAdd && !addMessage.Contains("장식")) addMessage += "[장식] ";
+        if (itemAdd && !addMessage.Contains("잡동사니")) addMessage += "[잡동사니] ";
 
         clothSetManager.ReNewHangers();
         StartCoroutine(WaitAlert());

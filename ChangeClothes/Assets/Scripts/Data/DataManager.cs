@@ -13,6 +13,8 @@ public class DataManager : MonoBehaviour
 
     DataVo data = new DataVo
     {
+        ViewEnding = false,
+        GetTrasure = false,
         Challenge1 = false,
         Challenge2 = false,
         Challenge3 = false,
@@ -23,10 +25,14 @@ public class DataManager : MonoBehaviour
         Challenge8 = false,
         Challenge9 = false,
         Challenge10 = false,
+        Challenge11 = false,
+        Challenge12 = false,
         ClearCount = 0
     };
     string filePath = "SaveData/data";
-    public static bool[] challengeClearArr = { false, false, false, false, false, false, false, false, false, false };
+    public static bool[] challengeClearArr = { false, false, false, false, false, false, false, false, false, false, false, false };
+    public static bool dataTrasure = false;
+    public static bool viewEnding = false;
     public static int dataClearCount = 0;
     void Start()
     {
@@ -76,6 +82,18 @@ public class DataManager : MonoBehaviour
             data.Challenge10 = bool.Parse(loadData["Challenge10"].ToString());
             challengeClearArr[9] = data.Challenge10;
 
+            data.Challenge10 = bool.Parse(loadData["Challenge11"].ToString());
+            challengeClearArr[10] = data.Challenge10;
+
+            data.Challenge10 = bool.Parse(loadData["Challenge12"].ToString());
+            challengeClearArr[11] = data.Challenge10;
+
+            data.GetTrasure = bool.Parse(loadData["GetTrasure"].ToString());
+            dataTrasure = data.GetTrasure;
+
+            data.ViewEnding = bool.Parse(loadData["ViewEnding"].ToString());
+            viewEnding = data.ViewEnding;
+
             data.ClearCount = int.Parse(loadData["ClearCount"].ToString());
             dataClearCount = data.ClearCount;
             checkResultManager.clearCount = dataClearCount;
@@ -105,6 +123,10 @@ public class DataManager : MonoBehaviour
             Challenge8 = challengeClearArr[7],
             Challenge9 = challengeClearArr[8],
             Challenge10 = challengeClearArr[9],
+            Challenge11 = challengeClearArr[10],
+            Challenge12 = challengeClearArr[11],
+            GetTrasure = dataTrasure,
+            ViewEnding = viewEnding,
             ClearCount = dataClearCount
         };
         string json = JsonConvert.SerializeObject(data);

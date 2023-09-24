@@ -20,7 +20,7 @@ public class UIMovingManager : MonoBehaviour
     public Text speech1;
     public Text speech2;
     public Text[] partText;
-    private string[] partArr = {"머리","얼굴","상의","하의","외투","장식" };
+    private string[] partArr = {"모자","얼굴","상의","하의","외투","장식" };
     public GameObject scoreNumText;
     public GameObject scoreMessageText;
     public GameObject multiScoreText;
@@ -56,6 +56,7 @@ public class UIMovingManager : MonoBehaviour
     public GameObject clothSetBtnUI;
 
     public GameObject[] scoreObjects;
+    public GameObject boxText;
 
     Sprite[] daySprite;
 
@@ -569,6 +570,7 @@ public class UIMovingManager : MonoBehaviour
     {
         StartCoroutine(DelayOpen(1.5f));
         StartCoroutine(DelayEffect(10, 1.5f));
+        boxText.SetActive(true);
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 668, 2.5f).SetEase(Ease.OutQuad); 
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 418, 2.5f).SetEase(Ease.OutQuad); 
         challengeUI.transform.DOLocalMoveX(-730, 2.5f).SetEase(Ease.OutQuad); 
@@ -576,6 +578,7 @@ public class UIMovingManager : MonoBehaviour
 
     public void RemoveUI()
     {
+        boxText.SetActive(false);
         bottomUI.transform.DOLocalMoveX(bottomUI_default_pos.x, 2.5f);
         bottomUI.transform.DOLocalMoveY(bottomUI_default_pos.y, 2.5f);
         clothSetBtnUI.GetComponent<ClothSetManager>().CloseAll();

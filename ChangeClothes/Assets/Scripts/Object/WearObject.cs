@@ -92,6 +92,11 @@ public class WearObject : MonoBehaviour
                     stat.SetBody(clothType, clothType_Part);
                     gameObject.transform.localPosition = new Vector3(0, 0);
                     gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+
+                    if(gameObject.name.Equals("Other_groovcoster_0"))
+                    {
+                        gameObject.transform.localPosition = new Vector3(0.63f, -1.17f);
+                    }
                 }
                 else if (char_change)
                 {

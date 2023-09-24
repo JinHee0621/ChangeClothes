@@ -1,28 +1,44 @@
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using System.Text;
+using System.IO;
 
 public class TitleManager : MonoBehaviour
 {
     public Image fadeIn;
     public GameObject fadeOut;
     public GameObject closeWindow;
+    string filePath = "SaveData/data";
+
 
     private void Awake()
     {
+        Application.targetFrameRate = 60;
         StartCoroutine(removeFadeOut());
     }
 
     public void GoToMain()
     {
-        SoundManager.PlaySFX(5);
-        fadeIn.enabled = true;
-        StartCoroutine(SceneChangeFadeIn());
+        if (!File.Exists(filePath))
+        {
+            SoundManager.PlaySFX(5);
+            fadeIn.enabled = true;
+            StartCoroutine(SceneChangeFadeIn("Opening"));
+        }
+        else
+        {
+            SoundManager.PlaySFX(5);
+            fadeIn.enabled = true;
+            StartCoroutine(SceneChangeFadeIn("Main"));
+        }
     }
-    IEnumerator SceneChangeFadeIn()
+    IEnumerator SceneChangeFadeIn(string sceneName)
     {
         Color nextColor = fadeIn.color;
         nextColor.a += 0.025f;
@@ -30,13 +46,16 @@ public class TitleManager : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         if (fadeIn.color.a < 1f)
         {
-            StartCoroutine(SceneChangeFadeIn());
+            StartCoroutine(SceneChangeFadeIn(sceneName));
         }
         else
         {
-            OptionManager.instance.optionWindow.SetActive(true);
-            OptionManager.instance.GoMain();
-            SceneManager.LoadScene("Main");
+            if(sceneName.Equals("Main"))
+            {
+                OptionManager.instance.GoMain();
+                OptionManager.instance.optionWindow.SetActive(true);
+            }
+            SceneManager.LoadScene(sceneName);
             yield return null;
         }
     }

@@ -11,10 +11,10 @@ public class ChallengeManager : MonoBehaviour
 
     public UIMovingManager uiMovingObject;
     static UIMovingManager uiMovingManager;
-    static Stack<int> clearChellengeIdStack = new Stack<int>();
+    static Queue<int> clearChellengeIdStack = new Queue<int>();
     public GameObject[] challengeObjects;
-    static GameObject[] challengeElements = new GameObject[10];
-    static bool[] challengeCheck = new bool[10];
+    static GameObject[] challengeElements = new GameObject[12];
+    static bool[] challengeCheck = new bool[12];
     public Text clearCntObj;
     static Text clearCntTxt;
     static int clearCnt = 0;
@@ -25,16 +25,18 @@ public class ChallengeManager : MonoBehaviour
     private bool openHint = false;
     private string[] hintContent =
     {
-        "결과확인 1회 달성",
-        "결과확인 3회 달성",
-        "상의, 하의, 외투를 장비하지 않고 결과확인 1회 달성",
-        "상의를 장비하지 않고 결과확인 1회 달성",
-        "광대 코, 외계인 안경을 반드시 장비하고 결과확인 1회 달성",
-        "",
-        "",
-        "",
-        "",
-        ""
+        "결과확인 1회",
+        "결과확인 3회",
+        "상의, 하의, 외투를 장비하지 않고 결과확인",
+        "상의만 장비하지 않고 결과확인",
+        "광대 코, 외계인 선글라스 를 반드시 장비, 상의 및 하의 아무거나 장비하고 결과확인",
+        "헌팅캡 모자, 상의 아무거나, 하의 아무거나 장비하고 결과확인",
+        "모든 부위에 아무거나 장비하고 결과확인",
+        "갓, 선글라스 아무거나, 하의 아무거나, 헤드셋 장비하고 결과확인",
+        "요네 코스프레를 모두 장비하고 결과확인",
+        "레이스 코스프레를 모두 장비하고 이발 후 결과확인",
+        "화면에 숨어있는 보물을 찾는다",
+        "모든 도전과제를 달성"
     };
 
     private void Awake()
@@ -50,6 +52,8 @@ public class ChallengeManager : MonoBehaviour
         uiMovingManager = uiMovingObject;
     }
 
+
+
     public void CheckChallenge()
     {
         StartCoroutine(WaitCheckChellenge());
@@ -59,15 +63,47 @@ public class ChallengeManager : MonoBehaviour
     {
         while (clearChellengeIdStack.Count != 0)
         {
-            ClearChallenge(clearChellengeIdStack.Pop());
+            ClearChallenge(clearChellengeIdStack.Dequeue());
             yield return new WaitForSeconds(3f);
         }
     }
 
+    public static void checkAllChallenge()
+    {
+        bool clearAllChallenge = true;
+        for (int i = 0; i < DataManager.challengeClearArr.Length -1; i++)
+        {
+            if(DataManager.challengeClearArr[i] == false)
+            {
+                clearAllChallenge = false;
+                break;
+            }
+        }
+        if(clearAllChallenge) AddChellengeClearId(12);
+    }
+
+    
+    public static bool checkAllClear()
+    {
+        bool clearAll = true;
+        foreach(bool ele in DataManager.challengeClearArr)
+        {
+            if (ele == false)
+            {
+                clearAll = false;
+                break;
+            }
+        }
+
+        return clearAll;
+    }
+
+
+
     public static void AddChellengeClearId(int id)
     {
         checkTime += 2.5f;
-        clearChellengeIdStack.Push(id);
+        clearChellengeIdStack.Enqueue(id);
         DataManager.ChanegeChallengeState(id);
     }
 
@@ -82,6 +118,7 @@ public class ChallengeManager : MonoBehaviour
         clearCnt += 1;
         challengeCheck[challengeNum] = true;
         addClothManager.UnLockSet("Challenge" + (challengeNum + 1));
+        addClothManager.ResetMessage();
         UpdateChallengeCnt();
     }
 
@@ -94,7 +131,6 @@ public class ChallengeManager : MonoBehaviour
             clearCnt += 1;
             challengeCheck[challengeNum-1] = true;
             uiMovingManager.AlertChallengeClear(challengeElements[challengeNum - 1].transform.GetChild(0).GetComponent<Image>().sprite, challengeElements[challengeNum - 1].transform.GetChild(1).GetComponent<Text>().text);
-
 
             addClothManager.UnLockSet("Challenge" + challengeNum);
             addCloth = true;

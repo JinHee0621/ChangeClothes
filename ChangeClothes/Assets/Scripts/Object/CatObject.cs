@@ -54,7 +54,7 @@ public class CatObject : WearObject
             gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
             if (code == 0)
             {
-                if (( movingPercent < 80 && movingPercent >= 20) && !firstStand)
+                if ((movingPercent < 80 && movingPercent >= 20) && !firstStand)
                 {
                     movingPercent = random.Next(0, 100);
                     float movingRange = random.Next(0, 35) / 10f;
@@ -86,7 +86,8 @@ public class CatObject : WearObject
                 {
                     firstStand = false;
                     catAnim.SetTrigger("Sit");
-                    yield return new WaitForSeconds(15f);
+                    yield return new WaitForSeconds(27f);
+
                     runningCatMove = StartCoroutine(RunningMotion(code));
                 }
                 else

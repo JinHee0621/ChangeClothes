@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -19,12 +20,20 @@ public class SoundManager : MonoBehaviour
         SFX_Sound = transform.Find("EffectMusic").gameObject.GetComponent<AudioSource>();
         SFX_Sound2 = transform.Find("EffectMusic2").gameObject.GetComponent<AudioSource>();
         BGM_Sound = transform.Find("BackgroundMusic").gameObject.GetComponent<AudioSource>();
-        BGM_Sound.Play();
-        StartCoroutine(FadeInBGM(BGM_Sound));
+
+        if(SceneManager.GetActiveScene().name.Equals("Title")){
+            BGM_Sound.Play();
+            StartCoroutine(FadeInBGM(BGM_Sound));
+        }
     }
     static public void OffBGM()
     {
         BGM_Sound.Stop();
+    }
+
+    public static void PlayBGM()
+    {
+        BGM_Sound.Play();
     }
 
     static public void PlaySFX(int code)

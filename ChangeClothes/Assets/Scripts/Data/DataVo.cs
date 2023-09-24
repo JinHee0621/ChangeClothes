@@ -5,6 +5,8 @@ using UnityEngine;
 public class DataVo 
 {
     public int ClearCount { get; set; }
+    public bool ViewEnding { get; set; }
+    public bool GetTrasure { get; set; }
     public bool Challenge1 { get; set; }
     public bool Challenge2 { get; set; }
     public bool Challenge3 { get; set; }
@@ -15,4 +17,7 @@ public class DataVo
     public bool Challenge8 { get; set; }
     public bool Challenge9 { get; set; }
     public bool Challenge10 { get; set; }
+    public bool Challenge11 { get; set; }
+    public bool Challenge12 { get; set; }
+
 }

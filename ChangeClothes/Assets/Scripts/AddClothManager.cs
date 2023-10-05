@@ -181,7 +181,7 @@ public class AddClothManager : MonoBehaviour
         if (shirtAdd && !addMessage.Contains("상의")) addMessage += "[상의] ";
         if (pantsAdd && !addMessage.Contains("하의")) addMessage += "[하의] ";
         if (outerAdd && !addMessage.Contains("외투")) addMessage += "[외투] ";
-        if (hairAdd && !addMessage.Contains("모자")) addMessage += "[모자] ";
+        if (hairAdd && !addMessage.Contains("머리")) addMessage += "[머리] ";
         if (itemAdd && !addMessage.Contains("잡동사니")) addMessage += "[잡동사니] ";
 
         clothSetManager.ReNewHangers();

@@ -156,7 +156,13 @@ public class CheckResultManager : MonoBehaviour
             uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 0;
             if(!ChallengeManager.challengeCheck[2]) ChallengeManager.AddChellengeClearId(3);
-        }else if(charStateManager.isbald && charStatus["외투"].Equals("뒤집은 회색후드") && charStatus["하의"].Equals("츄리닝 바지"))
+        }else if(charStatus["외투"].Equals("마왕복장") && charStatus["모자"].Equals("마왕복장"))
+        {
+            resultText = "마왕김도 ";
+            uiManager.CheckResultText("종합", resultText);
+            uiManager.multiVal = 20;
+        }
+        else if(charStateManager.isbald && charStatus["외투"].Equals("뒤집은 회색후드") && charStatus["하의"].Equals("츄리닝 바지"))
         {
             resultText = "ASEX LEGEND ";
             uiManager.CheckResultText("외투", "레이스 코스프레");
@@ -217,12 +223,25 @@ public class CheckResultManager : MonoBehaviour
             uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 15;
         }
+        else if (charStatus["외투"].Equals("싼다할아버지") && charStatus["모자"].Equals("싼다할아버지") && charStatus["얼굴"].Equals("싼다할아버지"))
+        {
+            resultText = "싼다 할아버지 ";
+            uiManager.CheckResultText("종합", resultText);
+            uiManager.multiVal = 15;
+        }
 
         if (!charStatus.ContainsKey("종합"))
         {
             resultText = "일반 복장 ";
             uiManager.multiVal = 5;
             uiManager.CheckResultText("종합", resultText);
+        }
+
+        if (charStatus["모자"].Equals("사천왕인형탈"))
+        {
+            resultText = "사천왕! : " + resultText;
+            uiManager.CheckResultText("종합", resultText);
+            uiManager.multiVal += 2;
         }
 
         if (charStatus["얼굴"].Equals("광대 코, 외계인선글라스") && charStatus["장식"].Equals("훈수벨"))

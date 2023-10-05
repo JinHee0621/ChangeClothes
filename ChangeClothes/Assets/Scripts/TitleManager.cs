@@ -12,6 +12,7 @@ using System.IO;
 public class TitleManager : MonoBehaviour
 {
     public Image fadeIn;
+    public SoundManager soundManager;
     public GameObject fadeOut;
     public GameObject closeWindow;
     string filePath = "SaveData/data";
@@ -21,6 +22,11 @@ public class TitleManager : MonoBehaviour
     {
         Application.targetFrameRate = 60;
         StartCoroutine(removeFadeOut());
+    }
+
+    private void Start()
+    {
+        soundManager.BGMOn();
     }
 
     public void GoToMain()

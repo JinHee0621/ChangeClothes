@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class CheckResultManager : MonoBehaviour
 {
+    public SoundManager soundManager;
     public CharStateManager charStateManager;
     public UIMovingManager uiManager;
     public AddClothManager addClothManager;
@@ -45,6 +46,7 @@ public class CheckResultManager : MonoBehaviour
 
     public void startCheckResult()
     {
+        ChallengeManager.clearChellengeIdStack.Clear();
         //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
         OptionManager.instance.nowCheckResult = true;
 
@@ -62,7 +64,7 @@ public class CheckResultManager : MonoBehaviour
         CharEquippedSetCheck();
         charStateManager.StopFixCloth();
         yield return new WaitForSeconds(1.5f);
-        SoundManager.OffBGM();
+        soundManager.BGMOff();
         cover1.GetComponent<Animator>().SetTrigger("StartCheck");
         cover2.GetComponent<Animator>().SetTrigger("StartCheck");
         SoundManager.PlaySFX(3);
@@ -138,7 +140,6 @@ public class CheckResultManager : MonoBehaviour
         uiManager.CheckResultText("장식", left_type);
 
         CheckChellengeCleard();
-
         uiManager.ScoreVal(score);
         clearCount += 1;
         DataManager.dataClearCount = clearCount;
@@ -148,80 +149,105 @@ public class CheckResultManager : MonoBehaviour
     public void CheckChellengeCleard()
     {
         Dictionary<string, string> charStatus = uiManager.ReturnResultDic();
-        
-
+        string resultText = "";
         if(charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
         {
-            uiManager.CheckResultText("종합", "옷좀입어요;");
+            resultText = "옷좀입어요; ";
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 0;
-            ChallengeManager.AddChellengeClearId(3);
+            if(!ChallengeManager.challengeCheck[2]) ChallengeManager.AddChellengeClearId(3);
         }else if(charStateManager.isbald && charStatus["외투"].Equals("뒤집은 회색후드") && charStatus["하의"].Equals("츄리닝 바지"))
         {
+            resultText = "ASEX LEGEND ";
             uiManager.CheckResultText("외투", "레이스 코스프레");
             uiManager.CheckResultText("하의", "레이스 코스프레");
-            uiManager.CheckResultText("종합", "ASEX LEGEND");
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 15;
-            ChallengeManager.AddChellengeClearId(10);
-        }
-        else if (charStatus["얼굴"].Equals("광대 코, 외계인선글라스") && !charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음"))
-        {
-            uiManager.CheckResultText("종합", "훈수허용");
-            uiManager.multiVal = 10;
-            ChallengeManager.AddChellengeClearId(5);
+            if (!ChallengeManager.challengeCheck[9]) ChallengeManager.AddChellengeClearId(10);
         }
         else if (charStatus["얼굴"].Equals("없음") && charStatus["모자"].Equals("요네 코스프레") && charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("요네 코스프레") && charStatus["장식"].Equals("겐지 칼") && charStatus["외투"].Equals("없음"))
         {
-            uiManager.CheckResultText("종합", "코스프레");
+            resultText = "코스프레 ";
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 15;
-            ChallengeManager.AddChellengeClearId(9);
+            if (!ChallengeManager.challengeCheck[8])  ChallengeManager.AddChellengeClearId(9);
         }
-        else if (charStatus["모자"].Equals("갓") && charStatus["얼굴"].Contains("선글라스") && charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("해변바지") && charStatus["얼굴"].Contains("헤드셋"))
+        else if (charStatus["모자"].Equals("갓") && charStatus["얼굴"].Contains("선글라스") && charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음") && charStatus["얼굴"].Contains("헤드셋") && charStatus["장식"].Contains("리듬게임컨트롤러"))
         {
-            uiManager.CheckResultText("종합", "리듬게이머");
+            resultText = "파워리듬게이머 ";
+            uiManager.CheckResultText("종합", resultText);
+            uiManager.multiVal = 15;
+        }
+        else if (charStatus["모자"].Equals("갓") && charStatus["얼굴"].Contains("선글라스") && charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("여름반바지") && charStatus["얼굴"].Contains("헤드셋"))
+        {
+            resultText = "리듬게이머 "; 
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 10;
-            ChallengeManager.AddChellengeClearId(8);
+            if (!ChallengeManager.challengeCheck[7]) ChallengeManager.AddChellengeClearId(8);
         }
         else if (charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음") && charStatus["외투"].Equals("없음"))
         {
+            resultText = "게이밍슈트 "; 
             uiManager.CheckResultText("상의", "게이밍슈트");
-            uiManager.CheckResultText("종합", "게이밍슈트");
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 10;
-            ChallengeManager.AddChellengeClearId(4);
-        } 
+            if (!ChallengeManager.challengeCheck[3]) ChallengeManager.AddChellengeClearId(4);
+        }
         else if(charStatus["모자"].Equals("헌팅 캡") && !charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음"))
         {
-            uiManager.CheckResultText("종합", "힐링방송");
+            resultText = "힐링방송 ";
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 10;
-            ChallengeManager.AddChellengeClearId(6);
+            if (!ChallengeManager.challengeCheck[5]) ChallengeManager.AddChellengeClearId(6);
         } else if ( charStatus["얼굴"].Equals("없음") && charStatus["모자"].Equals("렘도") && charStatus["상의"].Equals("렘도") && charStatus["하의"].Equals("렘도") && charStatus["외투"].Equals("없음"))
         {
-            uiManager.CheckResultText("종합", "렘 코스프레");
+            resultText = "렘 코스프레 ";
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 15;
         }
         else if (charStatus["얼굴"].Equals("없음") && charStatus["모자"].Equals("라뮬라나 복장") && charStatus["상의"].Equals("없음") && charStatus["하의"].Equals("라뮬라나 복장") && charStatus["외투"].Equals("라뮬라나 복장") && charStatus["장식"].Equals("채찍"))
         {
-            uiManager.CheckResultText("종합", "탐험가");
+            resultText = "유적탐험가 ";
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 15;
         }
         else if (charStatus["상의"].Equals("크립토 복장") && charStatus["하의"].Equals("크립토 복장") && charStatus["외투"].Equals("크립토 복장"))
         {
-            uiManager.CheckResultText("종합", "크립토");
+            resultText = "크립토 ";
+            uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 15;
-        }
-        else if(!charStatus["모자"].Equals("없음") && !charStatus["얼굴"].Equals("없음") && !charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음") && !charStatus["외투"].Equals("없음") && !charStatus["장식"].Equals("없음"))
-        {
-            uiManager.CheckResultText("종합", "전신 장비");
-            uiManager.multiVal = 8;
-            ChallengeManager.AddChellengeClearId(7);
         }
 
         if (!charStatus.ContainsKey("종합"))
         {
+            resultText = "일반 복장 ";
             uiManager.multiVal = 5;
-            uiManager.CheckResultText("종합", "일반 복장");
+            uiManager.CheckResultText("종합", resultText);
         }
 
-        if(DataManager.dataTrasure)
+        if (charStatus["얼굴"].Equals("광대 코, 외계인선글라스") && charStatus["장식"].Equals("훈수벨"))
+        {
+            resultText = "훈수구걸 : " + resultText;
+            uiManager.CheckResultText("종합", resultText);
+            uiManager.multiVal -= 1;
+        }
+        else if (charStatus["얼굴"].Equals("광대 코, 외계인선글라스"))
+        {
+            resultText = "훈수허용 : " + resultText;
+            uiManager.CheckResultText("종합", resultText);
+            uiManager.multiVal += 1;
+            if (!ChallengeManager.challengeCheck[4]) ChallengeManager.AddChellengeClearId(5);
+        }
+
+        if (!charStatus["모자"].Equals("없음") && !charStatus["얼굴"].Equals("없음") && !charStatus["상의"].Equals("없음") && !charStatus["하의"].Equals("없음") && !charStatus["외투"].Equals("없음") && !charStatus["장식"].Equals("없음"))
+        {
+            resultText = "전신 장비 : " + resultText;
+            uiManager.CheckResultText("종합", resultText);
+            uiManager.multiVal += 3;
+            if (!ChallengeManager.challengeCheck[6]) ChallengeManager.AddChellengeClearId(7);
+        }
+
+        if (DataManager.dataTrasure)
         {
             ChallengeManager.AddChellengeClearId(11);
         }
@@ -253,26 +279,26 @@ public class CheckResultManager : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         if (ChallengeManager.checkAllClear() && !DataManager.viewEnding)
         {
-            yield return new WaitForSeconds(1f);
             SceneManager.LoadScene("Ending");
         } else
         {
+            soundManager.BGMOn();
             uiManager.FadeInCover();
-        }
-        uiManager.ResetUI();
-        ChallengeManager.ResetWaitTime();
-        yield return new WaitForSeconds(3f);
-        nowRestarting = false;
-        addClothManager.clothSetManager.openAlert = false;
-        //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
-        OptionManager.instance.nowCheckResult = false;
+            uiManager.ResetUI();
+            ChallengeManager.ResetWaitTime();
+            yield return new WaitForSeconds(3f);
+            nowRestarting = false;
+            addClothManager.clothSetManager.openAlert = false;
+            //결과확인중일때는 옵션이 열리지 않도록 [개발중일 때는 주석처리할것]
+            OptionManager.instance.nowCheckResult = false;
 
-        if (challengeManager.addCloth)
-        {
-            uiManager.PopUpOpen(addClothManager.addMessage);
-            yield return new WaitForSeconds(1f);
-            challengeManager.ResetAddCloth();
-            addClothManager.ResetAddState();
+            if (challengeManager.addCloth)
+            {
+                uiManager.PopUpOpen(addClothManager.addMessage);
+                yield return new WaitForSeconds(1f);
+                challengeManager.ResetAddCloth();
+                addClothManager.ResetAddState();
+            }
         }
     }
 

@@ -8,19 +8,28 @@ public class OpeningManager : MonoBehaviour
 {
     public Image fadeIn;
     public Animator openingSceneAnim;
+    public GameObject nextBtn;
     private int page = 0;
     private bool animPlay = false;
 
     public void NextOpening()
     {
-        if (!animPlay && page < 5)
+        if (!animPlay && page < 4)
         {
             SoundManager.PlaySFX(7);
             animPlay = true;
             openingSceneAnim.SetTrigger("Next");
+            nextBtn.SetActive(false);
             page += 1;
-            StartCoroutine(WaitAnim());
-        } else if(!animPlay && page >= 5)
+            if(page < 4)
+            {
+                StartCoroutine(WaitAnim(2.5f));
+            } else
+            {
+                StartCoroutine(WaitAnim(5f));
+            }
+
+        } else if(!animPlay && page >= 4)
         {
             fadeIn.gameObject.SetActive(true);
             SoundManager.PlaySFX(7);
@@ -28,10 +37,11 @@ public class OpeningManager : MonoBehaviour
         }
     }
 
-    IEnumerator WaitAnim()
+    IEnumerator WaitAnim(float time)
     {
-        yield return new WaitForSeconds(2f);
-        animPlay = false; 
+        yield return new WaitForSeconds(time);
+        animPlay = false;
+        nextBtn.SetActive(true);
     }
 
     IEnumerator SceneChangeFadeIn()

@@ -9,6 +9,7 @@ public class EndingManager : MonoBehaviour
 {
     public Image fadeIn;
     public Animator endimgAnim;
+    public SoundManager soundManager;
 
     void Start()
     {
@@ -23,11 +24,13 @@ public class EndingManager : MonoBehaviour
         SoundManager.PlaySFX(26);
         yield return new WaitForSeconds(1.2f);
         SoundManager.PlaySFX(26);
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(1.0f);
         SoundManager.PlaySFX(15);
         yield return new WaitForSeconds(1.0f);
         SoundManager.PlayBGM();
-        yield return new WaitForSeconds(55.0f);
+        yield return new WaitForSeconds(54.0f);
+        soundManager.BGMOff();
+        yield return new WaitForSeconds(5.0f);
         StartCoroutine(SceneChangeFadeIn());
     }
 

@@ -11,13 +11,13 @@ public class ChallengeManager : MonoBehaviour
 
     public UIMovingManager uiMovingObject;
     static UIMovingManager uiMovingManager;
-    static Queue<int> clearChellengeIdStack = new Queue<int>();
+    public static Queue<int> clearChellengeIdStack = new Queue<int>();
     public GameObject[] challengeObjects;
     static GameObject[] challengeElements = new GameObject[12];
-    static bool[] challengeCheck = new bool[12];
+    public static bool[] challengeCheck = new bool[12];
     public Text clearCntObj;
     static Text clearCntTxt;
-    static int clearCnt = 0;
+    public static int clearCnt = 0;
     public static float checkTime = 0f;
 
     Coroutine checkHintClickTime = null;
@@ -29,14 +29,14 @@ public class ChallengeManager : MonoBehaviour
         "결과확인 3회",
         "상의, 하의, 외투를 장비하지 않고 결과확인",
         "상의만 장비하지 않고 결과확인",
-        "광대 코, 외계인 선글라스 를 반드시 장비, 상의 및 하의 아무거나 장비하고 결과확인",
+        "광대 코, 외계인 선글라스 를 반드시 장비하고 결과확인",
         "헌팅캡 모자, 상의 아무거나, 하의 아무거나 장비하고 결과확인",
         "모든 부위에 아무거나 장비하고 결과확인",
-        "갓, 선글라스 아무거나, 하의 아무거나, 헤드셋 장비하고 결과확인",
-        "요네 코스프레를 모두 장비하고 결과확인",
-        "레이스 코스프레를 모두 장비하고 이발 후 결과확인",
-        "화면에 숨어있는 보물을 찾는다",
-        "모든 도전과제를 달성"
+        "상의는 입으면 안되며 갓, 선글라스 아무거나, 여름반바지, 헤드셋 장비하고 결과확인",
+        "요네 코스프레만 모두 장비하고 결과확인",
+        "레이스 코스프레만 모두 장비하고 이발 후 결과확인",
+        "방음부스에 숨어있는 보물을 찾는다",
+        "이 도전과제를 제외한 나머지 도전과제를 달성한 다음 결과확인 1회"
     };
 
     private void Awake()
@@ -71,9 +71,9 @@ public class ChallengeManager : MonoBehaviour
     public static void checkAllChallenge()
     {
         bool clearAllChallenge = true;
-        for (int i = 0; i < DataManager.challengeClearArr.Length -1; i++)
+        for (int i = 0; i < challengeCheck.Length -1; i++)
         {
-            if(DataManager.challengeClearArr[i] == false)
+            if(challengeCheck[i] == false)
             {
                 clearAllChallenge = false;
                 break;

@@ -5,6 +5,7 @@ using UnityEngine;
 public class DataVo 
 {
     public int ClearCount { get; set; }
+    public bool ViewTutorial { get; set; }
     public bool ViewEnding { get; set; }
     public bool GetTrasure { get; set; }
     public bool Challenge1 { get; set; }

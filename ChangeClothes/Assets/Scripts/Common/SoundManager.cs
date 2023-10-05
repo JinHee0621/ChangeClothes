@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class SoundManager : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class SoundManager : MonoBehaviour
     static AudioSource Mouse_Sound;
     static AudioSource SFX_Sound;
     static AudioSource SFX_Sound2;
+    public AudioSource BGM_Sound_pub;
     static AudioSource BGM_Sound;
     static public List<AudioClip> SFX;
 
@@ -21,10 +21,6 @@ public class SoundManager : MonoBehaviour
         SFX_Sound2 = transform.Find("EffectMusic2").gameObject.GetComponent<AudioSource>();
         BGM_Sound = transform.Find("BackgroundMusic").gameObject.GetComponent<AudioSource>();
 
-        if(SceneManager.GetActiveScene().name.Equals("Title")){
-            BGM_Sound.Play();
-            StartCoroutine(FadeInBGM(BGM_Sound));
-        }
     }
     static public void OffBGM()
     {
@@ -33,6 +29,7 @@ public class SoundManager : MonoBehaviour
 
     public static void PlayBGM()
     {
+        BGM_Sound.volume = OptionManager.ReturnBGMVolumeSize();
         BGM_Sound.Play();
     }
 
@@ -54,13 +51,35 @@ public class SoundManager : MonoBehaviour
         Mouse_Sound.Play();
     }
 
+    public void BGMOn()
+    {
+        BGM_Sound_pub.Play();
+        BGM_Sound_pub.volume = 0f;
+        StartCoroutine(FadeInBGM(BGM_Sound_pub));
+    }
+
     IEnumerator FadeInBGM(AudioSource source)
     {
-        source.volume += 0.005f;
-        if(source.volume < 0.18f)
+        source.volume += 0.05f;
+        if(source.volume < OptionManager.ReturnBGMVolumeSize())
         {
             yield return new WaitForSeconds(0.5f);
             StartCoroutine(FadeInBGM(source));
+        }
+    }
+
+    public void BGMOff()
+    {
+        StartCoroutine(FadeOutBGM(BGM_Sound_pub));
+    }
+
+    IEnumerator FadeOutBGM(AudioSource source)
+    {
+        source.volume -= 0.05f;
+        if (source.volume > 0f)
+        {
+            yield return new WaitForSeconds(0.25f);
+            StartCoroutine(FadeOutBGM(source));
         }
     }
 }

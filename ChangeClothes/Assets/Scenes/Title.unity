@@ -270,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.5}
+  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
   m_EffectDistance: {x: 5, y: -6}
   m_UseGraphicAlpha: 1
 --- !u!1 &21670018
@@ -1417,7 +1417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.5}
+  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
   m_EffectDistance: {x: 5, y: -6}
   m_UseGraphicAlpha: 1
 --- !u!1 &336931641
@@ -1535,13 +1535,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 384799909}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1927304477}
-  m_RootOrder: 3
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &384799911
 MonoBehaviour:
@@ -1556,6 +1556,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 1976158627}
+  soundManager: {fileID: 1761684881}
   fadeOut: {fileID: 2036905521}
   closeWindow: {fileID: 1737183974}
 --- !u!1 &390704156
@@ -3235,7 +3236,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 97f5d0d0535ccad49ba20ae1c6470fab, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.503
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -4035,7 +4036,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
+  m_BackGroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -5825,6 +5826,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cab31f6a996819e4d9d4dcb688d2d32b, type: 3}
   BGM_List:
   - {fileID: 8300000, guid: b9e33d55f305c4a469ab1fa48e09015c, type: 3}
+  BGM_Sound_pub: {fileID: 863133363}
 --- !u!1 &1768480440
 GameObject:
   m_ObjectHideFlags: 0
@@ -6136,7 +6138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 0.5}
+  m_EffectColor: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
   m_EffectDistance: {x: 5, y: -6}
   m_UseGraphicAlpha: 1
 --- !u!1 &1877869488
@@ -6371,7 +6373,6 @@ Transform:
   - {fileID: 1761684880}
   - {fileID: 841181098}
   - {fileID: 184418718}
-  - {fileID: 384799910}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -43,6 +43,7 @@ public class OptionManager : MonoBehaviour
     public bool titleOpen;
 
     private Button optionBtn;
+    private Button mainOptionBtn;
     private Button optionCloseBtn;
 
     private void Awake()
@@ -69,20 +70,25 @@ public class OptionManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape) && nowCheckResult == false)
             {
-                SoundManager.PlaySFX(7);
-                if (!optionOpen)
-                {
-                    backgroundBtnUI.CloseMenuPub();
-                    clothSetBtnUI.CloseAll();
-                    optionWindow.SetActive(true);
-                    instance.optionOpen = true;
-                }
-                else
-                {
-                    optionWindow.SetActive(false);
-                    instance.optionOpen = false;
-                }
+                OptionOpen();
             }
+        }
+    }
+
+    public void OptionOpen()
+    {
+        SoundManager.PlaySFX(7);
+        if (!optionOpen)
+        {
+            backgroundBtnUI.CloseMenuPub();
+            clothSetBtnUI.CloseAll();
+            optionWindow.SetActive(true);
+            instance.optionOpen = true;
+        }
+        else
+        {
+            optionWindow.SetActive(false);
+            instance.optionOpen = false;
         }
     }
 
@@ -126,6 +132,10 @@ public class OptionManager : MonoBehaviour
 
         bgmSlider.onValueChanged.AddListener(BGMValueChange);
         sfxSlider.onValueChanged.AddListener(SFXValueChange);
+
+
+        mainOptionBtn = GameObject.Find("OptionOpenBtn").GetComponent<Button>();
+        mainOptionBtn.onClick.AddListener(OptionOpen);
 
         SoundValueInit();
         optionWindow.SetActive(false);
@@ -177,6 +187,12 @@ public class OptionManager : MonoBehaviour
         bgmSource.volume = bgmSize * 0.5f;
     }
 
+    public static float ReturnBGMVolumeSize()
+    {
+        return instance.bgmSize * 0.5f; 
+    }
+
+
     private void SFXValueChange(float arg0)
     {
         sfxSize = sfxSlider.value;
@@ -215,7 +231,7 @@ public class OptionManager : MonoBehaviour
 
     public void TitleCloseOption()
     {
-        SoundManager.PlaySFX(7);
+        SoundManager.PlaySFX(14);
         optionWindow.SetActive(false);
         instance.optionOpen = false;
     }
@@ -231,7 +247,7 @@ public class OptionManager : MonoBehaviour
 
     public void CloseOptionWindow()
     {
-        SoundManager.PlaySFX(7);
+        SoundManager.PlaySFX(14);
         optionWindow.SetActive(false);
         instance.optionOpen = false;
     }
@@ -295,7 +311,7 @@ public class OptionManager : MonoBehaviour
 
     public void CloseReturnTitleWindow()
     {
-        SoundManager.PlaySFX(7);
+        SoundManager.PlaySFX(14);
         titleWindow.SetActive(false);
         instance.titleOpen = false;
     }

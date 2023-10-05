@@ -15,8 +15,10 @@ public class CatObject : WearObject
     private Vector3 cat_first_pos;
     public int posCode = 0;
     private System.Random random = new System.Random();
-
+    public bool cat_Moving;
     Coroutine runningCatMove = null;
+
+    private int beforePosCode = 0;
 
     private void Start()
     {
@@ -29,7 +31,22 @@ public class CatObject : WearObject
     public void SetPostion()
     {
         if (runningCatMove != null) StopCoroutine(runningCatMove);
-        posCode = random.Next(0, 2);
+
+        if(DataManager.dataClearCount == 0)
+        {
+            posCode = 2;
+        } else
+        {
+            if (beforePosCode == 2)
+            {
+                posCode = random.Next(0, 2);
+            }
+            else
+            {
+                posCode = random.Next(0, 3);
+            }
+        }
+        beforePosCode = posCode;
         gameObject.transform.SetParent(sponePosition[posCode]);
         cat_first_pos = new Vector3(0f, 0f, 0f);
         gameObject.transform.localPosition = cat_first_pos;
@@ -65,20 +82,30 @@ public class CatObject : WearObject
                         if (gameObject.transform.position.x <= 10)
                         {
                             gameObject.transform.DOLocalMoveX(gameObject.transform.localPosition.x + movingRange, movingTime);
+                            cat_Moving = true;
                         }
                         yield return new WaitForSeconds(movingTime);
+                        
+                        if(!weared) gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                        else gameObject.transform.localScale = new Vector3(0.6666667f, 0.6666667f, 1f);
+
                     } else if(movingPercent < 50)
                     {
                         if (gameObject.transform.position.x > -10)
                         {
                             gameObject.transform.localScale = new Vector3(-1f, 1f, 1f);
                             gameObject.transform.DOLocalMoveX(gameObject.transform.localPosition.x - movingRange, movingTime);
+                            cat_Moving = true;
                         }
                         yield return new WaitForSeconds(movingTime);
-                        gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                        if (!weared) gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                        else gameObject.transform.localScale = new Vector3(0.6666667f, 0.6666667f, 1f);
                     }
-                    cat_first_pos = gameObject.transform.localPosition;
+                    if(!weared) cat_first_pos = gameObject.transform.localPosition;
+                    else cat_first_pos = new Vector3(0f, 0f, 0f);
+
                     catAnim.SetBool("Moving", false);
+                    cat_Moving = false;
                     yield return new WaitForSeconds(10f);
                     runningCatMove = StartCoroutine(RunningMotion(code));
                 }
@@ -86,7 +113,7 @@ public class CatObject : WearObject
                 {
                     firstStand = false;
                     catAnim.SetTrigger("Sit");
-                    yield return new WaitForSeconds(27f);
+                    yield return new WaitForSeconds(35f);
 
                     runningCatMove = StartCoroutine(RunningMotion(code));
                 }
@@ -160,7 +187,7 @@ public class CatObject : WearObject
                     stat.SetBody(clothType, clothType_Part);
                     gameObject.transform.localPosition = new Vector3(0, 0, 0);
                     gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
-
+                    gameObject.transform.localScale = new Vector3(0.6666667f, 0.6666667f, 1f);
                 }
                 else if (cat_char_change)
                 {
@@ -168,12 +195,14 @@ public class CatObject : WearObject
                     ResetChanged();
                     gameObject.transform.localPosition = cat_first_pos;
                     catAnim.SetBool("Pick", false);
+                    gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
                 }
                 else
                 {
                     catAnim.SetBool("Equip", false);
                     SoundManager.PlaySFX(2);
                     gameObject.transform.localPosition = cat_first_pos;
+                    gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
                     gameObject.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
                     stat.OutBody(clothType_Part, clothRankPoint);
                     catAnim.SetBool("Pick", false);
@@ -190,7 +219,15 @@ public class CatObject : WearObject
             cat_Pick = true;
             if (!move)
             {
-                SoundManager.PlaySFX(0);
+                DOTween.Kill(gameObject.transform);
+                int pickSoundPercent = random.Next(0, 100);
+                if(pickSoundPercent > 50)
+                {
+                    SoundManager.PlaySFX(27);
+                } else
+                {
+                    SoundManager.PlaySFX(26);
+                }
                 catAnim.SetBool("Pick", true);
             }
         }

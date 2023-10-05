@@ -13,6 +13,7 @@ public class DataManager : MonoBehaviour
 
     DataVo data = new DataVo
     {
+        ViewTutorial = false,
         ViewEnding = false,
         GetTrasure = false,
         Challenge1 = false,
@@ -33,6 +34,7 @@ public class DataManager : MonoBehaviour
     public static bool[] challengeClearArr = { false, false, false, false, false, false, false, false, false, false, false, false };
     public static bool dataTrasure = false;
     public static bool viewEnding = false;
+    public static bool viewTutorial = false;
     public static int dataClearCount = 0;
     void Start()
     {
@@ -94,10 +96,13 @@ public class DataManager : MonoBehaviour
             data.ViewEnding = bool.Parse(loadData["ViewEnding"].ToString());
             viewEnding = data.ViewEnding;
 
+            data.ViewTutorial = bool.Parse(loadData["ViewTutorial"].ToString());
+            viewTutorial = data.ViewTutorial;
+
             data.ClearCount = int.Parse(loadData["ClearCount"].ToString());
             dataClearCount = data.ClearCount;
             checkResultManager.clearCount = dataClearCount;
-
+            ChallengeManager.clearCnt = 0;
             for (int i = 0; i < challengeClearArr.Length; i++)
             {
                 if(challengeClearArr[i])
@@ -127,6 +132,7 @@ public class DataManager : MonoBehaviour
             Challenge12 = challengeClearArr[11],
             GetTrasure = dataTrasure,
             ViewEnding = viewEnding,
+            ViewTutorial = viewTutorial,
             ClearCount = dataClearCount
         };
         string json = JsonConvert.SerializeObject(data);

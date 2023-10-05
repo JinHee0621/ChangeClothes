@@ -37,6 +37,8 @@ public class UIMovingManager : MonoBehaviour
     public Animator[] stars;
     public ParticleSystem[] starPopEffect;
 
+    public GameObject tutorialBtn;
+
     public GameObject challengeUI;
     public GameObject challengeAlert;
     public Text challengeNm;
@@ -64,6 +66,7 @@ public class UIMovingManager : MonoBehaviour
     private Vector3 dayUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 bottomUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 challengeUI_default_pos = new Vector3(0, 0, 0);
+    private Vector3 tutorialBtn_default_pos = new Vector3(0, 0, 0);
     private Vector3 viewerUI_default_pos = new Vector3(0, 0, 0);
     private Vector3 rankUI_default_pos = new Vector3(0, 0, 0);
 
@@ -562,6 +565,7 @@ public class UIMovingManager : MonoBehaviour
         //daySprite = Resources.LoadAll<Sprite>("UI/UI_Number");
         bottomUI_default_pos = bottomUI.transform.localPosition;
         challengeUI_default_pos = challengeUI.transform.localPosition;
+        tutorialBtn_default_pos = tutorialBtn.transform.localPosition;
 
         MoveUI();
     }
@@ -574,6 +578,7 @@ public class UIMovingManager : MonoBehaviour
         bottomUI.transform.DOLocalMoveX(bottomUI.transform.localPosition.x - 668, 2.5f).SetEase(Ease.OutQuad); 
         bottomUI.transform.DOLocalMoveY(bottomUI.transform.localPosition.y + 418, 2.5f).SetEase(Ease.OutQuad); 
         challengeUI.transform.DOLocalMoveX(-730, 2.5f).SetEase(Ease.OutQuad); 
+        tutorialBtn.transform.DOLocalMoveX(-817, 2.5f).SetEase(Ease.OutQuad);
     }
 
     public void RemoveUI()
@@ -584,6 +589,7 @@ public class UIMovingManager : MonoBehaviour
         clothSetBtnUI.GetComponent<ClothSetManager>().CloseAll();
         backBtnManager.CloseMenuPub();
         challengeUI.transform.DOLocalMoveX(challengeUI_default_pos.x, 2.5f);
+        tutorialBtn.transform.DOLocalMoveX(tutorialBtn_default_pos.x, 2.5f);
     }
 
     IEnumerator DelayOpen(float time)

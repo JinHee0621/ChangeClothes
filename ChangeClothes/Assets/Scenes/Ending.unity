@@ -570,7 +570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 337, y: 117.00002}
+  m_AnchoredPosition: {x: 337, y: 158}
   m_SizeDelta: {x: 900, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &91146568
@@ -1146,8 +1146,8 @@ Camera:
   m_GameObject: {fileID: 175454009}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1717,7 +1717,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 332, y: -120}
+  m_AnchoredPosition: {x: 332, y: -138}
   m_SizeDelta: {x: 900, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &421764598
@@ -1768,7 +1768,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.25
-  m_Text: "\uC720\uB2C8\uD2F0 Asset \n\uD568\uB9C8\uAC00\uC838\uC640\uB77C (\uC9C1\uC811\uB179\uC74C)"
+  m_Text: "\uC720\uB2C8\uD2F0 Asset \n\uAE40\uB3C4\uB79C\uB4DC\n\uCEE4\uBE44\n\uD568\uB9C8\uAC00\uC838\uC640\uB77C"
 --- !u!222 &421764600
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1911,7 +1911,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 514682217}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -315, y: 54, z: 0}
+  m_LocalPosition: {x: 0, y: 54, z: 0}
   m_LocalScale: {x: 90, y: 90, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2358,6 +2358,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cc591548c67d2be4cace8559706e9e4e, type: 3}
   BGM_List:
   - {fileID: 8300000, guid: 0e806260a7c92e548a484773bc616c23, type: 3}
+  BGM_Sound_pub: {fileID: 1133150700}
 --- !u!1 &619831685
 GameObject:
   m_ObjectHideFlags: 0
@@ -2376,7 +2377,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &619831686
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2470,7 +2471,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &620207713
 Transform:
   m_ObjectHideFlags: 0
@@ -2814,7 +2815,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 332, y: -51.999977}
+  m_AnchoredPosition: {x: 332, y: -39}
   m_SizeDelta: {x: 900, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &846576286
@@ -3876,7 +3877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 337, y: 43.000023}
+  m_AnchoredPosition: {x: 337, y: 70.99999}
   m_SizeDelta: {x: 900, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1195794336
@@ -3929,7 +3930,10 @@ MonoBehaviour:
     m_LineSpacing: 1.25
   m_Text: 'Bladverk Band - Constellations
 
-    Hara Noda - Bob'
+    Hara Noda - Bob
+
+    Jane Street -
+    TrackTribe'
 --- !u!222 &1195794338
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4392,6 +4396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeIn: {fileID: 2118907519}
   endimgAnim: {fileID: 1989516887}
+  soundManager: {fileID: 614306698}
 --- !u!1 &1315926250
 GameObject:
   m_ObjectHideFlags: 0

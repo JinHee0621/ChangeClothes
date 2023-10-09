@@ -223,7 +223,7 @@ public class CheckResultManager : MonoBehaviour
             uiManager.CheckResultText("종합", resultText);
             uiManager.multiVal = 15;
         }
-        else if (charStatus["외투"].Equals("싼다할아버지") && charStatus["모자"].Equals("싼다할아버지") && charStatus["얼굴"].Equals("싼다할아버지"))
+        else if (charStatus["외투"].Equals("싼다할아버지") && charStatus["모자"].Equals("싼다할아버지") && charStatus["얼굴"].Contains("싼다할아버지"))
         {
             resultText = "싼다 할아버지 ";
             uiManager.CheckResultText("종합", resultText);

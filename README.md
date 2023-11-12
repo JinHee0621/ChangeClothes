@@ -7,3 +7,9 @@
 ## :hammer: 개발환경
 - Unity Engine
 - C#
+
+## :floppy_disk: 게임 다운로드 Link
+<https://cafe.naver.com/kimdoe/52040>
+
+## :movie_camera: 스트리머 플레이 영상
+<https://youtu.be/xDHTkrgDEVg>
